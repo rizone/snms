@@ -21,19 +21,20 @@ public class DateJsonMapper implements JsonDeserializer<Date> {
 
     public Date deserialize(JsonElement json, Type typeOfT,
             JsonDeserializationContext context) throws JsonParseException {
-        Log.e("dfd", json.getAsString());
-        Log.e("dfd", json.getAsString());
-        Log.e("dfd", json.getAsString());
-        Log.e("dfd", json.getAsString());
-        Log.e("dfd", json.getAsString());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
 			return dateFormat.parse(json.getAsString());
 		
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return null;
+			SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+			try {
+				return dateFormat.parse("2013-10-27T00:00:33:00");
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			return new Date(); 
 		}
     }
 }

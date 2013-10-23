@@ -43,7 +43,7 @@ public class PreyListFragment extends ListFragment {
 	private void putPreyItemsOnRequestQueue() {
 	    GsonRequest<PreyItemList> jsObjRequest = new GsonRequest<PreyItemList>(
 	        Method.GET,
-	        "http://192.168.0.108:3000/api/prayer/1010",
+	        "http://192.168.0.106:3000/api/prayer/year/2013/month/10/day/27",
 	        PreyItemList.class,
 	        this.createSuccessListener(),
 	        this.createErrorListener());
@@ -91,6 +91,7 @@ public class PreyListFragment extends ListFragment {
 			TextView title = (TextView) convertView.findViewById(R.id.row_title);
 			title.setText(getItem(position).getName());
 			TextView time = (TextView) convertView.findViewById(R.id.row_time);
+			PreyItem item = getItem(position);
 			time.setText(getItem(position).getTime().toGMTString());
 			return convertView;
 		}
