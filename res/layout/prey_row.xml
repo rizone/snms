@@ -23,5 +23,7 @@
         android:padding="10dp"
         android:text="Medium Text"
         android:textAppearance="@android:style/TextAppearance.Medium" />
+       
+       
 
 </LinearLayout>

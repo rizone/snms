@@ -1,18 +1,10 @@
 package com.example.snms;
 
-
-import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.example.snms.domain.PreyItem;
-import com.example.snms.domain.PreyItemList;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,11 +13,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class PreyListFragment extends ListFragment {
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.Request.Method;
+import com.android.volley.toolbox.Volley;
+import com.example.snms.PreyListFragment.PreyListAdapter;
+import com.example.snms.domain.HolydayItem;
+import com.example.snms.domain.PreyItem;
+import com.example.snms.domain.PreyItemList;
+
+public class HolidayListFragment extends ListFragment {
 	
-	private RequestQueue requestQueue;
+private RequestQueue requestQueue;
 	
-	private PreyListAdapter adapter;
+	private HolidayListAdapter adapter;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		this.requestQueue = Volley.newRequestQueue(this.getActivity());
@@ -35,35 +37,31 @@ public class PreyListFragment extends ListFragment {
 	
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		adapter = new PreyListAdapter(getActivity());
+		adapter = new HolidayListAdapter(getActivity());
 		this.requestQueue = Volley.newRequestQueue(this.getActivity());
 		putPreyItemsOnRequestQueue();
 		setListAdapter(adapter);
 	}
 	
 	private void putPreyItemsOnRequestQueue() {
-	    GsonRequest<PreyItemList> jsObjRequest = new GsonRequest<PreyItemList>(
+	    GsonRequest<HolydayItem[]> jsObjRequest = new GsonRequest<HolydayItem[]> (
 	        Method.GET,
-	        "http://46.137.184.176:3000/api/prayer/year/2013/month/10/day/27",
-	        PreyItemList.class,
+	        "http://192.168.0.106:3000/api/holidays",
+	        HolydayItem[].class,
 	        this.createSuccessListener(),
 	        this.createErrorListener());
 	    this.requestQueue.add(jsObjRequest);
 	}
 			
-	private Response.Listener<PreyItemList> createSuccessListener() {
-	    return new Response.Listener<PreyItemList>() {
+	private Response.Listener <HolydayItem[]> createSuccessListener() {
+	    return new Response.Listener <HolydayItem[]>() {
 	       
 	    	@Override
-			public void onResponse(PreyItemList response) {
-	    		adapter.clear();
-	    		for(PreyItem preyItem : response.getPreylist()) {
-	    			adapter.add(preyItem);
-	    		}
-				// TODO Auto-generated method stub
+			public void onResponse(HolydayItem[] response) {
+				adapter.addAll(response);
 				
 			}
-	    };
+	    };	
 	}
 	
 	private Response.ErrorListener createErrorListener() {
@@ -78,9 +76,9 @@ public class PreyListFragment extends ListFragment {
 	}
 	
 	
-	public class PreyListAdapter extends ArrayAdapter<PreyItem> {
+	public class HolidayListAdapter extends ArrayAdapter<HolydayItem> {
 
-		public PreyListAdapter(Context context) {
+		public HolidayListAdapter(Context context) {
 			super(context, 0);
 		}
 
@@ -90,13 +88,11 @@ public class PreyListFragment extends ListFragment {
 			}
 			TextView title = (TextView) convertView.findViewById(R.id.row_title);
 			title.setText(getItem(position).getName());
-			TextView time = (TextView) convertView.findViewById(R.id.row_time);
-			PreyItem item = getItem(position);
-			time.setText(getItem(position).getTime().toGMTString());
 			return convertView;
 		}
 		
 
 	}
+	
 
 }
