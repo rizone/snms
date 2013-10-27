@@ -22,7 +22,7 @@ public class PreyOverView extends  BaseActivity {
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager()
 		.beginTransaction()
-		.replace(R.id.content_frame, new PreyListFragment())
+		.add(R.id.content_frame, new PreyListFragment())
 		.commit();
 		
 		getSlidingMenu().setSecondaryMenu(R.layout.menu_frame_two);

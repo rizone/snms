@@ -45,13 +45,21 @@ public class BaseActivity extends SlidingFragmentActivity {
 
 		// customize the SlidingMenu
 		SlidingMenu sm = getSlidingMenu();
+		
 		sm.setShadowWidthRes(R.dimen.shadow_width);
 		sm.setShadowDrawable(R.drawable.shadow);
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
+		
+		//sm.setSelectorDrawable(R.drawable.flamingo);
+		sm.setSelectorEnabled(false);
 		sm.setFadeDegree(0.35f);
 		sm.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-
+		
+		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setTitle("SNMS");
+		getSupportActionBar().setIcon(R.drawable.flamingo);
+//		getSupportActionBar().set
 	}
 
 	@Override
@@ -59,9 +67,6 @@ public class BaseActivity extends SlidingFragmentActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			toggle();
-			return true;
-		case R.id.github:
-			Util.goToGitHub(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

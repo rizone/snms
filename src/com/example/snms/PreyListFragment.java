@@ -43,7 +43,7 @@ public class PreyListFragment extends ListFragment {
 	private void putPreyItemsOnRequestQueue() {
 	    GsonRequest<PreyItemList> jsObjRequest = new GsonRequest<PreyItemList>(
 	        Method.GET,
-	        "http://192.168.0.106:3000/api/prayer/year/2013/month/10/day/27",
+	        "http://46.137.184.176:3000/api/prayer/year/2013/month/10/day/27",
 	        PreyItemList.class,
 	        this.createSuccessListener(),
 	        this.createErrorListener());
