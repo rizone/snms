@@ -46,7 +46,7 @@ private RequestQueue requestQueue;
 	private void putPreyItemsOnRequestQueue() {
 	    GsonRequest<HolydayItem[]> jsObjRequest = new GsonRequest<HolydayItem[]> (
 	        Method.GET,
-	        "http://192.168.0.106:3000/api/holidays",
+	        "http://46.137.184.176:3000/api/holidays",
 	        HolydayItem[].class,
 	        this.createSuccessListener(),
 	        this.createErrorListener());

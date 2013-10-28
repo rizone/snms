@@ -57,7 +57,8 @@ public class BaseActivity extends SlidingFragmentActivity {
 		
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setTitle("SNMS");
+		//getSupportActionBar().setTitle("SNMS");
+		//getSupportActionBar().setIcon(R.drawable.ic_logo);
 //		getSupportActionBar().set
 	}
 
