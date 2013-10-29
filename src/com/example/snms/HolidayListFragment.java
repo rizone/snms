@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.HeaderViewListAdapter;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -28,18 +29,21 @@ public class HolidayListFragment extends ListFragment {
 private RequestQueue requestQueue;
 	
 	private HolidayListAdapter adapter;
+	private View mheaderView;
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		this.requestQueue = Volley.newRequestQueue(this.getActivity());
-		putPreyItemsOnRequestQueue();
+		mheaderView = inflater.inflate(R.layout.holyday_header, null);
 		return inflater.inflate(R.layout.list, null);
 	}
+	
 	
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		adapter = new HolidayListAdapter(getActivity());
-		this.requestQueue = Volley.newRequestQueue(this.getActivity());
 		putPreyItemsOnRequestQueue();
+		getListView().addHeaderView(mheaderView);
 		setListAdapter(adapter);
 	}
 	
@@ -84,10 +88,13 @@ private RequestQueue requestQueue;
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				convertView = LayoutInflater.from(getContext()).inflate(R.layout.prey_row, null);
+				convertView = LayoutInflater.from(getContext()).inflate(R.layout.holyday_row, null);
 			}
-			TextView title = (TextView) convertView.findViewById(R.id.row_title);
-			title.setText(getItem(position).getName());
+			TextView title = (TextView) convertView.findViewById(R.id.row_holyday_title);
+			
+			HolydayItem h =  getItem(position);
+			
+			title.setText(getItem(position).getName() +" - Fra" +h.getFrom().toLocaleString() + " til " + getItem(position).getTo().getDay() +h.getTo().toLocaleString());
 			return convertView;
 		}
 		

@@ -3,7 +3,7 @@
 
     <item
         android:left="10dp"
-        android:right="10dp">
+        android:right="100dp">
         <bitmap android:src="@drawable/ic_navigation_drawer2" />
     </item>
 

@@ -30,11 +30,5 @@ public class PreyItem {
 		this.time = time;
 	}
 	
-	
-	
-	
-
-	
-	
 
 }

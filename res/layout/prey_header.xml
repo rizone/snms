@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:orientation="horizontal" >
+    android:layout_height="40dp"
+    android:orientation="horizontal" 
+    android:background="@color/snmsDarkBlue"
+    android:layout_margin="0dp"
+    >
 
     <TextView
-        android:id="@+id/row_title"
+        android:id="@+id/header_title"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+      
         android:gravity="center_vertical"
         android:padding="10dp"
         android:text="Bønn"
@@ -17,31 +23,40 @@
        <TextView
         android:id="@+id/prey_time"
         android:layout_width="0dp"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:text="Bønntid"
+        android:text="Tid"
         android:textAppearance="@android:style/TextAppearance.Medium" />
        
         <TextView
-        android:id="@+id/prey_time_left"
+        android:id="@+id/status"
         android:layout_width="0dp"
+         android:textSize="14dp"
+        android:textColor="@color/white"
+    
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:text="Tid igjen"
+        android:text="Status"
         android:textAppearance="@android:style/TextAppearance.Medium" />
         
         <TextView
         android:id="@+id/prey_alarm"
+        android:textSize="14dp"
+        android:textColor="@color/white"
+      
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:padding="10dp"
-        android:text="Tid igjen"
+        android:text="Alarm"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 
 </LinearLayout>
