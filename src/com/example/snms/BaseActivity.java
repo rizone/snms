@@ -71,6 +71,16 @@ public class BaseActivity extends SlidingFragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	
+	public void switchContent(Fragment fragment) {
+		getSupportFragmentManager()
+		.beginTransaction()
+		.replace(R.id.content_frame, fragment)
+		.commit();
+		getSlidingMenu().showContent();
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

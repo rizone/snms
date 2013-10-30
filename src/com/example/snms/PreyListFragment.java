@@ -162,16 +162,16 @@ public class PreyListFragment extends ListFragment {
 			
 			if(preyDate.isBeforeNow()){
 				preyText = "Ferdig";
-			}
-			if(preyDate.isAfterNow()) {
 				if(isActive(item)){
 					preyText = "Aktiv";
-				}else {
-					preyText = "-";
 				}
+			}
+			if(preyDate.isAfterNow()) {
+				preyText = "-";
 				if(isNext(item)){
 					DateTime delta = item.getTime().minus(DateTime.now().getMillis());
-					preyText = delta.getHourOfDay() + ":" + delta.getMinuteOfHour();
+					delta = delta.minusHours(1);
+					preyText = String.valueOf(delta.getMinuteOfDay());
 				}
 		
 			}

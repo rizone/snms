@@ -1,7 +1,10 @@
 package com.example.snms;
 
+
+
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,4 +57,15 @@ public class SampleListFragment extends ListFragment {
 		}
 
 	}
+	
+	private void switchFragment(Fragment fragment) {
+		if (getActivity() == null)
+			return;
+		
+		if (getActivity() instanceof BaseActivity) {
+			BaseActivity fca = (BaseActivity) getActivity();
+			fca.switchContent(fragment);
+		} 
+	}
+	
 }
