@@ -2,13 +2,15 @@ package com.example.snms.domain;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 public class HolydayItem {
 
 	public String name;
 	
-	Date from;
+	DateTime from;
 	
-	Date to;
+	DateTime to;
 
 	public String getName() {
 		return name;
@@ -16,25 +18,25 @@ public class HolydayItem {
 	
 	
 
-	public Date getFrom() {
+	public DateTime getFrom() {
 		return from;
 	}
 
 
 
-	public void setFrom(Date from) {
+	public void setFrom(DateTime from) {
 		this.from = from;
 	}
 
 
 
-	public Date getTo() {
+	public DateTime getTo() {
 		return to;
 	}
 
 
 
-	public void setTo(Date to) {
+	public void setTo(DateTime to) {
 		this.to = to;
 	}
 

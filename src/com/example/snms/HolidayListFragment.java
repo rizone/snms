@@ -94,7 +94,7 @@ private RequestQueue requestQueue;
 			
 			HolydayItem h =  getItem(position);
 			
-			title.setText(getItem(position).getName() +" - Fra" +h.getFrom().toLocaleString() + " til " + getItem(position).getTo().getDay() +h.getTo().toLocaleString());
+			title.setText(getItem(position).getName() +" - Fra" +h.getFrom().toString() + " til "  +h.getTo().toString());
 			return convertView;
 		}
 		

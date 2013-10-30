@@ -17,6 +17,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 
 public class GsonRequest<T> extends Request<T> {
     private final Gson mGson;
@@ -32,7 +34,7 @@ public class GsonRequest<T> extends Request<T> {
         super(Method.GET, url, errorListener);
         
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(Date.class, new DateJsonMapper());
+        gsonBuilder.registerTypeAdapter(DateTime.class, new DateJsonMapper());
         mGson = gsonBuilder.create();
         this.mClazz = clazz;
         this.mListener = listener;

@@ -8,6 +8,8 @@ import java.util.Date;
 
 import java.lang.reflect.Type;
 
+import org.joda.time.DateTime;
+
 import android.util.Log;
 
 import com.google.gson.JsonDeserializationContext;
@@ -17,24 +19,24 @@ import com.google.gson.JsonParseException;
 
 
 
-public class DateJsonMapper implements JsonDeserializer<Date> {
+public class DateJsonMapper implements JsonDeserializer<DateTime> {
 
-    public Date deserialize(JsonElement json, Type typeOfT,
+    public DateTime deserialize(JsonElement json, Type typeOfT,
             JsonDeserializationContext context) throws JsonParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
-			return dateFormat.parse(json.getAsString());
+        	return DateTime.parse(json.getAsString());
 		
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 			try {
-				return dateFormat.parse("2013-10-27T00:00:33:00");
-			} catch (ParseException e1) {
+				return DateTime.parse("2013-10-27T00:00:33:00");
+			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			return new Date(); 
+			return new DateTime(); 
 		}
     }
 }

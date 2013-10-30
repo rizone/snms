@@ -1,9 +1,13 @@
 package com.example.snms;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
+
+import org.joda.time.DateTime;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -63,7 +67,6 @@ public class PreyListFragment extends ListFragment {
 		getListView().addHeaderView(mheaderView);
 		putPreyItemsOnRequestQueue();
 		setListAdapter(adapter);
-		timer.start();
 	}
 	
 	private void putPreyItemsOnRequestQueue() {
@@ -81,10 +84,12 @@ public class PreyListFragment extends ListFragment {
 	       
 	    	@Override
 			public void onResponse(PreyItemList response) {
+	    		adapter.setActivePreys(response.getPreylist());
 	    		adapter.clear();
 	    		for(PreyItem preyItem : response.getPreylist()) {
 	    			adapter.add(preyItem);
 	    		}
+	    		timer.start();
 				// TODO Auto-generated method stub
 				
 			}
@@ -111,18 +116,35 @@ public class PreyListFragment extends ListFragment {
 			super(context, 0);
 		}
 		
+		public void setActivePreys(List<PreyItem> currentPreys){
+			this.currentPreys = currentPreys;
+		}
+		
 		private boolean isActive(PreyItem preyItem) {
-			Date currentTime = new Date(System.currentTimeMillis());
-			return true;
+			List <PreyItem> candidates = new ArrayList<PreyItem>();
+			for(PreyItem candiate : currentPreys){
+				if(candiate.getTime().isBeforeNow()){
+					candidates.add(candiate);
+				}
+			}
+			Collections.sort(candidates);
+			return candidates.get(candidates.size()-1).equals(preyItem);
 			//Hvis det er større enn
-			
+		}
+		
+		private boolean isNext(PreyItem preyItem) {
+			List <PreyItem> candidates = new ArrayList<PreyItem>();
+			for(PreyItem candiate : currentPreys){
+				if(candiate.getTime().isAfterNow()){
+					candidates.add(candiate);
+				}
+			}
+			Collections.sort(candidates);
+			return candidates.get(0).equals(preyItem);
 		}
 		
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			
-			Date currentTime = new Date(System.currentTimeMillis());
-			
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.prey_row, null);
 			}
@@ -131,12 +153,29 @@ public class PreyListFragment extends ListFragment {
 			title.setText(getItem(position).getName());
 			TextView time = (TextView) convertView.findViewById(R.id.row_time);
 			PreyItem item = getItem(position);
-			time.setText(getItem(position).getTime().getHours()+":" + getItem(position).getTime().getMinutes());
+			
+			time.setText(getItem(position).getTime().getHourOfDay()+":" + getItem(position).getTime().getMinuteOfHour());
 			
 			TextView status = (TextView) convertView.findViewById(R.id.row_status);
-			String newHour = String.valueOf(item.getTime().getHours() - currentTime.getHours());
-			String newMinute = String.valueOf(item.getTime().getMinutes() - currentTime.getMinutes());
-			status.setText(newHour + ":" + newMinute);
+			DateTime preyDate = item.getTime();			
+			String preyText = ""; 
+			
+			if(preyDate.isBeforeNow()){
+				preyText = "Ferdig";
+			}
+			if(preyDate.isAfterNow()) {
+				if(isActive(item)){
+					preyText = "Aktiv";
+				}else {
+					preyText = "-";
+				}
+				if(isNext(item)){
+					DateTime delta = item.getTime().minus(DateTime.now().getMillis());
+					preyText = delta.getHourOfDay() + ":" + delta.getMinuteOfHour();
+				}
+		
+			}
+			status.setText(preyText);
 			
 			return convertView;
 		}

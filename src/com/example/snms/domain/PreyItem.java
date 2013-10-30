@@ -1,15 +1,18 @@
 package com.example.snms.domain;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.Date;
 
-public class PreyItem {
+import org.joda.time.DateTime;
+
+public class PreyItem implements Comparable<PreyItem> {
 	
 	private String name; 
 	
-	private Date time; 
+	private DateTime time; 
 	
-	PreyItem(String name, Timestamp time) {
+	PreyItem(String name, DateTime time) {
 		this.name = name; 
 		this.time = time; 
 	}
@@ -22,12 +25,17 @@ public class PreyItem {
 		this.name = name;
 	}
 
-	public Date getTime() {
+	public DateTime getTime() {
 		return time;
 	}
 
-	public void setTime(Date time) {
+	public void setTime(DateTime time) {
 		this.time = time;
+	}
+
+	@Override
+	public int compareTo( PreyItem arg1) {
+		return this.getTime().compareTo(arg1.getTime());
 	}
 	
 
