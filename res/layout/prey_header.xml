@@ -6,7 +6,7 @@
     android:background="@color/snmsDarkBlue"
     android:layout_margin="0dp"
     >
-
+	
     <TextView
         android:id="@+id/header_title"
         android:layout_width="0dp"

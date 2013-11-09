@@ -1,6 +1,12 @@
 package com.example.snms;
 
 
+import java.util.List;
+
+import org.joda.time.DateTime;
+
+import com.example.snms.domain.PreyItem;
+import com.example.snms.utils.SnmsPrayTimeAdapter;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import android.os.Bundle;
@@ -11,7 +17,9 @@ import android.view.Menu;
 public class PreyOverView extends  BaseActivity {
 	
 	 
-
+	
+	List <PreyItem> preyTimes; 
+	
 	public PreyOverView() {
 		super(R.string.left_and_right);
 	}
@@ -22,8 +30,10 @@ public class PreyOverView extends  BaseActivity {
 		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
-		currentFragment1 =  new PreyListFragment();
-		currentFragment2 = new HolidayListFragment();
+		if(currentFragment1 == null) {
+			currentFragment1 =  new PreyListFragment();
+			((PreyListFragment) currentFragment1).setPreyList(preyTimes);
+			currentFragment2 = new NewsListFragment();
 		
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager()
@@ -38,6 +48,9 @@ public class PreyOverView extends  BaseActivity {
 		.beginTransaction()
 		.replace(R.id.menu_frame_two, new SampleListFragment())
 		.commit();
+		}
 	}
     
+
+	
 }

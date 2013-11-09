@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import com.android.volley.Request.Method;
@@ -16,6 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
+import com.example.snms.utils.PrayTime;
+import com.example.snms.utils.SnmsPrayTimeAdapter;
 
 
 import android.content.Context;
@@ -31,13 +34,13 @@ import android.widget.TextView;
 
 public class PreyListFragment extends ListFragment {
 	
-	private RequestQueue requestQueue;
+
 	private View mheaderView;
 	private PreyListAdapter adapter;
+	private List<PreyItem> preyTimes;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		this.requestQueue = Volley.newRequestQueue(this.getActivity());
-		putPreyItemsOnRequestQueue();
+	//	putPreyItemsOnRequestQueue();
 		mheaderView = inflater.inflate(R.layout.prey_header, null);
 		return inflater.inflate(R.layout.list, null);
 		
@@ -59,15 +62,37 @@ public class PreyListFragment extends ListFragment {
 		
 	}
 	
+	
+	public List<PreyItem> loadPrayTimes() {
+		
+		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter();
+		DateTime dateTime = new  DateTime();
+		//sdsds
+		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay()).minusMinutes(dateTime.getMinuteOfHour()).minusSeconds(dateTime.getSecondOfMinute());
+		return prayTimeAdapter.getPrayListForDate(midnight);
+
+	}
+	
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		preyTimes = loadPrayTimes();
 		adapter = new PreyListAdapter(getActivity());
-		this.requestQueue = Volley.newRequestQueue(this.getActivity());
 		mheaderView.setPadding(0, 0, 0, 0);
 		getListView().addHeaderView(mheaderView);
-		putPreyItemsOnRequestQueue();
+		//putPreyItemsOnRequestQueue();
 		setListAdapter(adapter);
+		adapter.setActivePreys(preyTimes);
+		adapter.clear();
+		adapter.setActivePreys(preyTimes);
+		for(PreyItem preyItem :  preyTimes) {
+			adapter.add(preyItem);
+		}
+		timer.start();
 	}
+	
+
+	
+	/*
 	
 	private void putPreyItemsOnRequestQueue() {
 	    GsonRequest<PreyItemList> jsObjRequest = new GsonRequest<PreyItemList>(
@@ -76,7 +101,7 @@ public class PreyListFragment extends ListFragment {
 	        PreyItemList.class,
 	        this.createSuccessListener(),
 	        this.createErrorListener());
-	    this.requestQueue.add(jsObjRequest);
+	    RequestManager.getRequestQueue().add(jsObjRequest);
 	}
 			
 	private Response.Listener<PreyItemList> createSuccessListener() {
@@ -107,6 +132,7 @@ public class PreyListFragment extends ListFragment {
 	    };
 	}
 	
+	*/
 		
 	public class PreyListAdapter extends ArrayAdapter<PreyItem> {
 		
@@ -183,6 +209,13 @@ public class PreyListFragment extends ListFragment {
 	
 		
 
+	}
+
+
+
+	public void setPreyList(List<PreyItem> preyTimes2) {
+		preyTimes = preyTimes2;
+		
 	}
 
 }
