@@ -21,6 +21,9 @@ public class BaseActivity extends SlidingFragmentActivity {
 
 	private int mTitleRes;
 	protected ListFragment mFrag;
+	
+	Fragment currentFragment1;
+	Fragment currentFragment2;
 
 	public BaseActivity(int titleRes) {
 		mTitleRes = titleRes;
@@ -73,11 +76,27 @@ public class BaseActivity extends SlidingFragmentActivity {
 	}
 	
 	
-	public void switchContent(Fragment fragment) {
+	public void switchContent(Fragment fragment1, Fragment fragment2) {
+		
+		if(fragment2 == null) {
 		getSupportFragmentManager()
 		.beginTransaction()
-		.replace(R.id.content_frame, fragment)
-		.commit();
+		.remove(currentFragment1)
+		.remove(currentFragment2)
+		.replace(R.id.content_frame, fragment1)
+		.commit();}
+		else {
+			getSupportFragmentManager()
+			.beginTransaction()
+			.remove(currentFragment1)
+			.replace(R.id.content_frame, fragment1)
+			.replace(R.id.content_frame2, fragment2)
+			.commit();
+		}
+		
+		currentFragment1 = fragment1;
+		currentFragment2 = fragment2;
+		
 		getSlidingMenu().showContent();
 	}
 	
