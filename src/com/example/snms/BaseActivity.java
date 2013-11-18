@@ -16,9 +16,17 @@ import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
-public class BaseActivity extends SlidingFragmentActivity {
+public abstract class BaseActivity extends SlidingFragmentActivity implements OnDateSetListener, TimePickerDialog.OnTimeSetListener  {
+	
+	final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, 2007, 10, 1, false);
 
+    final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, 0 ,0, false);
+    
 	private int mTitleRes;
 	protected ListFragment mFrag;
 
@@ -73,6 +81,10 @@ public class BaseActivity extends SlidingFragmentActivity {
 		case android.R.id.home:
 			toggle();
 			return true;
+		case R.id.github:
+		     datePickerDialog.setYearRange(1985, 2028);
+             datePickerDialog.show(getSupportFragmentManager(), "datepicker");
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -107,4 +119,12 @@ public class BaseActivity extends SlidingFragmentActivity {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
+	@Override
+	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 }

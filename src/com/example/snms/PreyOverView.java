@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 
 import com.example.snms.domain.PreyItem;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import android.os.Bundle;
@@ -52,6 +53,12 @@ public class PreyOverView extends  BaseActivity {
 		}
 	}
     
+	@Override
+	public void onDateSet(DatePickerDialog datePickerDialog, int year,
+			int month, int day) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 }
