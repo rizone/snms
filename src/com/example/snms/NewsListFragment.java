@@ -21,6 +21,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,17 +32,21 @@ public class NewsListFragment extends ListFragment {
 
 	private NewsListAdapter adapter;
 	private View mheaderView;
-	
-	
+	boolean isLoading = false; 
+
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		mheaderView = inflater.inflate(R.layout.news_header, null);
-		return inflater.inflate(R.layout.list, null);
+		   super.onCreateView(inflater, container,
+			        savedInstanceState);
+
+		   mheaderView = inflater.inflate(R.layout.news_header, null);
+		   return inflater.inflate(R.layout.listnews, container,false);
+
 	}
 	
 	
 	@Override
 	  public void onListItemClick(ListView l, View v, int position, long id) {
-	   
 	   NewsItem clickedDetail = (NewsItem)l.getItemAtPosition(position);
 	   NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(clickedDetail);
 	   switchFragment(myDetailFragment,null);
@@ -62,8 +69,12 @@ public class NewsListFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		adapter = new NewsListAdapter(getActivity());
 		putPreyItemsOnRequestQueue();
-		getListView().addHeaderView(mheaderView);
+	//	ListView v = (ListView)getView().findViewById(android.R.id.list);
+	//	v.addHeaderView(mheaderView);
+	     getListView().addHeaderView(mheaderView);
+		//getListView().addHeaderView(mheaderView);
 		setListAdapter(adapter);
+		this.getListView().setOnScrollListener(new NewsScrollListner());
 	}
 	
 	private void putPreyItemsOnRequestQueue() {
@@ -81,8 +92,10 @@ public class NewsListFragment extends ListFragment {
 	       
 	    	@Override
 			public void onResponse(NewsItem[] response) {
+	    		adapter.clear();
 				adapter.addAll(response);
-				
+				adapter.notifyDataSetChanged();
+				isLoading = false;
 			}
 	    };	
 	}
@@ -92,8 +105,8 @@ public class NewsListFragment extends ListFragment {
 	        @Override
 	        public void onErrorResponse(VolleyError error) {
 	        	//TODO : Log error and get prey times from local storage
-	            error.getStackTrace();
-	        	Log.e("error", error.getMessage());
+	            //error.getStackTrace();
+	        	Log.e("error", "could not fetch data");
 	        }
 	    };
 	}
@@ -103,22 +116,65 @@ public class NewsListFragment extends ListFragment {
 
 		public NewsListAdapter(Context context) {
 			super(context, 0);
+			
 		}
-
+		
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_row, null);
 			}
 			TextView title = (TextView) convertView.findViewById(R.id.row_news_title);
-			TextView text = (TextView) convertView.findViewById(R.id.row_news_ingress);
+		//	TextView text = (TextView) convertView.findViewById(R.id.row_news_ingress);
 			NetworkImageView image = (NetworkImageView)convertView.findViewById(R.id.newsImage);
 			NewsItem h =  getItem(position);
 			title.setText(getItem(position).getTitle());
 			Uri uri = Uri.parse(h.getImgUrl());
-			text.setText(h.getText());
+		//	text.setText(h.getText());
 			image.setImageUrl(h.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
 			return convertView;
 		}
 }
+	
+	public class NewsScrollListner implements OnScrollListener  {
+		
+		int currentFirstVisibleItem;
+		int  currentVisibleItemCount;
+		int currentScrollState;
+	
+		
+		
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		    this.currentFirstVisibleItem = firstVisibleItem;
+		    this.currentVisibleItemCount = visibleItemCount;
+		}
+		
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
+		    this.currentScrollState = scrollState;
+		    this.isScrollCompleted();
+		 }
+		
+		void loadMoreData() {
+			putPreyItemsOnRequestQueue();
+		}
+
+		private void isScrollCompleted() {
+		    if (this.currentVisibleItemCount > 0 && this.currentScrollState == SCROLL_STATE_IDLE) {
+		        /*** In this way I detect if there's been a scroll which has completed ***/
+		        /*** do the work for load more date! ***/
+		        if(!isLoading){
+		             isLoading = true;
+		             loadMoreData();
+		        }
+		    }
+		}
+
+
+
+		
+		
+	}
+	
 	
 }

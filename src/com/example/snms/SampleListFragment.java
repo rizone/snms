@@ -50,7 +50,7 @@ public class SampleListFragment extends ListFragment {
 		
 		case 0:
 			newContent1 = new PreyListFragment();
-			newContent2 = new HolidayListFragment();
+			newContent2 = new NewsListFragment();
 			break;
 		case 1:
 			newContent1 = new NewsListFragment();

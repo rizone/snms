@@ -22,12 +22,13 @@ public class PreyOverView extends  BaseActivity {
 	
 	public PreyOverView() {
 		super(R.string.left_and_right);
+		
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
+		getSlidingMenu().setMode(SlidingMenu.LEFT);
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
 		if(currentFragment1 == null) {

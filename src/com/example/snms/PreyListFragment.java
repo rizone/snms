@@ -28,20 +28,30 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class PreyListFragment extends ListFragment {
+public class PreyListFragment extends ListFragment implements OnClickListener {
 	
 
+	private DateTime currentDate; 
 	private View mheaderView;
 	private PreyListAdapter adapter;
 	private List<PreyItem> preyTimes;
+	private TextView currentDay; 
+	private TextView nextDay; 
+	private TextView calender;
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	//	putPreyItemsOnRequestQueue();
 		mheaderView = inflater.inflate(R.layout.prey_header, null);
+		currentDay = (TextView)mheaderView.findViewById(R.id.prey_current_day); 
+		nextDay = (TextView)mheaderView.findViewById(R.id.prey_next_day); 
+		nextDay.setOnClickListener(this);
+		currentDate = new DateTime();
 		return inflater.inflate(R.layout.list, null);
 		
 	}
@@ -63,10 +73,9 @@ public class PreyListFragment extends ListFragment {
 	}
 	
 	
-	public List<PreyItem> loadPrayTimes() {
+	public List<PreyItem> loadPrayTimes(DateTime dateTime) {
 		
 		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter();
-		DateTime dateTime = new  DateTime();
 		//sdsds
 		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay()).minusMinutes(dateTime.getMinuteOfHour()).minusSeconds(dateTime.getSecondOfMinute());
 		return prayTimeAdapter.getPrayListForDate(midnight);
@@ -75,7 +84,8 @@ public class PreyListFragment extends ListFragment {
 	
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		preyTimes = loadPrayTimes();
+		preyTimes = loadPrayTimes(new DateTime());
+		setUpCurrentDay();
 		adapter = new PreyListAdapter(getActivity());
 		mheaderView.setPadding(0, 0, 0, 0);
 		getListView().addHeaderView(mheaderView);
@@ -90,7 +100,45 @@ public class PreyListFragment extends ListFragment {
 		timer.start();
 	}
 	
-
+	
+	private void setUpCurrentDay() {
+		
+		int dayOfWeek = currentDate.getDayOfWeek();
+		String day; 
+		switch (dayOfWeek) {
+			
+			case 1 : 
+				day = "Mandag"; 
+				break; 
+			case 2 : 
+				day = "Tirsdag"; 
+				break; 
+			case 3 : 
+				day = "Onsdag"; 
+				break;
+			case 4 : 
+				day = "Torsdag"; 
+				break;
+			case 5 : 
+				day = "Fredag"; 
+				break;
+			case 6 : 
+				day = "Lørdag"; 
+				break;
+			case 7 : 
+				day = "Søndag"; 
+				break;
+			default : 
+				day = "Ukjent";
+				break;				
+			
+		}
+		day+= " " + currentDate.getDayOfMonth() + "." + currentDate.getMonthOfYear() + "." + currentDate.getYear();
+		currentDay.setText(day);
+		
+		
+	}
+	
 	
 	/*
 	
@@ -217,5 +265,26 @@ public class PreyListFragment extends ListFragment {
 		preyTimes = preyTimes2;
 		
 	}
+
+
+	@Override
+	public void onClick(View v) {
+		if(v.equals(nextDay)){
+			currentDate = currentDate.plusDays(1);
+			setUpCurrentDay();
+			preyTimes = loadPrayTimes(currentDate);
+			adapter.setActivePreys(preyTimes);
+			adapter.clear();
+			adapter.setActivePreys(preyTimes);
+			for(PreyItem preyItem :  preyTimes) {
+				adapter.add(preyItem);
+			}
+			adapter.notifyDataSetChanged();
+		}
+		
+	}
+
+
+
 
 }
