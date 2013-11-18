@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import com.android.volley.Request.Method;
@@ -16,6 +17,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
+import com.example.snms.utils.PrayTime;
+import com.example.snms.utils.SnmsPrayTimeAdapter;
 
 
 import android.content.Context;
@@ -25,20 +28,30 @@ import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class PreyListFragment extends ListFragment {
+public class PreyListFragment extends ListFragment implements OnClickListener {
 	
-	private RequestQueue requestQueue;
+
+	private DateTime currentDate; 
 	private View mheaderView;
 	private PreyListAdapter adapter;
+	private List<PreyItem> preyTimes;
+	private TextView currentDay; 
+	private TextView nextDay; 
+	private TextView calender;
+	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		this.requestQueue = Volley.newRequestQueue(this.getActivity());
-		putPreyItemsOnRequestQueue();
+	//	putPreyItemsOnRequestQueue();
 		mheaderView = inflater.inflate(R.layout.prey_header, null);
+		currentDay = (TextView)mheaderView.findViewById(R.id.prey_current_day); 
+		nextDay = (TextView)mheaderView.findViewById(R.id.prey_next_day); 
+		nextDay.setOnClickListener(this);
+		currentDate = new DateTime();
 		return inflater.inflate(R.layout.list, null);
 		
 	}
@@ -59,24 +72,84 @@ public class PreyListFragment extends ListFragment {
 		
 	}
 	
+	
+	public List<PreyItem> loadPrayTimes(DateTime dateTime) {
+		
+		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter();
+		//sdsds
+		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay()).minusMinutes(dateTime.getMinuteOfHour()).minusSeconds(dateTime.getSecondOfMinute());
+		return prayTimeAdapter.getPrayListForDate(midnight);
+
+	}
+	
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		preyTimes = loadPrayTimes(new DateTime());
+		setUpCurrentDay();
 		adapter = new PreyListAdapter(getActivity());
-		this.requestQueue = Volley.newRequestQueue(this.getActivity());
 		mheaderView.setPadding(0, 0, 0, 0);
 		getListView().addHeaderView(mheaderView);
-		putPreyItemsOnRequestQueue();
+		//putPreyItemsOnRequestQueue();
 		setListAdapter(adapter);
+		adapter.setActivePreys(preyTimes);
+		adapter.clear();
+		adapter.setActivePreys(preyTimes);
+		for(PreyItem preyItem :  preyTimes) {
+			adapter.add(preyItem);
+		}
+		timer.start();
 	}
+	
+	
+	private void setUpCurrentDay() {
+		
+		int dayOfWeek = currentDate.getDayOfWeek();
+		String day; 
+		switch (dayOfWeek) {
+			
+			case 1 : 
+				day = "Mandag"; 
+				break; 
+			case 2 : 
+				day = "Tirsdag"; 
+				break; 
+			case 3 : 
+				day = "Onsdag"; 
+				break;
+			case 4 : 
+				day = "Torsdag"; 
+				break;
+			case 5 : 
+				day = "Fredag"; 
+				break;
+			case 6 : 
+				day = "Lørdag"; 
+				break;
+			case 7 : 
+				day = "Søndag"; 
+				break;
+			default : 
+				day = "Ukjent";
+				break;				
+			
+		}
+		day+= " " + currentDate.getDayOfMonth() + "." + currentDate.getMonthOfYear() + "." + currentDate.getYear();
+		currentDay.setText(day);
+		
+		
+	}
+	
+	
+	/*
 	
 	private void putPreyItemsOnRequestQueue() {
 	    GsonRequest<PreyItemList> jsObjRequest = new GsonRequest<PreyItemList>(
 	        Method.GET,
-	        "http://46.137.184.176:3000/api/prayer/year/2013/month/10/day/30",
+	        "http://46.137.184.176:3000/api/prayer/year/2013/month/11/day/4",
 	        PreyItemList.class,
 	        this.createSuccessListener(),
 	        this.createErrorListener());
-	    this.requestQueue.add(jsObjRequest);
+	    RequestManager.getRequestQueue().add(jsObjRequest);
 	}
 			
 	private Response.Listener<PreyItemList> createSuccessListener() {
@@ -107,6 +180,7 @@ public class PreyListFragment extends ListFragment {
 	    };
 	}
 	
+	*/
 		
 	public class PreyListAdapter extends ArrayAdapter<PreyItem> {
 		
@@ -162,16 +236,16 @@ public class PreyListFragment extends ListFragment {
 			
 			if(preyDate.isBeforeNow()){
 				preyText = "Ferdig";
-			}
-			if(preyDate.isAfterNow()) {
 				if(isActive(item)){
 					preyText = "Aktiv";
-				}else {
-					preyText = "-";
 				}
+			}
+			if(preyDate.isAfterNow()) {
+				preyText = "-";
 				if(isNext(item)){
 					DateTime delta = item.getTime().minus(DateTime.now().getMillis());
-					preyText = delta.getHourOfDay() + ":" + delta.getMinuteOfHour();
+					delta = delta.minusHours(1);
+					preyText = String.valueOf(delta.getMinuteOfDay());
 				}
 		
 			}
@@ -186,5 +260,33 @@ public class PreyListFragment extends ListFragment {
 	}
 	
 	
+
+
+
+	public void setPreyList(List<PreyItem> preyTimes2) {
+		preyTimes = preyTimes2;
+		
+	}
+
+
+	@Override
+	public void onClick(View v) {
+		if(v.equals(nextDay)){
+			currentDate = currentDate.plusDays(1);
+			setUpCurrentDay();
+			preyTimes = loadPrayTimes(currentDate);
+			adapter.setActivePreys(preyTimes);
+			adapter.clear();
+			adapter.setActivePreys(preyTimes);
+			for(PreyItem preyItem :  preyTimes) {
+				adapter.add(preyItem);
+			}
+			adapter.notifyDataSetChanged();
+		}
+		
+	}
+
+
+
 
 }

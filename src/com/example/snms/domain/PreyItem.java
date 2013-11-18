@@ -12,7 +12,7 @@ public class PreyItem implements Comparable<PreyItem> {
 	
 	private DateTime time; 
 	
-	PreyItem(String name, DateTime time) {
+	public PreyItem(String name, DateTime time) {
 		this.name = name; 
 		this.time = time; 
 	}

@@ -1,13 +1,19 @@
 package com.example.snms;
 
+
+
+
+
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class SampleListFragment extends ListFragment {
@@ -20,8 +26,9 @@ public class SampleListFragment extends ListFragment {
 		super.onActivityCreated(savedInstanceState);
 		SampleAdapter adapter = new SampleAdapter(getActivity());
 		
-	    adapter.add(new SampleItem("Innstillinger", android.R.drawable.ic_menu_search));
-	    adapter.add(new SampleItem("Kontakt", android.R.drawable.ic_menu_search));
+		adapter.add(new SampleItem("Bønnetider", android.R.drawable.ic_menu_search));
+	    adapter.add(new SampleItem("Nyheter", android.R.drawable.ic_menu_search));
+	   
 	
 		setListAdapter(adapter);
 	}
@@ -34,6 +41,25 @@ public class SampleListFragment extends ListFragment {
 			this.iconRes = iconRes;
 		}
 	}
+	
+	@Override
+	public void onListItemClick(ListView lv, View v, int position, long id) {
+		Fragment newContent1 = null;
+		Fragment newContent2 = null;
+		switch (position) {
+		
+		case 0:
+			newContent1 = new PreyListFragment();
+			newContent2 = new NewsListFragment();
+			break;
+		case 1:
+			newContent1 = new NewsListFragment();
+			break;
+		}
+		if (newContent1 != null)
+			switchFragment(newContent1,newContent2);
+	}
+	
 
 	public class SampleAdapter extends ArrayAdapter<SampleItem> {
 
@@ -54,4 +80,15 @@ public class SampleListFragment extends ListFragment {
 		}
 
 	}
+	
+	private void switchFragment(Fragment fragment1, Fragment fragment2) {
+		if (getActivity() == null)
+			return;
+		
+		if (getActivity() instanceof BaseActivity) {
+			BaseActivity fca = (BaseActivity) getActivity();
+			fca.switchContent(fragment1, fragment2);
+		} 
+	}
+	
 }
