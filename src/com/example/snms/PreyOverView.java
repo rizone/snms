@@ -5,10 +5,13 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.view.Menu;
 
-public class PreyOverView extends  BaseActivity {
-
+public class PreyOverView extends  BaseActivity{
+	
+	private static Context context;		//Dag-Martin
 	public PreyOverView() {
 		super(R.string.left_and_right);
 	}
@@ -16,6 +19,7 @@ public class PreyOverView extends  BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		PreyOverView.context = getApplicationContext();		//Dag-Martin
 		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
@@ -33,5 +37,12 @@ public class PreyOverView extends  BaseActivity {
 		.replace(R.id.menu_frame_two, new SampleListFragment())
 		.commit();
 	}
+	
+
+
+	public static Context getAppContext() {
+	    return PreyOverView.context;
+	}
+	
     
 }

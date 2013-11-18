@@ -1,21 +1,23 @@
 package com.example.snms;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class BaseActivity extends SlidingFragmentActivity {
 
@@ -28,8 +30,8 @@ public class BaseActivity extends SlidingFragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
+		super.onCreate(savedInstanceState);        
+        
 		setTitle(mTitleRes);
 
 		// set the Behind View
@@ -42,6 +44,9 @@ public class BaseActivity extends SlidingFragmentActivity {
 		} else {
 			mFrag = (ListFragment)this.getSupportFragmentManager().findFragmentById(R.id.menu_frame);
 		}
+		
+
+		
 
 		// customize the SlidingMenu
 		SlidingMenu sm = getSlidingMenu();
@@ -60,6 +65,9 @@ public class BaseActivity extends SlidingFragmentActivity {
 		getSupportActionBar().setTitle("");
 		//getSupportActionBar().setIcon(R.drawable.ic_logo);
 //		getSupportActionBar().set
+		
+
+		
 	}
 
 	@Override
@@ -77,4 +85,44 @@ public class BaseActivity extends SlidingFragmentActivity {
 		getSupportMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+
+	    
+	public void onToggleClicked(View view) {
+	    // Is the toggle on?
+	    boolean on = ((ToggleButton) view).isChecked();
+	    
+	    
+	    
+	    if (on) {
+	        // Enable vibrate
+	    	
+	    	
+	    	showTimePickerDialog();
+	    } else {
+
+//			Context context = PreyOverView.getAppContext();
+//			AlarmUtilities Util = new AlarmUtilities();
+//			Intent intent = new Intent(context, AlarmReceiverActivity.class);
+//	    	
+////			//Remove alarm
+//			Util.RemoveAlarm(Util.getAlarmId(cal), intent, this);		//Denne fungerer
+////			
+////			//Remove alarm from database
+//			DBAdapter db = new DBAdapter(this);
+//			db.open();
+//			db.deleteAlarmsInDatabase(Util.getAlarmId(cal)); 
+//			db.close();
+	    	
+	    	//Må ha en id for hvert event som kan finnes i database. 
+	    	//Må kunne sjekke hvilken tilstand alarmen er i under oppstart.
+	    	
+	    }
+	}
+	
+	    public void showTimePickerDialog() {
+	        DialogFragment newFragment = new TimePickerFragment();
+	        newFragment.show(getFragmentManager(), "timePicker");
+	    }
+	
 }

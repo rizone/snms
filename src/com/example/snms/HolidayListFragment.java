@@ -14,9 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.HeaderViewListAdapter;
 import android.widget.TextView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.Volley;
 import com.example.snms.PreyListFragment.PreyListAdapter;
