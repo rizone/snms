@@ -3,6 +3,7 @@ package com.example.snms;
 import org.joda.time.DateTime;
 
 import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,8 +23,19 @@ import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class BaseActivity extends SlidingFragmentActivity implements PreyListFragment.OnHeadlineSelectedListener{
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+//import com.fourmob.datetimepicker.date.DatePickerDialog;
+//import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+//import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+//import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+public abstract class BaseActivity extends SlidingFragmentActivity implements TimePickerDialog.OnTimeSetListener, PreyListFragment.OnHeadlineSelectedListener  {
+	
+//	final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, 2007, 10, 1, false);
+
+
+//    final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, 0 ,0, false);
+    
 	private int mTitleRes;
 	protected ListFragment mFrag;
 
@@ -89,6 +101,10 @@ public class BaseActivity extends SlidingFragmentActivity implements PreyListFra
 		case android.R.id.home:
 			toggle();
 			return true;
+		case R.id.github:
+//		     datePickerDialog.setYearRange(1985, 2028);
+//             datePickerDialog.show(getSupportFragmentManager(), "datepicker");
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -123,6 +139,7 @@ public class BaseActivity extends SlidingFragmentActivity implements PreyListFra
 		getSupportMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
 	
 
 	
@@ -136,4 +153,14 @@ public class BaseActivity extends SlidingFragmentActivity implements PreyListFra
     }
     
  
+
+
+//	@Override
+//	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+	
+
 }

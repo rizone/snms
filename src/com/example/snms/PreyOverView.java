@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 
 import com.example.snms.domain.PreyItem;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
+//import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.content.Context;
 import android.view.Menu;
 import android.app.Fragment;
 import android.view.Menu;
+import android.widget.TimePicker;
 
 public class PreyOverView extends  BaseActivity{
 	
@@ -67,8 +69,20 @@ public class PreyOverView extends  BaseActivity{
 	public static Context getAppContext() {
 	    return PreyOverView.context;
 	}
+
+	@Override
+	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+		// TODO Auto-generated method stub
+		
+	}
 	
     
+//	@Override
+//	public void onDateSet(DatePickerDialog datePickerDialog, int year,
+//			int month, int day) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	
 }

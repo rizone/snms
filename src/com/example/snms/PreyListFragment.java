@@ -39,7 +39,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+
 import android.widget.ListView;
+
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -51,7 +53,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	private PreyListAdapter adapter;
 	private List<PreyItem> preyTimes;
 	private TextView currentDay; 
-	private TextView nextDay; 
+	private ImageView nextDay; 
 	private TextView calender;
 	
 	
@@ -59,7 +61,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	//	putPreyItemsOnRequestQueue();
 		mheaderView = inflater.inflate(R.layout.prey_header, null);
 		currentDay = (TextView)mheaderView.findViewById(R.id.prey_current_day); 
-		nextDay = (TextView)mheaderView.findViewById(R.id.prey_next_day); 
+		nextDay = (ImageView)mheaderView.findViewById(R.id.prey_next_day); 
 		nextDay.setOnClickListener(this);
 		currentDate = new DateTime();
 		return inflater.inflate(R.layout.list, null);
