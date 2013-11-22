@@ -34,12 +34,15 @@
         android:text="Ferdig"
         android:textAppearance="@android:style/TextAppearance.Medium" />
     
-	<ToggleButton 
-    	android:id="@+id/togglebutton"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:textOn="Alarm on"
-    	android:textOff="Alarm off"
-    	android:onClick="onToggleClicked"/>
+    <ImageView 
+        android:layout_height="match_parent" 
+        android:layout_width="0dp" 
+        android:padding="5dp" 
+        android:gravity="center_vertical" 
+        android:layout_weight="1" 
+        android:id="@+id/alarmclock_inactive" 
+        android:src="@drawable/alarmclock_inactive"/>
+    
+
 
 </LinearLayout>

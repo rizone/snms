@@ -36,7 +36,7 @@ public class SnmsPrayTimeAdapter {
         for (int i = 0; i < prayerTimes.size(); i++) {
         	
         	DateTime timeToAdd = time.plusHours(Integer.valueOf(prayerTimes.get(i).split(":")[0])).plusMinutes(Integer.valueOf(prayerTimes.get(i).split(":")[1]));
-        	PreyItem preyItem = new PreyItem(prayerNames.get(i),timeToAdd);
+        	PreyItem preyItem = new PreyItem(prayerNames.get(i),timeToAdd, false);
         	listToReturn.add(preyItem);
         }
         return listToReturn;

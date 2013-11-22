@@ -1,5 +1,7 @@
 package com.example.snms;
 
+import org.joda.time.DateTime;
+
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +22,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class BaseActivity extends SlidingFragmentActivity {
+public class BaseActivity extends SlidingFragmentActivity implements PreyListFragment.OnHeadlineSelectedListener{
 
 	private int mTitleRes;
 	protected ListFragment mFrag;
@@ -123,42 +125,15 @@ public class BaseActivity extends SlidingFragmentActivity {
 	}
 	
 
-	    
-	public void onToggleClicked(View view) {
-	    // Is the toggle on?
-	    boolean on = ((ToggleButton) view).isChecked();
-	    
-	    
-	    
-	    if (on) {
-	        // Enable vibrate
-	    	
-	    	
-	    	showTimePickerDialog();
-	    } else {
+	
+    public void onArticleSelected(DateTime time, String name) {
+        // The user selected the headline of an article from the HeadlinesFragment
+        // Do something here to display that article
+    	
+        DialogFragment newFragment = new TimePickerFragment(time, name);
+        newFragment.show(getFragmentManager(), "timePicker");
 
-//			Context context = PreyOverView.getAppContext();
-//			AlarmUtilities Util = new AlarmUtilities();
-//			Intent intent = new Intent(context, AlarmReceiverActivity.class);
-//	    	
-////			//Remove alarm
-//			Util.RemoveAlarm(Util.getAlarmId(cal), intent, this);		//Denne fungerer
-////			
-////			//Remove alarm from database
-//			DBAdapter db = new DBAdapter(this);
-//			db.open();
-//			db.deleteAlarmsInDatabase(Util.getAlarmId(cal)); 
-//			db.close();
-	    	
-	    	//Må ha en id for hvert event som kan finnes i database. 
-	    	//Må kunne sjekke hvilken tilstand alarmen er i under oppstart.
-	    	
-	    }
-	}
-	
-	    public void showTimePickerDialog() {
-	        DialogFragment newFragment = new TimePickerFragment();
-	        newFragment.show(getFragmentManager(), "timePicker");
-	    }
-	
+    }
+    
+ 
 }

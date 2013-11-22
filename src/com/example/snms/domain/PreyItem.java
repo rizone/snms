@@ -12,9 +12,12 @@ public class PreyItem implements Comparable<PreyItem> {
 	
 	private DateTime time; 
 	
-	public PreyItem(String name, DateTime time) {
+	private boolean alarm;
+	
+	public PreyItem(String name, DateTime time, boolean alarm) {
 		this.name = name; 
 		this.time = time; 
+		this.alarm = alarm;
 	}
 
 	public String getName() {
@@ -31,6 +34,14 @@ public class PreyItem implements Comparable<PreyItem> {
 
 	public void setTime(DateTime time) {
 		this.time = time;
+	}
+	
+	public void setAlarmBoolean(boolean alarm){
+		this.alarm = alarm;
+	}
+	
+	public boolean getAlarmBoolean(){
+		return alarm;
 	}
 
 	@Override

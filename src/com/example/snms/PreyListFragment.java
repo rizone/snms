@@ -2,6 +2,7 @@ package com.example.snms;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -15,15 +16,21 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.example.snms.HeadlinesFragment.OnHeadlineSelectedListener;
+import com.example.snms.domain.NewsItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
 import com.example.snms.utils.PrayTime;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 
 
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,10 +38,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class PreyListFragment extends ListFragment implements OnClickListener {
-	
+	OnHeadlineSelectedListener mCallback;
 
 	private DateTime currentDate; 
 	private View mheaderView;
@@ -71,6 +81,100 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	public void updateList() {
 		
 	}
+	
+
+	
+	
+    // Container Activity must implement this interface
+    public interface OnHeadlineSelectedListener {
+        public void onArticleSelected(DateTime time, String name);
+    }
+    
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnHeadlineSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+	
+	
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // Send the event to the host activity
+    	PreyItem clickedDetail = (PreyItem)l.getItemAtPosition(position);
+    	ImageView image = (ImageView)v.findViewById(R.id.alarmclock_inactive);
+//    	if(eventhaspassed: Do nothing)				SETT INN DENNE!
+    	if(clickedDetail.getAlarmBoolean()==true){
+    		
+		Context context = PreyOverView.getAppContext();
+		AlarmUtilities Util = new AlarmUtilities();
+		Intent intent = new Intent(context, AlarmReceiverActivity.class);
+		
+		//Find correct cal to cancel
+		DateTime AlarmToCancel = clickedDetail.getTime();
+		Integer [] date = new Integer [6];
+		date[0] = AlarmToCancel.getYear();
+		date[1] = AlarmToCancel.getMonthOfYear()-1;
+		date[2] = AlarmToCancel.getDayOfMonth();
+		date[3] = AlarmToCancel.getHourOfDay();
+		date[4] = AlarmToCancel.getMinuteOfHour();
+		date[5] = 1;
+		
+		final Calendar cal = Util.GregorianCalender(date);
+//		//Remove alarm
+		Util.RemoveAlarm(Util.getAlarmId(cal), intent, context);		//Denne fungerer
+//		
+//		//Remove alarm from database
+		DBAdapter db = new DBAdapter(context);
+		db.open();
+		db.deleteAlarmsInDatabase(Util.getAlarmId(cal)); 
+		db.close();
+    		
+		image.setImageResource(R.drawable.alarmclock_inactive);
+    	clickedDetail.setAlarmBoolean(false);
+    		
+    	}else{
+    		//IF(COMPARETO==FERDIG) DO NOTHING!
+    		
+    		mCallback.onArticleSelected(clickedDetail.getTime(), clickedDetail.getName());
+    		
+    		//Change picture for alarm clock
+    		
+////    		findViewById(R.id.alarmclock_inactive).setBackgroundResource(R.drawable.alarmclock);
+    		image.setImageResource(R.drawable.alarmclock);
+    		
+    		//Set boolean to true to mark alarm active
+    		clickedDetail.setAlarmBoolean(true);
+
+    	}
+    	
+    	
+        
+        
+    }
+	
+//	private void switchFragment(Fragment fragment1, Fragment fragment2) {
+//		if (getActivity() == null)
+//			return;
+//		
+//		if (getActivity() instanceof BaseActivity) {
+//			BaseActivity fca = (BaseActivity) getActivity();
+//			fca.switchContent(fragment1, fragment2);
+//		} 
+//	}
+	
+//	public void onToggleClicked(View view) {
+//	    // Is the toggle on?
+//	    boolean on = ((ToggleButton) view).isChecked();
+
+	
 	
 	
 	public List<PreyItem> loadPrayTimes(DateTime dateTime) {
