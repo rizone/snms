@@ -17,7 +17,7 @@ public class PollReciever extends BroadcastReceiver {
 	  @Override
 	  public void onReceive(Context context, Intent myIntent) {
 		  
-		  System.out.println("Haha!");
+		  
 		  Intent intent = new Intent(context, AlarmReceiverActivity.class);
 		  AlarmUtilities Util = new AlarmUtilities();
 //		  context.startActivity(myIntent);

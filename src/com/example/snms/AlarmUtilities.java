@@ -7,6 +7,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 public class AlarmUtilities {
 	
@@ -17,12 +18,15 @@ public class AlarmUtilities {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
         alarmManager.cancel(sender);
         
+        Toast.makeText(context, "Alarm er blitt deaktivert.", Toast.LENGTH_SHORT).show();
         System.out.println("Alarm with ID:" + id + " canceled");
 		
 	}
 	
 	void SetAlarm(Calendar cal, int id, Intent intent, Context context) {
 		// TODO Auto-generated method stub
+		
+		
 		if (cal.after(Calendar.getInstance())) {
 			
 //			Intent intent = new Intent(this, AlarmReceiverActivity.class);
@@ -30,9 +34,12 @@ public class AlarmUtilities {
 				intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-			System.out.println("Alarm set");
+			
+			Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT).show();
+			
 		}else{
-			System.out.println("Ooops... Alarm has already passed.");
+			Toast.makeText(context, "Oops... Alarmdato har allerede passert", Toast.LENGTH_SHORT).show();
+			
 		}
 	}
 	

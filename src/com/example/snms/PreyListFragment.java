@@ -28,6 +28,8 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -39,6 +41,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import android.widget.ListView;
 
@@ -112,9 +115,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
         // Send the event to the host activity
     	PreyItem clickedDetail = (PreyItem)l.getItemAtPosition(position);
     	ImageView image = (ImageView)v.findViewById(R.id.alarmclock_inactive);
-//    	if(eventhaspassed: Do nothing)				SETT INN DENNE!
-    	if(clickedDetail.getAlarmBoolean()==true){
-    		
+    	
 		Context context = PreyOverView.getAppContext();
 		AlarmUtilities Util = new AlarmUtilities();
 		Intent intent = new Intent(context, AlarmReceiverActivity.class);
@@ -130,51 +131,43 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 		date[5] = 1;
 		
 		final Calendar cal = Util.GregorianCalender(date);
-//		//Remove alarm
-		Util.RemoveAlarm(Util.getAlarmId(cal), intent, context);		//Denne fungerer
+    	
+    	if(cal.after(Calendar.getInstance())){				
+    		if(clickedDetail.getAlarmBoolean()==true){
+    		
+//			//Remove alarm
+    		Util.RemoveAlarm(Util.getAlarmId(cal), intent, context);		
 //		
-//		//Remove alarm from database
-		DBAdapter db = new DBAdapter(context);
-		db.open();
-		db.deleteAlarmsInDatabase(Util.getAlarmId(cal)); 
-		db.close();
+//			//Remove alarm from database
+			DBAdapter db = new DBAdapter(context);
+			db.open();
+			db.deleteAlarmsInDatabase(Util.getAlarmId(cal)); 
+			db.close();
+    	
+			//Switch alarmclock image	
+			image.setImageResource(R.drawable.alarmclock_inactive);
+    		clickedDetail.setAlarmBoolean(false);
     		
-		image.setImageResource(R.drawable.alarmclock_inactive);
-    	clickedDetail.setAlarmBoolean(false);
+    		}else{
+    			//IF(COMPARETO==FERDIG) DO NOTHING!
     		
-    	}else{
-    		//IF(COMPARETO==FERDIG) DO NOTHING!
+    			mCallback.onArticleSelected(clickedDetail.getTime(), clickedDetail.getName());
     		
-    		mCallback.onArticleSelected(clickedDetail.getTime(), clickedDetail.getName());
+    			//Change picture for alarm clock
+    			image.setImageResource(R.drawable.alarmclock);
     		
-    		//Change picture for alarm clock
-    		
-////    		findViewById(R.id.alarmclock_inactive).setBackgroundResource(R.drawable.alarmclock);
-    		image.setImageResource(R.drawable.alarmclock);
-    		
-    		//Set boolean to true to mark alarm active
-    		clickedDetail.setAlarmBoolean(true);
+    			//Set boolean to true to mark alarm active
+    			clickedDetail.setAlarmBoolean(true);
 
+    		}
+    	
+    	}else{
+    		Toast.makeText(context, "Oops... Bønn er aktiv, eller har allerede passert", Toast.LENGTH_SHORT).show();
     	}
-    	
-    	
         
         
     }
 	
-//	private void switchFragment(Fragment fragment1, Fragment fragment2) {
-//		if (getActivity() == null)
-//			return;
-//		
-//		if (getActivity() instanceof BaseActivity) {
-//			BaseActivity fca = (BaseActivity) getActivity();
-//			fca.switchContent(fragment1, fragment2);
-//		} 
-//	}
-	
-//	public void onToggleClicked(View view) {
-//	    // Is the toggle on?
-//	    boolean on = ((ToggleButton) view).isChecked();
 
 	
 	
@@ -182,7 +175,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	public List<PreyItem> loadPrayTimes(DateTime dateTime) {
 		
 		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter();
-		//sdsds
+		
 		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay()).minusMinutes(dateTime.getMinuteOfHour()).minusSeconds(dateTime.getSecondOfMinute());
 		return prayTimeAdapter.getPrayListForDate(midnight);
 
@@ -202,6 +195,14 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 		adapter.setActivePreys(preyTimes);
 		for(PreyItem preyItem :  preyTimes) {
 			adapter.add(preyItem);
+			System.out.println("Dust2dust2");
+			//Set correct alarm image at start-up
+			if(preyItem.getAlarmBoolean()==true){
+				View v = getListView();
+				ImageView image = (ImageView)v.findViewById(R.id.alarmclock_inactive);
+				image.setImageResource(R.drawable.alarmclock);
+				System.out.println("Dustdust");
+			}
 		}
 		timer.start();
 	}
