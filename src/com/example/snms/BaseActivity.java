@@ -102,6 +102,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements Ti
 			toggle();
 			return true;
 		case R.id.github:
+			switchContent(new PrayCalenderListFragment(),null);
 //		     datePickerDialog.setYearRange(1985, 2028);
 //             datePickerDialog.show(getSupportFragmentManager(), "datepicker");
 			return true;

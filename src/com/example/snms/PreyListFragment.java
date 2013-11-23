@@ -16,7 +16,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.snms.HeadlinesFragment.OnHeadlineSelectedListener;
 import com.example.snms.domain.NewsItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
@@ -150,9 +149,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
     		
     		}else{
     			//IF(COMPARETO==FERDIG) DO NOTHING!
-    		
-    			mCallback.onArticleSelected(clickedDetail.getTime(), clickedDetail.getName());
-    		
+    			mCallback.onArticleSelected(clickedDetail.getTime(), clickedDetail.getName());    		
     			//Change picture for alarm clock
     			image.setImageResource(R.drawable.alarmclock);
     		
@@ -188,20 +185,16 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 		adapter = new PreyListAdapter(getActivity());
 		mheaderView.setPadding(0, 0, 0, 0);
 		getListView().addHeaderView(mheaderView);
-		//putPreyItemsOnRequestQueue();
 		setListAdapter(adapter);
 		adapter.setActivePreys(preyTimes);
 		adapter.clear();
 		adapter.setActivePreys(preyTimes);
 		for(PreyItem preyItem :  preyTimes) {
 			adapter.add(preyItem);
-			System.out.println("Dust2dust2");
-			//Set correct alarm image at start-up
 			if(preyItem.getAlarmBoolean()==true){
 				View v = getListView();
 				ImageView image = (ImageView)v.findViewById(R.id.alarmclock_inactive);
 				image.setImageResource(R.drawable.alarmclock);
-				System.out.println("Dustdust");
 			}
 		}
 		timer.start();
