@@ -120,18 +120,18 @@ public class AlarmUtilities {
 		cal.add(Calendar.MINUTE, date[4] - MinuteNow);
 		cal.add(Calendar.SECOND, -SecondNow);
 
-		System.out.println("year");
-		System.out.println(date[0] - YearNow);
-		System.out.println("month");
-		System.out.println(date[1] - MonthNow);
-		System.out.println("day");
-		System.out.println(date[2] - DayNow);
-		System.out.println("hour");
-		System.out.println(date[3] - HourNow);
-		System.out.println("minute");
-		System.out.println(date[4] - MinuteNow);
-		System.out.println("second");
-		System.out.println(-SecondNow);
+//		System.out.println("year");
+//		System.out.println(date[0] - YearNow);
+//		System.out.println("month");
+//		System.out.println(date[1] - MonthNow);
+//		System.out.println("day");
+//		System.out.println(date[2] - DayNow);
+//		System.out.println("hour");
+//		System.out.println(date[3] - HourNow);
+//		System.out.println("minute");
+//		System.out.println(date[4] - MinuteNow);
+//		System.out.println("second");
+//		System.out.println(-SecondNow);
 
 		return cal;
 
