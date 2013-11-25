@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 public class PreyItem implements Comparable<PreyItem> {
 	
@@ -49,5 +50,9 @@ public class PreyItem implements Comparable<PreyItem> {
 		return this.getTime().compareTo(arg1.getTime());
 	}
 	
+	public String getTimeOfDayAsString() {
+		LocalTime time = new LocalTime(this.getTime().getHourOfDay(),this.getTime().getMinuteOfHour());
+		return time.toString("HH:mm");
+	}
 
 }

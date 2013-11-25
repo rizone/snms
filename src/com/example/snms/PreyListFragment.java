@@ -16,7 +16,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.snms.HeadlinesFragment.OnHeadlineSelectedListener;
 import com.example.snms.domain.NewsItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
@@ -150,9 +149,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
     		
     		}else{
     			//IF(COMPARETO==FERDIG) DO NOTHING!
-    		
-    			mCallback.onArticleSelected(clickedDetail.getTime(), clickedDetail.getName());
-    		
+    			mCallback.onArticleSelected(clickedDetail.getTime(), clickedDetail.getName());    		
     			//Change picture for alarm clock
     			image.setImageResource(R.drawable.alarmclock);
     		
@@ -188,7 +185,6 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 		adapter = new PreyListAdapter(getActivity());
 		mheaderView.setPadding(0, 0, 0, 0);
 		getListView().addHeaderView(mheaderView);
-		//putPreyItemsOnRequestQueue();
 		setListAdapter(adapter);
 		adapter.setActivePreys(preyTimes);
 		adapter.clear();
@@ -196,8 +192,14 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 		for(PreyItem preyItem :  preyTimes) {
 			adapter.add(preyItem);
 
+			if(preyItem.getAlarmBoolean()==true){
+				View v = getListView();
+				ImageView image = (ImageView)v.findViewById(R.id.alarmclock_inactive);
+				image.setImageResource(R.drawable.alarmclock);
+			}
+
 		}
-		checkAlarmStateAtStartup();
+//		checkAlarmStateAtStartup();
 		timer.start();
 	}
 	
@@ -390,7 +392,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 			adapter.setActivePreys(preyTimes);
 			for(PreyItem preyItem :  preyTimes) {
 				adapter.add(preyItem);
-				checkAlarmStateAtStartup(preyItem);
+//				checkAlarmStateAtStartup(preyItem);
 			}
 			adapter.notifyDataSetChanged();
 			
@@ -398,71 +400,71 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 		
 	}
 	
-	public void checkAlarmStateAtStartup(PreyItem preyItem){
-		
-		Context context = PreyOverView.getAppContext();
-//		Intent intent = new Intent(context, AlarmReceiverActivity.class);
-		  AlarmUtilities Util = new AlarmUtilities();
-//		  context.startActivity(myIntent);
-		  
-		//Get alarms after reboot
-			DBAdapter db = new DBAdapter(context);
-			db.open();
-			
-			Cursor cursor = db.getAllAlarms();
-			
-			try{
-				cursor.moveToLast();
-				do{
-					
-					
-					Integer [] AlarmDate = Util.RefactorToIntegerFromDatabase(cursor.getString(1));
-					
-					DateTime dateTimeFromDB = new DateTime(AlarmDate[0], AlarmDate[1]+1, AlarmDate[2],
-							AlarmDate[3], AlarmDate[4], AlarmDate[5]-1, 0); 
-					String dateTimeFromDBString = dateTimeFromDB.getYear() + ":" + dateTimeFromDB.getMonthOfYear() + ":" +
-							dateTimeFromDB.getDayOfMonth() + ":" + dateTimeFromDB.getHourOfDay() + ":" + 
-							dateTimeFromDB.getMinuteOfHour() + ":" + dateTimeFromDB.getSecondOfMinute();
-					
-					System.out.println("dateTimeFromDB: " + dateTimeFromDBString);
-					
-					
-						
-						DateTime dateTimeFromEvent = preyItem.getTime();
-						//Set correct alarm image at start-up
-						String dateTimeFromEventString = dateTimeFromEvent.getYear() + ":" + 
-						dateTimeFromEvent.getMonthOfYear() + ":" + dateTimeFromEvent.getDayOfMonth() + 
-						":" + dateTimeFromEvent.getHourOfDay() + ":" + 
-						dateTimeFromEvent.getMinuteOfHour() + ":" + dateTimeFromEvent.getSecondOfMinute();
-						System.out.println("dateTimeFromEvent: " + dateTimeFromEventString);
-						if(dateTimeFromEventString.equals(dateTimeFromDBString)==true){
-							System.out.println("Dust4");
-							
-							ImageView image = (ImageView)v.findViewById(R.id.alarmclock_inactive);
-							image.setImageResource(R.drawable.alarmclock);
-							
-							
-//							PreyItem clickedDetail = (PreyItem)l.getItemAtPosition(position);
-//							v.setAlarmBoolean(true);
-							System.out.println("Yep");
-						}
-					
-
-					
-				}while(cursor.moveToPrevious() && cursor.getInt(0)>0);
-			
-				System.out.println("AlarmPictures have been set on start-up");
-				
-			}catch(CursorIndexOutOfBoundsException e){
-		    	System.out.println("There are no alarmPictures to be set...");
-			
-			db.close();
-			
-			
-
-			}	
-	  
-	}
+//	public void checkAlarmStateAtStartup(PreyItem preyItem){
+//		
+//		Context context = PreyOverView.getAppContext();
+////		Intent intent = new Intent(context, AlarmReceiverActivity.class);
+//		  AlarmUtilities Util = new AlarmUtilities();
+////		  context.startActivity(myIntent);
+//		  
+//		//Get alarms after reboot
+//			DBAdapter db = new DBAdapter(context);
+//			db.open();
+//			
+//			Cursor cursor = db.getAllAlarms();
+//			
+//			try{
+//				cursor.moveToLast();
+//				do{
+//					
+//					
+//					Integer [] AlarmDate = Util.RefactorToIntegerFromDatabase(cursor.getString(1));
+//					
+//					DateTime dateTimeFromDB = new DateTime(AlarmDate[0], AlarmDate[1]+1, AlarmDate[2],
+//							AlarmDate[3], AlarmDate[4], AlarmDate[5]-1, 0); 
+//					String dateTimeFromDBString = dateTimeFromDB.getYear() + ":" + dateTimeFromDB.getMonthOfYear() + ":" +
+//							dateTimeFromDB.getDayOfMonth() + ":" + dateTimeFromDB.getHourOfDay() + ":" + 
+//							dateTimeFromDB.getMinuteOfHour() + ":" + dateTimeFromDB.getSecondOfMinute();
+//					
+//					System.out.println("dateTimeFromDB: " + dateTimeFromDBString);
+//					
+//					
+//						
+//						DateTime dateTimeFromEvent = preyItem.getTime();
+//						//Set correct alarm image at start-up
+//						String dateTimeFromEventString = dateTimeFromEvent.getYear() + ":" + 
+//						dateTimeFromEvent.getMonthOfYear() + ":" + dateTimeFromEvent.getDayOfMonth() + 
+//						":" + dateTimeFromEvent.getHourOfDay() + ":" + 
+//						dateTimeFromEvent.getMinuteOfHour() + ":" + dateTimeFromEvent.getSecondOfMinute();
+//						System.out.println("dateTimeFromEvent: " + dateTimeFromEventString);
+//						if(dateTimeFromEventString.equals(dateTimeFromDBString)==true){
+//							System.out.println("Dust4");
+//							
+//							ImageView image = (ImageView)v.findViewById(R.id.alarmclock_inactive);
+//							image.setImageResource(R.drawable.alarmclock);
+//							
+//							
+////							PreyItem clickedDetail = (PreyItem)l.getItemAtPosition(position);
+////							v.setAlarmBoolean(true);
+//							System.out.println("Yep");
+//						}
+//					
+//
+//					
+//				}while(cursor.moveToPrevious() && cursor.getInt(0)>0);
+//			
+//				System.out.println("AlarmPictures have been set on start-up");
+//				
+//			}catch(CursorIndexOutOfBoundsException e){
+//		    	System.out.println("There are no alarmPictures to be set...");
+//			
+//			db.close();
+//			
+//			
+//
+//			}	
+//	  
+//	}
 		
 }
 
