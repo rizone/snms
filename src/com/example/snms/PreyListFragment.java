@@ -361,6 +361,11 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 				}
 		
 			}
+			if(item.getAlarmBoolean()==true){
+				ImageView image = (ImageView)convertView.findViewById(R.id.alarmclock_inactive);
+				image.setImageResource(R.drawable.alarmclock);
+				
+			}
 			status.setText(preyText);
 			
 			return convertView;
