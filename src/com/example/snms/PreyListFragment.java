@@ -171,7 +171,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	
 	public List<PreyItem> loadPrayTimes(DateTime dateTime) {
 		
-		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter();
+		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter(getActivity().getAssets());
 		
 		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay()).minusMinutes(dateTime.getMinuteOfHour()).minusSeconds(dateTime.getSecondOfMinute());
 		return prayTimeAdapter.getPrayListForDate(midnight);

@@ -26,7 +26,7 @@ import android.widget.TextView;
 public class PrayCalenderListFragment extends Fragment {
 
 	ListView prayGridForMonth;
-	SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter();
+	SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter(getActivity().getAssets());
 	PreyCalenderAdapter adapter;
 	
 	@Override
@@ -58,23 +58,25 @@ public class PrayCalenderListFragment extends Fragment {
 		
 
 				convertView = LayoutInflater.from(getContext()).inflate(
-						R.layout.calender_row, null);
+						R.layout.calender_row, parent,false);
 
 				ViewGroup layout = (ViewGroup) convertView;
 				PreyItemList h = getItem(position);
 				TextView day = new TextView(getContext());
 				day.setHeight(60);
-				day.setTextSize(10);
+				day.setMaxWidth(30);
+				day.setWidth(30);
+				day.setTextSize(13);
 				day.setPadding(1, 1, 1, 1);
 				day.setText(h.getDay().toString());
-				layout.addView(day);
+				layout.addView(day,70,30);
 				for (PreyItem item : h.getPreylist()) {
 					TextView prey = new TextView(getContext());
 					prey.setHeight(60);
-					prey.setTextSize(10);
+					prey.setTextSize(13);
 					prey.setPadding(1, 1, 1, 1);
 					prey.setText(item.getTimeOfDayAsString());
-					layout.addView(prey);
+					layout.addView(prey,70,30);
 				}
 
 

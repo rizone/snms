@@ -131,7 +131,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements Ti
 
 		currentFragment1 = fragment1;
 		currentFragment2 = fragment2;
-
 		getSlidingMenu().showContent();
 	}
 
