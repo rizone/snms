@@ -51,11 +51,18 @@ return myTPDialog;
 
 }
 
+//public void onDismiss(DialogInterface dialog){
+//
+//    System.out.println("Cancelled set alarm");
+//
+//}
+
 public void onTimeSet(TimePicker view, int hour, int minute) {
 	
 	if(fired == true){
 		return;
 	}else{
+		
 		
 		int year = time.getYear();
 		int month = time.getMonthOfYear();

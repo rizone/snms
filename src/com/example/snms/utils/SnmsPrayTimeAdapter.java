@@ -53,7 +53,8 @@ public class SnmsPrayTimeAdapter {
 	
 	public List<PreyItem> getPrayListForDate(DateTime time) {
 		
-        double latitude = 59;
+//        double latitude = 59;
+        double latitude = 170;
         double longitude = 10;
         double timezone = 1;
         PrayTime prayers = new PrayTime();

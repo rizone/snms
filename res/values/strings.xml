@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
+	<string name="hello">Tid for bønn</string>
     <string name="app_name">Alarm Demo</string>
     <string name="alarm_hello">The alarm will start in five seconds.</string>
     <string name="stop_alarm">Stop Alarm</string>
