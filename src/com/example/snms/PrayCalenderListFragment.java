@@ -26,7 +26,7 @@ import android.widget.TextView;
 public class PrayCalenderListFragment extends Fragment {
 
 	ListView prayGridForMonth;
-	SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter(getActivity().getAssets());
+	SnmsPrayTimeAdapter prayTimeAdapter; 
 	PreyCalenderAdapter adapter;
 	
 	@Override
@@ -42,9 +42,9 @@ public class PrayCalenderListFragment extends Fragment {
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
+		prayTimeAdapter = new SnmsPrayTimeAdapter(getActivity().getAssets());
 		prayGridForMonth.setAdapter(adapter);
-		adapter.addAll(prayTimeAdapter.getPrayGridForMonthIndYear(11, 2013));
+		adapter.addAll(prayTimeAdapter.getPrayGridForMonthIndYear(11, 2013,false));
 		adapter.notifyDataSetChanged();
 	}
 

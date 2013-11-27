@@ -14,6 +14,8 @@ import org.joda.time.DateTimeField;
 import org.joda.time.LocalTime;
 import org.joda.time.MonthDay;
 import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -40,12 +42,12 @@ public class SnmsPrayTimeAdapter {
 		this.assetManager = assetManager;
 	}
 
-	public List<PreyItemList> getPrayGridForMonthIndYear(int month, int year) {
+	public List<PreyItemList> getPrayGridForMonthIndYear(int month, int year, boolean includeAlarm) {
 		DateTime dateTime = new DateTime(year, month, 1, 1, 0, 0, 000);
 		List<PreyItemList> dayPreyListMap = new ArrayList<PreyItemList>();
 		for (int i = 1; i <= dateTime.dayOfMonth().getMaximumValue(); i++) {
 			DateTime dateTime2 = new DateTime(year, month, i, 1, 0, 0, 000);
-			List<PreyItem> items = this.getPrayListForDate(dateTime2);
+			List<PreyItem> items = this.getPrayListForDate(dateTime2,includeAlarm);
 			PreyItemList list = new PreyItemList(items, i);
 			dayPreyListMap.add(list);
 		}
@@ -62,8 +64,6 @@ public class SnmsPrayTimeAdapter {
 			}
 			String name = parser.getName();
 			// Starts by looking for the entry tag
-			String test = parser.getAttributeValue(0);
-			String test2 = String.valueOf(time.getDayOfMonth());
 			if (name.equals("Row")
 					&& parser.getAttributeValue(0).equals(String.valueOf(time.getDayOfMonth()))) {
 				entries.addAll(readEntry(parser,time));
@@ -91,55 +91,29 @@ public class SnmsPrayTimeAdapter {
 			}
 		}
 	}
-
+	
+	
+	private DateTime getPrayTimeFromString(DateTime time, String timeToParse) {
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm:ss aa");
+		LocalTime timeFromString = LocalTime.parse(timeToParse,fmt);
+		return time.plusHours(timeFromString.getHourOfDay()).plusMinutes(timeFromString.getMinuteOfHour());
+	}
 	
 	private List<PreyItem> readEntry(XmlPullParser parser,DateTime time) throws XmlPullParserException, IOException {
 	    parser.require(XmlPullParser.START_TAG, ns, "Row");
-
 	    List <PreyItem> preyList = new ArrayList<PreyItem>();
-	  	DateTime fajrTime = time.plusHours(
-				Integer.valueOf(parser.getAttributeValue(1).split(":")[0]))
-				.plusMinutes(
-						Integer.valueOf(parser.getAttributeValue(1).split(":")[1]));
-	  	
-	  	 PreyItem fajr = new PreyItem("Fajr", fajrTime, false);	
-	  	 
-	 	DateTime soloppgangTime = time.plusHours(
-				Integer.valueOf(parser.getAttributeValue(2).split(":")[0]))
-				.plusMinutes(
-						Integer.valueOf(parser.getAttributeValue(2).split(":")[1]));
-	  	
-	  	 PreyItem soloppgang = new PreyItem("Soloppgang", soloppgangTime, false);	
-	  	 
-	  	DateTime dhuhrTime = time.plusHours(
-				Integer.valueOf(parser.getAttributeValue(3).split(":")[0]))
-				.plusMinutes(
-						Integer.valueOf(parser.getAttributeValue(3).split(":")[1]));
-	  	
-	  	 PreyItem duhr = new PreyItem("Dhuhr", dhuhrTime, false);	
-	  	 
-		  	DateTime asrTime = time.plusHours(
-					Integer.valueOf(parser.getAttributeValue(4).split(":")[0]))
-					.plusMinutes(
-							Integer.valueOf(parser.getAttributeValue(4).split(":")[1]));
-		  	
-		  	 PreyItem asr = new PreyItem("Asr", asrTime, false);	
-		  	 
-		  	 
-		   	DateTime maghribTime = time.plusHours(
-					Integer.valueOf(parser.getAttributeValue(5).split(":")[0]))
-					.plusMinutes(
-							Integer.valueOf(parser.getAttributeValue(5).split(":")[1]));
-		  	
-		  	 PreyItem maghrib = new PreyItem("Maghrib", maghribTime, false);	
-		  	 
-		   	DateTime ishaTime = time.plusHours(
-					Integer.valueOf(parser.getAttributeValue(6).split(":")[0]))
-					.plusMinutes(
-							Integer.valueOf(parser.getAttributeValue(6).split(":")[1]));
-		  	
-		  	 PreyItem isha = new PreyItem("Isha", ishaTime, false);	
-	    
+	  	DateTime fajrTime = getPrayTimeFromString(time,parser.getAttributeValue(1));
+	  	PreyItem fajr = new PreyItem("Fajr", fajrTime, false);	 
+	 	DateTime soloppgangTime = getPrayTimeFromString(time,parser.getAttributeValue(2));
+	  	PreyItem soloppgang = new PreyItem("Soloppgang", soloppgangTime, false);		  	 
+	  	DateTime dhuhrTime = getPrayTimeFromString(time,parser.getAttributeValue(3));
+	  	PreyItem duhr = new PreyItem("Dhuhr", dhuhrTime, false);	
+		DateTime asrTime = getPrayTimeFromString(time,parser.getAttributeValue(4));
+		PreyItem asr = new PreyItem("Asr", asrTime, false);	
+	    DateTime maghribTime = getPrayTimeFromString(time,parser.getAttributeValue(5));  	
+		PreyItem maghrib = new PreyItem("Maghrib", maghribTime, false);	
+		DateTime ishaTime = getPrayTimeFromString(time,parser.getAttributeValue(6));
+		PreyItem isha = new PreyItem("Isha", ishaTime, false);	
 		preyList.add(fajr);
 		preyList.add(soloppgang);
 		preyList.add(duhr);
@@ -174,10 +148,18 @@ public class SnmsPrayTimeAdapter {
 		return null;
 	}
 
-	public List<PreyItem> getPrayListForDate(DateTime time) {
+	public List<PreyItem> getPrayListForDate(DateTime time, boolean includeAlarm) {
 		
-		if(true)
-			return readPrayItemFormXml(time);
+		if(true) {
+			List<PreyItem> list = readPrayItemFormXml(time);
+			if(includeAlarm){
+				for(PreyItem item : list) {
+					checkAlarmStateAtStartup(item);
+				}
+			}
+			return list;
+		}
+			
 		double latitude = 59;
 		double longitude = 10;
 		double timezone = 1;
@@ -275,6 +257,7 @@ public class SnmsPrayTimeAdapter {
 			} while (cursor.moveToPrevious() && cursor.getInt(0) > 0);
 
 		} catch (CursorIndexOutOfBoundsException e) {
+			e.printStackTrace();
 			db.close();
 
 		}
