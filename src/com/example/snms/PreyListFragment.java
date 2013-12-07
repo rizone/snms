@@ -21,6 +21,8 @@ import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
 import com.example.snms.utils.PrayTime;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -29,6 +31,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.shapes.RectShape;
 import android.graphics.drawable.shapes.Shape;
 import android.opengl.Visibility;
@@ -37,11 +40,14 @@ import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -50,8 +56,12 @@ import android.widget.ListView;
 
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
-public class PreyListFragment extends ListFragment implements OnClickListener {
+public class PreyListFragment extends ListFragment implements OnClickListener,  OnDateSetListener, TimePickerDialog.OnTimeSetListener  {
 	OnHeadlineSelectedListener mCallback;
 
 	private DateTime currentDate;
@@ -59,23 +69,29 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	private View mheaderView;
 	private PreyListAdapter adapter;
 	private List<PreyItem> preyTimes;
-	private TextView currentDay;
+	private Button currentDay;
 	private ImageView nextDay;
 	private ImageView prevDay;
 	private TextView calender;
 	private DateTime currentDateTime;
-
+	  DatePickerDialog datePickerDialog;
+	   public static final String DATEPICKER_TAG = "datepicker";
+	  
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// putPreyItemsOnRequestQueue();
 		mheaderView = inflater.inflate(R.layout.prey_header, null);
-		currentDay = (TextView) mheaderView.findViewById(R.id.prey_current_day);
+		currentDay = (Button) mheaderView.findViewById(R.id.prey_current_day);
 		nextDay = (ImageView) mheaderView.findViewById(R.id.prey_next_day);
 		nextDay.setOnClickListener(this);
 		prevDay = (ImageView) mheaderView.findViewById(R.id.prey_prev_day);
 		prevDay.setOnClickListener(this);
 		currentDate = new DateTime();
 		timeCurrentlyUsedInPreyOverView = currentDate;
+
+        final Calendar calendar = Calendar.getInstance();
+        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+		
 		return inflater.inflate(R.layout.list, null);
 
 	}
@@ -330,7 +346,8 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 			TextView time = (TextView) convertView.findViewById(R.id.row_time);
 			PreyItem item = getItem(position);
 
-			
+			ImageView image = (ImageView) convertView
+					.findViewById(R.id.alarmclock_inactive);
 			
 			//indicator.setBackgroundDrawable(background); 
 
@@ -361,9 +378,26 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 					preyText = "Aktiv";
 					title.setTextColor(Color.BLACK);
 					convertView.setBackgroundResource(R.drawable.border_active_pray);
+				//	convertView.setLayoutParams(parent.getLayoutParams());
+					final float scale = getContext().getResources().getDisplayMetrics().density;
+					int pixels = (int) (20 * scale + 0.5f);
+					
+					int paddingPixles = (int) (5 * scale + 0.5f);
+					pixels = (int) (80 * scale + 0.5f);
+					time.setWidth(80);
+					status.setGravity(Gravity.CENTER_VERTICAL);
+					time.setGravity(Gravity.CENTER_VERTICAL);
+					title.setGravity(Gravity.CENTER_VERTICAL);
+					time.setPadding(paddingPixles, paddingPixles, paddingPixles, paddingPixles);
+					pixels = (int) (60 * scale + 0.5f);
+					status.setWidth(120);
+					status.setPadding(20, 0,0 , 20);
+					pixels = (int) (200 * scale + 0.5f);
+					title.setWidth(pixels);
+					title.setPadding(paddingPixles, paddingPixles, paddingPixles, paddingPixles);
 					time.setTextColor(Color.BLACK);
 					status.setTextColor(Color.BLACK);
-					title.setHeight(80);
+				
 				}
 			}
 			if (preyDate.isAfterNow()) {
@@ -382,8 +416,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 
 			}
 			if (item.getAlarmBoolean() == true) {
-				ImageView image = (ImageView) convertView
-						.findViewById(R.id.alarmclock_inactive);
+			
 				image.setImageResource(R.drawable.alarmclock);
 
 			}
@@ -402,6 +435,9 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.equals(nextDay)) {
+		       datePickerDialog.setYearRange(1985, 2028);
+               datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
+			/*
 			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.plusDays(1);
 			setUpCurrentDay();
 			preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
@@ -413,7 +449,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 				// checkAlarmStateAtStartup(preyItem);
 			}
 			adapter.notifyDataSetChanged();
-
+			*/
 		}
 		if (v.equals(prevDay)) {
 			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.minusDays(1);
@@ -430,6 +466,19 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 
 		}
 
+	}
+
+	@Override
+	public void onDateSet(DatePickerDialog datePickerDialog, int year,
+			int month, int day) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
