@@ -9,6 +9,7 @@ import java.util.TimerTask;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -54,6 +55,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	OnHeadlineSelectedListener mCallback;
 
 	private DateTime currentDate;
+	private DateTime timeCurrentlyUsedInPreyOverView; 
 	private View mheaderView;
 	private PreyListAdapter adapter;
 	private List<PreyItem> preyTimes;
@@ -73,11 +75,12 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 		prevDay = (ImageView) mheaderView.findViewById(R.id.prey_prev_day);
 		prevDay.setOnClickListener(this);
 		currentDate = new DateTime();
+		timeCurrentlyUsedInPreyOverView = currentDate;
 		return inflater.inflate(R.layout.list, null);
 
 	}
 
-	CountDownTimer timer = new CountDownTimer(60000, 6000) {
+	CountDownTimer timer = new CountDownTimer(1000, 100) {
 
 		public void onTick(long millisUntilFinished) {
 			// DO NOTHING
@@ -215,7 +218,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 
 	private void setUpCurrentDay() {
 
-		int dayOfWeek = currentDate.getDayOfWeek();
+		int dayOfWeek = timeCurrentlyUsedInPreyOverView.getDayOfWeek();
 		String day;
 		switch (dayOfWeek) {
 
@@ -245,8 +248,8 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 			break;
 
 		}
-		day += " " + currentDate.getDayOfMonth() + "."
-				+ currentDate.getMonthOfYear() + "." + currentDate.getYear();
+		day += " " + timeCurrentlyUsedInPreyOverView.getDayOfMonth() + "."
+				+ timeCurrentlyUsedInPreyOverView.getMonthOfYear() + "." + timeCurrentlyUsedInPreyOverView.getYear();
 		currentDay.setText(day);
 
 	}
@@ -303,6 +306,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 		}
 
 		private boolean isNext(PreyItem preyItem) {
+			if(preyItem.getTime().getDayOfYear() == currentDate.getDayOfYear()) {
 			List<PreyItem> candidates = new ArrayList<PreyItem>();
 			for (PreyItem candiate : currentPreys) {
 				if (candiate.getTime().isAfterNow()) {
@@ -311,6 +315,10 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 			}
 			Collections.sort(candidates);
 			return candidates.get(0).equals(preyItem);
+			}
+			else {
+				return false;
+			}
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -359,20 +367,17 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 				}
 			}
 			if (preyDate.isAfterNow()) {
-				preyText = "-";
+				
 				if (isNext(item)) {
+					DateTime now = DateTime.now();
 					DateTime delta = item.getTime().minus(
 							DateTime.now().getMillis());
-					if (delta.getDayOfYear() > 0) {
-						preyText = delta.getDayOfYear() + "d ";
-					}
-					if (delta.getHourOfDay() > 0) {
-						preyText = +delta.getMinuteOfHour() + "t ";
-					}
-					if (delta.getMinuteOfHour() > 0) {
-						preyText = +delta.getMinuteOfHour() + "m";
-					}
-					// preyText = String.valueOf(delta.getMinuteOfDay());
+					int hoursDelta = item.getTime().getHourOfDay() -now.getHourOfDay();
+			//		int minDelta = delta.getHourOfDay()
+							delta.toTimeOfDay().toString();
+					int secondsDelta = delta.getSecondOfMinute();
+					
+					preyText = delta.toTimeOfDay().toString("HH:mm:ss");
 				}
 
 			}
@@ -397,9 +402,9 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (v.equals(nextDay)) {
-			currentDate = currentDate.plusDays(1);
+			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.plusDays(1);
 			setUpCurrentDay();
-			preyTimes = loadPrayTimes(currentDate);
+			preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
 			adapter.setActivePreys(preyTimes);
 			adapter.clear();
 			adapter.setActivePreys(preyTimes);
@@ -411,9 +416,9 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 
 		}
 		if (v.equals(prevDay)) {
-			currentDate = currentDate.minusDays(1);
+			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.minusDays(1);
 			setUpCurrentDay();
-			preyTimes = loadPrayTimes(currentDate);
+			preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
 			adapter.setActivePreys(preyTimes);
 			adapter.clear();
 			adapter.setActivePreys(preyTimes);

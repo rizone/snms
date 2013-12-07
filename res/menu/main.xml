@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  
+  	 <item android:id="@+id/github2" android:icon="@drawable/ic_settings2" android:showAsAction="always" android:title="@string/github_label" android:titleCondensed="@string/github" android:visible="true"></item>
     <item android:id="@+id/github" android:icon="@drawable/ic_calendar" android:showAsAction="always" android:title="@string/github_label" android:titleCondensed="@string/github" android:visible="true"></item>
 
 </menu>
