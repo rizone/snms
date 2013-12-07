@@ -21,7 +21,7 @@
             android:adjustViewBounds="true"
             android:src="@drawable/ic_left_arrow" />
 
-        <TextView
+        <com.example.snms.SnmsTextView
             android:id="@+id/prey_current_day"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -50,7 +50,7 @@
         android:background="@color/snmsDarkBlue"
         android:orientation="horizontal" >
 
-        <TextView
+        <com.example.snms.SnmsTextView
             android:id="@+id/header_title"
             android:layout_width="35dp"
             android:layout_height="match_parent"
@@ -62,7 +62,7 @@
             android:textColor="@color/white"
             android:textSize="14dp" />
 
-        <TextView
+        <com.example.snms.SnmsTextView
             android:id="@+id/prey_time"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -74,7 +74,7 @@
             android:textColor="@color/white"
             android:textSize="14dp" />
 
-        <TextView
+        <com.example.snms.SnmsTextView
             android:id="@+id/status"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -86,7 +86,7 @@
             android:textColor="@color/white"
             android:textSize="14dp" />
 
-        <TextView
+        <com.example.snms.SnmsTextView
             android:id="@+id/prey_alarm"
             android:layout_width="0dp"
             android:layout_height="match_parent"

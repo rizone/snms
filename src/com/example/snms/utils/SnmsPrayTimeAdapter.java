@@ -9,8 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.MonthDay;
 import org.joda.time.chrono.GregorianChronology;
@@ -37,6 +39,7 @@ public class SnmsPrayTimeAdapter {
 
 	AssetManager assetManager;
 	private static final String ns = null;
+
 
 	public SnmsPrayTimeAdapter(AssetManager assetManager) {
 		this.assetManager = assetManager;
@@ -98,6 +101,63 @@ public class SnmsPrayTimeAdapter {
 		LocalTime timeFromString = LocalTime.parse(timeToParse,fmt);
 		return time.plusHours(timeFromString.getHourOfDay()).plusMinutes(timeFromString.getMinuteOfHour());
 	}
+	private List<DateTime> getFredagsbonnListe() {
+		
+		List <DateTime> fredagsbonnLiset = new ArrayList<DateTime>();
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss.SSS");
+		DateTime salatU1 = formatter.parseDateTime("2013-01-11 13:30:00.000");
+		DateTime salatU2 = formatter.parseDateTime("2013-02-01 14:00:00.000");
+		DateTime salatU3 = formatter.parseDateTime("2013-03-10 14:30:00.000");
+		DateTime salatU4 = formatter.parseDateTime("2013-04-01 15:30:00.000");
+		DateTime salatU5 = formatter.parseDateTime("2013-08-01 15:00:00.000");
+		DateTime salatU6 = formatter.parseDateTime("2013-11-01 13:00:00.000");
+		fredagsbonnLiset.add(salatU1);
+		fredagsbonnLiset.add(salatU2);
+		fredagsbonnLiset.add(salatU3);
+		fredagsbonnLiset.add(salatU4);
+		fredagsbonnLiset.add(salatU5);
+		fredagsbonnLiset.add(salatU6);
+		return fredagsbonnLiset;
+	}
+	
+	private void addFredagsbon(List <PreyItem> preyList, DateTime currentTime) {
+		DateTimeFormatter parser = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mmZ");
+		List <DateTime> fredagsBonns = getFredagsbonnListe();
+		int day = currentTime.getDayOfWeek();
+    	int daysToFriday = 5 - day;
+    	//next friday is next week 
+    	if(daysToFriday<0){
+    		daysToFriday = 5 + day;
+    	}
+    	DateTime salatTime = currentTime.plusDays(daysToFriday).plusHours(fredagsBonns.get(fredagsBonns.size()-1).getHourOfDay()).plusMinutes(fredagsBonns.get(fredagsBonns.size()-1).getMinuteOfDay());
+		for(int i = 0;i<fredagsBonns.size();i++) {
+	    	
+	    	if(currentTime.plusDays(daysToFriday).isBefore(fredagsBonns.get(i))){
+	    		int thaOne = -1;
+	    		if(i-1>-1){
+	    			thaOne = i-1;
+	    		}else {
+	    			thaOne = fredagsBonns.size()-1;
+	    		}
+	    		DateTime timeOfThaOne = fredagsBonns.get(thaOne);
+	    		salatTime = currentTime.plusDays(daysToFriday).plusHours(timeOfThaOne.getHourOfDay()).plusMinutes(timeOfThaOne.getMinuteOfDay());
+	    	
+	    		break;
+	    	}
+		}
+		PreyItem salat = new PreyItem("Salat-ul-Jummah", salatTime, false);	
+		preyList.add(salat);
+		/*
+		 * 
+		 * 01. november til 10. januar: 13:00
+11. januar til 31. januar: 13.30
+1. februar til 10. mars: 14:00
+11. mars til 31. mars: 14:30
+1. april til 31. juli: 15:30
+1. august til 10. oktober: 15:00 
+11. oktober til 31. oktober: 14:30
+		 */
+	}
 	
 	private List<PreyItem> readEntry(XmlPullParser parser,DateTime time) throws XmlPullParserException, IOException {
 	    parser.require(XmlPullParser.START_TAG, ns, "Row");
@@ -120,6 +180,7 @@ public class SnmsPrayTimeAdapter {
 		preyList.add(asr);
 		preyList.add(maghrib);
 		preyList.add(isha);
+	
 	    return preyList;
 	}
 
@@ -152,6 +213,7 @@ public class SnmsPrayTimeAdapter {
 		
 		if(true) {
 			List<PreyItem> list = readPrayItemFormXml(time);
+			addFredagsbon(list,time);
 			if(includeAlarm){
 				for(PreyItem item : list) {
 					checkAlarmStateAtStartup(item);
