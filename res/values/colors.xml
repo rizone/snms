@@ -5,6 +5,12 @@
     <color name="blue">#009</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
+    <color name="snmsActivePreyColor">#789f4b</color>
     <color name="snmsActionBar">#1c2c3b</color>  
     <color name="snmsDarkBlue">#182531</color>
+    <color name="snmsWhite">#F6F6F6</color>
+    <color name="snmsGrey">#e2e2e3</color>
+    
+   <color name="snmsLightGray">#f8f8f8</color>
+   <color name="snmsDarkGray">#f5f5f5</color>
 </resources>

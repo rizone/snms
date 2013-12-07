@@ -189,6 +189,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		preyTimes = loadPrayTimes(new DateTime());
+		getListView().setDividerHeight(0);
 		setUpCurrentDay();
 		adapter = new PreyListAdapter(getActivity());
 		mheaderView.setPadding(0, 0, 0, 0);
@@ -320,11 +321,10 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 			title.setText(getItem(position).getName());
 			TextView time = (TextView) convertView.findViewById(R.id.row_time);
 			PreyItem item = getItem(position);
-			TextView indicator = (TextView) convertView
-					.findViewById(R.id.row_indicator);
-			indicator.setWidth(0);
-			indicator.setHeight(0);
-			indicator.setVisibility(View.INVISIBLE);
+
+			
+			
+			//indicator.setBackgroundDrawable(background); 
 
 			String ZeroPlusHour = Integer.toString(getItem(position).getTime()
 					.getHourOfDay());
@@ -352,9 +352,9 @@ public class PreyListFragment extends ListFragment implements OnClickListener {
 				if (isActive(item)) {
 					preyText = "Aktiv";
 					title.setTextColor(Color.BLACK);
+					convertView.setBackgroundResource(R.drawable.border_active_pray);
 					time.setTextColor(Color.BLACK);
 					status.setTextColor(Color.BLACK);
-					indicator.setVisibility(View.VISIBLE);
 					title.setHeight(80);
 				}
 			}
