@@ -82,6 +82,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 		// putPreyItemsOnRequestQueue();
 		mheaderView = inflater.inflate(R.layout.prey_header, null);
 		currentDay = (Button) mheaderView.findViewById(R.id.prey_current_day);
+		currentDay.setOnClickListener(this);
 		nextDay = (ImageView) mheaderView.findViewById(R.id.prey_next_day);
 		nextDay.setOnClickListener(this);
 		prevDay = (ImageView) mheaderView.findViewById(R.id.prey_prev_day);
@@ -382,8 +383,21 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 					final float scale = getContext().getResources().getDisplayMetrics().density;
 					int pixels = (int) (20 * scale + 0.5f);
 					
-					int paddingPixles = (int) (5 * scale + 0.5f);
-					pixels = (int) (80 * scale + 0.5f);
+					int paddingPixles = (int) (25 * scale + 0.5f);
+					int paddingSmal = (int) (5 * scale + 0.5f);
+					pixels = (int) (100 * scale + 0.5f);
+					title.setPadding(paddingPixles, 5, 5, 5);
+					time.setPadding(paddingSmal, paddingSmal, paddingSmal, paddingSmal);
+					time.setHeight(100);
+					time.setTextColor(Color.BLACK);
+					status.setPadding(paddingSmal, paddingSmal,paddingSmal ,paddingSmal);
+					  LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+					    llp.setMargins(36, 0, 0, 0); // llp.setMargins(left, top, right, bottom);
+					time.setLayoutParams(llp);    
+					status.setWidth(30);
+					image.setPadding(5+paddingSmal, paddingPixles, paddingSmal, paddingSmal);
+					
+				/*	
 					time.setWidth(80);
 					status.setGravity(Gravity.CENTER_VERTICAL);
 					time.setGravity(Gravity.CENTER_VERTICAL);
@@ -396,6 +410,8 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 					title.setWidth(pixels);
 					title.setPadding(paddingPixles, paddingPixles, paddingPixles, paddingPixles);
 					time.setTextColor(Color.BLACK);
+					
+					*/
 					status.setTextColor(Color.BLACK);
 				
 				}
@@ -403,7 +419,8 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 			if (preyDate.isAfterNow()) {
 				
 				if (isNext(item)) {
-					DateTime now = DateTime.now();
+					//TODO: Don't hard code time difference
+					DateTime now = DateTime.now().minusHours(1);
 					DateTime delta = item.getTime().minus(
 							DateTime.now().getMillis());
 					int hoursDelta = item.getTime().getHourOfDay() -now.getHourOfDay();
@@ -434,7 +451,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 
 	@Override
 	public void onClick(View v) {
-		if (v.equals(nextDay)) {
+		if (v.equals(currentDay)) {
 		       datePickerDialog.setYearRange(1985, 2028);
                datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
 			/*
@@ -450,6 +467,20 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 			}
 			adapter.notifyDataSetChanged();
 			*/
+		}
+		if (v.equals(nextDay)) {
+			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.plusDays(1);
+			setUpCurrentDay();
+			preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
+			adapter.setActivePreys(preyTimes);
+			adapter.clear();
+			adapter.setActivePreys(preyTimes);
+			for (PreyItem preyItem : preyTimes) {
+				adapter.add(preyItem);
+				// checkAlarmStateAtStartup(preyItem);
+			}
+			adapter.notifyDataSetChanged();
+			
 		}
 		if (v.equals(prevDay)) {
 			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.minusDays(1);
@@ -471,7 +502,17 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 	@Override
 	public void onDateSet(DatePickerDialog datePickerDialog, int year,
 			int month, int day) {
-		// TODO Auto-generated method stub
+		timeCurrentlyUsedInPreyOverView = new DateTime(year,month,day,0,0);
+		setUpCurrentDay();
+		preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
+		adapter.setActivePreys(preyTimes);
+		adapter.clear();
+		adapter.setActivePreys(preyTimes);
+		for (PreyItem preyItem : preyTimes) {
+			adapter.add(preyItem);
+			// checkAlarmStateAtStartup(preyItem);
+		}
+		adapter.notifyDataSetChanged();
 		
 	}
 

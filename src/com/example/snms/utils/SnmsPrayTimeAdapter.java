@@ -129,7 +129,7 @@ public class SnmsPrayTimeAdapter {
     	if(daysToFriday<0){
     		daysToFriday = 5 + day;
     	}
-    	DateTime salatTime = currentTime.plusDays(daysToFriday).plusHours(fredagsBonns.get(fredagsBonns.size()-1).getHourOfDay()).plusMinutes(fredagsBonns.get(fredagsBonns.size()-1).getMinuteOfDay());
+    	DateTime salatTime = currentTime.plusDays(daysToFriday).plusHours(fredagsBonns.get(fredagsBonns.size()-1).getHourOfDay()+12).plusMinutes(fredagsBonns.get(fredagsBonns.size()-1).getMinuteOfDay());
 		for(int i = 0;i<fredagsBonns.size();i++) {
 	    	
 	    	if(currentTime.plusDays(daysToFriday).isBefore(fredagsBonns.get(i))){
@@ -140,7 +140,7 @@ public class SnmsPrayTimeAdapter {
 	    			thaOne = fredagsBonns.size()-1;
 	    		}
 	    		DateTime timeOfThaOne = fredagsBonns.get(thaOne);
-	    		salatTime = currentTime.plusDays(daysToFriday).plusHours(timeOfThaOne.getHourOfDay()).plusMinutes(timeOfThaOne.getMinuteOfDay());
+	    		salatTime = currentTime.plusDays(daysToFriday).plusHours(timeOfThaOne.getHourOfDay()+12).plusMinutes(timeOfThaOne.getMinuteOfDay());
 	    	
 	    		break;
 	    	}
