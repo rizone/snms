@@ -145,7 +145,7 @@ public class SnmsPrayTimeAdapter {
 	    		break;
 	    	}
 		}
-		PreyItem salat = new PreyItem("Salat-ul-Jummah", salatTime, false);	
+		PreyItem salat = new PreyItem("Jummah", salatTime, false);	
 		preyList.add(salat);
 		/*
 		 * 

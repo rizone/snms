@@ -69,7 +69,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 	private View mheaderView;
 	private PreyListAdapter adapter;
 	private List<PreyItem> preyTimes;
-	private Button currentDay;
+	private TextView currentDay;
 	private ImageView nextDay;
 	private ImageView prevDay;
 	private TextView calender;
@@ -83,7 +83,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 			Bundle savedInstanceState) {
 		// putPreyItemsOnRequestQueue();
 		mheaderView = inflater.inflate(R.layout.prey_header, null);
-		currentDay = (Button) mheaderView.findViewById(R.id.prey_current_day);
+		currentDay = (TextView) mheaderView.findViewById(R.id.prey_current_day);
 		currentDay.setOnClickListener(this);
 		nextDay = (ImageView) mheaderView.findViewById(R.id.prey_next_day);
 		nextDay.setOnClickListener(this);
@@ -377,9 +377,10 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 				title.setTextColor(Color.LTGRAY);
 				time.setTextColor(Color.LTGRAY);
 				status.setTextColor(Color.LTGRAY);
-				if (isActive(item)) {
-					preyText = "Aktiv";
+				if (isActive(item) && (preyDate.getDayOfMonth()==DateTime.now().getDayOfMonth() && preyDate.getMonthOfYear()==DateTime.now().getMonthOfYear())) {
+					preyText = "";
 					title.setTextColor(Color.BLACK);
+					title.setTypeface(null,Typeface.BOLD);
 					convertView.setBackgroundResource(R.drawable.border_active_pray);
 				//	convertView.setLayoutParams(parent.getLayoutParams());
 					final float scale = getContext().getResources().getDisplayMetrics().density;
@@ -389,6 +390,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 					int paddingSmal = (int) (5 * scale + 0.5f);
 					pixels = (int) (100 * scale + 0.5f);
 					title.setPadding(paddingPixles, 5, 5, 5);
+					time.setTypeface(null,Typeface.BOLD);
 					time.setPadding(paddingSmal, paddingSmal, paddingSmal, paddingSmal);
 					time.setHeight(100);
 					time.setTextColor(Color.BLACK);
@@ -397,6 +399,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 					    llp.setMargins(36, 0, 0, 0); // llp.setMargins(left, top, right, bottom);
 					time.setLayoutParams(llp);    
 					status.setWidth(30);
+					status.setTypeface(null,Typeface.BOLD);
 					image.setPadding(5+paddingSmal, paddingPixles, paddingSmal, paddingSmal);
 					
 				/*	
@@ -424,14 +427,11 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 					//TODO: Don't hard code time difference
 					DateTime delta = item.getTime().minus(
 							DateTime.now().getMillis());
-					
-//					
 //					int hoursDelta = item.getTime().getHourOfDay() -now.getHourOfDay();
 //							delta.toTimeOfDay().toString();
 //					int secondsDelta = delta.getSecondOfMinute();
-						preyCountDownTimer = new PreyCountDownTimer(delta.getMillis(), 1000, status, adapter);
-						preyCountDownTimer.start();
-					preyText = delta.toTimeOfDay().toString("HH:mm:ss");
+					preyCountDownTimer = new PreyCountDownTimer(delta.getMillis(), 1000, status, adapter);
+					preyCountDownTimer.start();
 				}
 
 			}
@@ -505,7 +505,12 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 	@Override
 	public void onDateSet(DatePickerDialog datePickerDialog, int year,
 			int month, int day) {
-		timeCurrentlyUsedInPreyOverView = new DateTime(year,month,day,0,0);
+		
+		if(preyCountDownTimer!=null) {
+			preyCountDownTimer.cancel();
+			preyCountDownTimer = null;
+		}
+		timeCurrentlyUsedInPreyOverView = new DateTime(year,month+1,day,0,0);
 		setUpCurrentDay();
 		preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
 		adapter.setActivePreys(preyTimes);

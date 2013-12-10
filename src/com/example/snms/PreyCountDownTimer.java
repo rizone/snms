@@ -27,7 +27,7 @@ public class PreyCountDownTimer extends CountDownTimer {
 	@Override
 	public void onTick(long millisUntilFinished) {
 		DateTime delta = new DateTime(millisUntilFinished);
-		String preyText = delta.toTimeOfDay().toString("HH:mm:ss");
+		String preyText = delta.minusHours(1).toTimeOfDay().toString("HH:mm:ss");
 		this.textViewToUpdate.setText(preyText);
 		
 	}
