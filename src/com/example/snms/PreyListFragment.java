@@ -76,6 +76,8 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 	private DateTime currentDateTime;
 	  DatePickerDialog datePickerDialog;
 	   public static final String DATEPICKER_TAG = "datepicker";
+	   
+	private CountDownTimer preyCountDownTimer;   
 	  
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -97,17 +99,17 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 
 	}
 
-	CountDownTimer timer = new CountDownTimer(1000, 100) {
-
-		public void onTick(long millisUntilFinished) {
-			// DO NOTHING
-		}
-
-		public void onFinish() {
-			adapter.notifyDataSetChanged();
-			this.start();
-		}
-	};
+//	CountDownTimer timer = new CountDownTimer(1000, 100) {
+//
+//		public void onTick(long millisUntilFinished) {
+//			// DO NOTHING
+//		}
+//
+//		public void onFinish() {
+//			adapter.notifyDataSetChanged();
+//			this.start();
+//		}
+//	};
 
 	public void updateList() {
 
@@ -230,7 +232,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 //
 		}
 		// checkAlarmStateAtStartup();
-		timer.start();
+	//	timer.start();
 	}
 
 	private void setUpCurrentDay() {
@@ -420,14 +422,15 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 				
 				if (isNext(item)) {
 					//TODO: Don't hard code time difference
-					DateTime now = DateTime.now().minusHours(1);
 					DateTime delta = item.getTime().minus(
 							DateTime.now().getMillis());
-					int hoursDelta = item.getTime().getHourOfDay() -now.getHourOfDay();
-			//		int minDelta = delta.getHourOfDay()
-							delta.toTimeOfDay().toString();
-					int secondsDelta = delta.getSecondOfMinute();
 					
+//					
+//					int hoursDelta = item.getTime().getHourOfDay() -now.getHourOfDay();
+//							delta.toTimeOfDay().toString();
+//					int secondsDelta = delta.getSecondOfMinute();
+						preyCountDownTimer = new PreyCountDownTimer(delta.getMillis(), 1000, status, adapter);
+						preyCountDownTimer.start();
 					preyText = delta.toTimeOfDay().toString("HH:mm:ss");
 				}
 
