@@ -128,8 +128,6 @@ DateTime dt = formatter.parseDateTime(string);
 		
 		
 		fredagsbonnLiset.add(new Jumma(1,11,10,1,13,0));
-		
-		
 		fredagsbonnLiset.add(new Jumma(11,1,31,1,13,0));
 		fredagsbonnLiset.add(new Jumma(1,2,10,3,14,00));
 		fredagsbonnLiset.add(new Jumma(11,3,31,3,14,30));

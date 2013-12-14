@@ -1,5 +1,11 @@
 package com.example.snms;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.joda.time.DateTime;
+
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.snms.NewsListFragment.NewsListAdapter;
 import com.example.snms.NewsListFragment.NewsScrollListner;
@@ -8,6 +14,8 @@ import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
 import com.example.snms.domain.image.ImageCacheManager;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
+import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import android.content.Context;
 import android.net.Uri;
@@ -15,20 +23,42 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class PrayCalenderListFragment extends Fragment {
+public class PrayCalenderListFragment extends Fragment implements
+		OnClickListener {
 
 	ListView prayGridForMonth;
-	SnmsPrayTimeAdapter prayTimeAdapter; 
+	SnmsPrayTimeAdapter prayTimeAdapter;
 	PreyCalenderAdapter adapter;
-	
+
+	TextView date;
+	TextView fajr;
+	TextView sol;
+	TextView duhr;
+
+	TextView asr;
+	TextView mag;
+	TextView ish;
+
+	private TextView currentDay;
+	private ImageView nextDay;
+	private ImageView prevDay;
+	private TextView calender;
+	private DateTime currentDateTime;
+	private DateTime currentDate;
+	private DateTime timeCurrentlyUsedInPreyOverView;
+	List<PreyItemList> list;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -36,52 +66,237 @@ public class PrayCalenderListFragment extends Fragment {
 				false);
 
 		prayGridForMonth = (ListView) rootView.findViewById(R.id.preyCalender);
+		prayGridForMonth.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		adapter = new PreyCalenderAdapter(getActivity());
+		currentDay = (TextView) rootView.findViewById(R.id.prey_current_day);
+		currentDay.setOnClickListener(this);
+		nextDay = (ImageView) rootView.findViewById(R.id.prey_next_day);
+		nextDay.setOnClickListener(this);
+		prevDay = (ImageView) rootView.findViewById(R.id.prey_prev_day);
+		prevDay.setOnClickListener(this);
+		currentDate = new DateTime();
+		timeCurrentlyUsedInPreyOverView = currentDate;
+
 		return rootView;
+	}
+
+	private String getMonthAsText(int monthOfYear) {
+		String month;
+		switch (monthOfYear) {
+
+		case 1:
+			month = "Januar";
+			break;
+		case 2:
+			month = "Februar";
+			break;
+		case 3:
+			month = "Mars";
+			break;
+		case 4:
+			month = "April";
+			break;
+		case 5:
+			month = "Mai";
+			break;
+		case 6:
+			month = "Juni";
+			break;
+		case 7:
+			month = "Juli";
+			break;
+		case 8:
+			month = "August";
+			break;
+		case 9:
+			month = "September";
+			break;
+		case 10:
+			month = "Oktober";
+			break;
+		case 11:
+			month = "November";
+			break;
+		case 12:
+			month = "Desember";
+			break;
+
+		default:
+			month = "August";
+			break;
+
+		}
+
+		return month;
+	}
+
+	private void setUpCurrentDay() {
+
+		int monthOfYear = timeCurrentlyUsedInPreyOverView.getMonthOfYear();
+		String month = getMonthAsText(monthOfYear);
+		String toSet = month + " " + timeCurrentlyUsedInPreyOverView.getYear();
+		currentDay.setText(toSet);
+
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		prayTimeAdapter = new SnmsPrayTimeAdapter(getActivity().getAssets());
 		prayGridForMonth.setAdapter(adapter);
-		adapter.addAll(prayTimeAdapter.getPrayGridForMonthIndYear(11, 2013,false));
+		setUpCurrentDay();
+		try {
+			list = prayTimeAdapter.getPrayGridForMonthIndYear(
+					timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
+					false);
+			for (PreyItemList o : list) {
+				adapter.add(o);
+			}
+		} catch (Exception e) {
+			Log.e("PreyListCalender", "Bygge kalender fra preylist adatper:"
+					+ e.getLocalizedMessage());
+		}
+
+		prayGridForMonth.setItemChecked(
+				timeCurrentlyUsedInPreyOverView.getDayOfMonth() - 1, true);
+		prayGridForMonth.smoothScrollToPosition(timeCurrentlyUsedInPreyOverView
+				.getDayOfMonth() - 1);
 		adapter.notifyDataSetChanged();
 	}
 
 	public class PreyCalenderAdapter extends ArrayAdapter<PreyItemList> {
 
+		HashMap<Integer, View> hasBeenRenderedMap = new HashMap<Integer, View>();
+
 		public PreyCalenderAdapter(Context context) {
 			super(context, 0);
 
 		}
+
+		boolean hasBeenRendered(int day) {
+			if (hasBeenRenderedMap.containsKey(day))
+				return true;
+
+			return false;
+		}
+
 		public View getView(int position, View convertView, ViewGroup parent) {
-		
 
+			PreyItemList h = getItem(position);
+
+			if (!hasBeenRendered(h.getDay())) {
 				convertView = LayoutInflater.from(getContext()).inflate(
-						R.layout.calender_row, parent,false);
+						R.layout.calender_row, null);
 
-				ViewGroup layout = (ViewGroup) convertView;
-				PreyItemList h = getItem(position);
-				TextView day = new TextView(getContext());
-				day.setHeight(60);
-				day.setMaxWidth(30);
-				day.setWidth(30);
-				day.setTextSize(13);
-				day.setPadding(1, 1, 1, 1);
-				day.setText(h.getDay().toString());
-				layout.addView(day,70,30);
-				for (PreyItem item : h.getPreylist()) {
-					TextView prey = new TextView(getContext());
-					prey.setHeight(60);
-					prey.setTextSize(13);
-					prey.setPadding(1, 1, 1, 1);
-					prey.setText(item.getTimeOfDayAsString());
-					layout.addView(prey,70,30);
+				date = (TextView) convertView.findViewById(R.id.row_date);
+				asr = (TextView) convertView.findViewById(R.id.row_asr);
+				fajr = (TextView) convertView.findViewById(R.id.row_fajr);
+				sol = (TextView) convertView.findViewById(R.id.row_soloppgang);
+				duhr = (TextView) convertView.findViewById(R.id.row_duhr);
+				mag = (TextView) convertView.findViewById(R.id.row_magrihb);
+				ish = (TextView) convertView.findViewById(R.id.row_isha);
+
+				List<TextView> lables = new ArrayList<TextView>();
+
+				lables.add(fajr);
+				lables.add(sol);
+				lables.add(duhr);
+				lables.add(asr);
+				lables.add(mag);
+				lables.add(ish);
+				date.setText(h.getDay().toString()
+						+ " "
+						+ getMonthAsText(timeCurrentlyUsedInPreyOverView
+								.getMonthOfYear()));
+				int counter = 0;
+				try {
+					for (PreyItem item : h.getPreylist()) {
+						if (counter == 6) {
+							break;
+						}
+						TextView prey = lables.get(counter);
+						prey.setText(addWhiteSpaces(item.getName())
+								+ item.getTimeOfDayAsString());
+						counter++;
+					}
+				} catch (Exception exception) {
+					Log.e("PreyListCalender", "Kunne ikke lage calender:"
+							+ exception.getLocalizedMessage());
 				}
 
+				hasBeenRenderedMap.put(h.getDay(), convertView);
+				return convertView;
+			}
 
-			return convertView;
+			return hasBeenRenderedMap.get(h.getDay());
+
 		}
+
+		private String addWhiteSpaces(String preyText) {
+			String s = preyText;
+			while (s.length() < 11) {
+				s += " ";
+			}
+
+			return s;
+		}
+
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		if (v.equals(nextDay)) {
+			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView
+					.plusDays(1);
+			setUpCurrentDay();
+			try {
+				list = prayTimeAdapter.getPrayGridForMonthIndYear(
+						timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
+						false);
+				for (PreyItemList o : list) {
+					adapter.add(o);
+				}
+			} catch (Exception e) {
+				Log.e("PreyListCalender",
+						"Bygge kalender fra preylist adatper:"
+								+ e.getLocalizedMessage());
+			}
+
+			prayGridForMonth.setItemChecked(
+					timeCurrentlyUsedInPreyOverView.getDayOfMonth() - 1, true);
+			prayGridForMonth
+					.smoothScrollToPosition(timeCurrentlyUsedInPreyOverView
+							.getDayOfMonth() - 1);
+			adapter.notifyDataSetChanged();
+
+		}
+		if (v.equals(prevDay)) {
+			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView
+					.minusDays(1);
+			setUpCurrentDay();
+			try {
+				list = prayTimeAdapter.getPrayGridForMonthIndYear(
+						timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
+						false);
+				for (PreyItemList o : list) {
+					adapter.add(o);
+				}
+			} catch (Exception e) {
+				Log.e("PreyListCalender",
+						"Bygge kalender fra preylist adatper:"
+								+ e.getLocalizedMessage());
+			}
+
+			prayGridForMonth.setItemChecked(
+					timeCurrentlyUsedInPreyOverView.getDayOfMonth() - 1, true);
+			prayGridForMonth
+					.smoothScrollToPosition(timeCurrentlyUsedInPreyOverView
+							.getDayOfMonth() - 1);
+			adapter.notifyDataSetChanged();
+
+		}
+		
+
 	}
 
 }
