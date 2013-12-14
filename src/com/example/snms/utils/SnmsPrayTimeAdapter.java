@@ -55,6 +55,7 @@ public class SnmsPrayTimeAdapter {
 			PreyItemList list = new PreyItemList(items, i);
 			dayPreyListMap.add(list);
 		}
+		
 		return dayPreyListMap;
 	}
 

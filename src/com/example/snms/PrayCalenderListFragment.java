@@ -1,6 +1,7 @@
 package com.example.snms;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +15,9 @@ import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
 import com.example.snms.domain.image.ImageCacheManager;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import android.content.Context;
@@ -35,12 +38,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class PrayCalenderListFragment extends Fragment implements
-		OnClickListener {
+		OnClickListener ,  OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 	ListView prayGridForMonth;
 	SnmsPrayTimeAdapter prayTimeAdapter;
 	PreyCalenderAdapter adapter;
-
+	  DatePickerDialog datePickerDialog;
+	   public static final String DATEPICKER_TAG = "datepicker";
 	TextView date;
 	TextView fajr;
 	TextView sol;
@@ -76,6 +80,9 @@ public class PrayCalenderListFragment extends Fragment implements
 		prevDay.setOnClickListener(this);
 		currentDate = new DateTime();
 		timeCurrentlyUsedInPreyOverView = currentDate;
+		   final Calendar calendar = Calendar.getInstance();
+	        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+			
 
 		return rootView;
 	}
@@ -178,6 +185,13 @@ public class PrayCalenderListFragment extends Fragment implements
 
 			return false;
 		}
+		
+		
+		@Override
+		public void clear() {
+			super.clear();
+			hasBeenRenderedMap = new HashMap<Integer, View>();
+		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -244,11 +258,32 @@ public class PrayCalenderListFragment extends Fragment implements
 
 	@Override
 	public void onClick(View v) {
-
-		if (v.equals(nextDay)) {
-			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView
-					.plusDays(1);
+		
+		if (v.equals(currentDay)) {
+		       datePickerDialog.setYearRange(1985, 2028);
+            datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
+			/*
+			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView.plusDays(1);
 			setUpCurrentDay();
+			preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
+			adapter.setActivePreys(preyTimes);
+			adapter.clear();
+			adapter.setActivePreys(preyTimes);
+			for (PreyItem preyItem : preyTimes) {
+				adapter.add(preyItem);
+				// checkAlarmStateAtStartup(preyItem);
+			}
+			adapter.notifyDataSetChanged();
+			*/
+		}
+		
+		if (v.equals(nextDay)) {
+			adapter.clear();
+			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView
+					.plusMonths(1);
+			setUpCurrentDay();
+			
+			prayGridForMonth.clearChoices();
 			try {
 				list = prayTimeAdapter.getPrayGridForMonthIndYear(
 						timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
@@ -262,18 +297,17 @@ public class PrayCalenderListFragment extends Fragment implements
 								+ e.getLocalizedMessage());
 			}
 
-			prayGridForMonth.setItemChecked(
-					timeCurrentlyUsedInPreyOverView.getDayOfMonth() - 1, true);
-			prayGridForMonth
-					.smoothScrollToPosition(timeCurrentlyUsedInPreyOverView
-							.getDayOfMonth() - 1);
+	
 			adapter.notifyDataSetChanged();
 
 		}
 		if (v.equals(prevDay)) {
+			adapter.clear();
 			timeCurrentlyUsedInPreyOverView = timeCurrentlyUsedInPreyOverView
-					.minusDays(1);
+					.minusMonths(1);
 			setUpCurrentDay();
+			adapter.clear();
+			prayGridForMonth.clearChoices();
 			try {
 				list = prayTimeAdapter.getPrayGridForMonthIndYear(
 						timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
@@ -287,16 +321,44 @@ public class PrayCalenderListFragment extends Fragment implements
 								+ e.getLocalizedMessage());
 			}
 
-			prayGridForMonth.setItemChecked(
-					timeCurrentlyUsedInPreyOverView.getDayOfMonth() - 1, true);
-			prayGridForMonth
-					.smoothScrollToPosition(timeCurrentlyUsedInPreyOverView
-							.getDayOfMonth() - 1);
 			adapter.notifyDataSetChanged();
 
 		}
 		
 
+	}
+
+	@Override
+	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDateSet(DatePickerDialog datePickerDialog, int year,
+			int month, int day) {
+		
+		timeCurrentlyUsedInPreyOverView = new DateTime(year,month+1,day,0,0);
+		setUpCurrentDay();
+		adapter.clear();
+		try {
+			list = prayTimeAdapter.getPrayGridForMonthIndYear(
+					timeCurrentlyUsedInPreyOverView.getMonthOfYear(), 2013,
+					false);
+			for (PreyItemList o : list) {
+				adapter.add(o);
+			}
+		} catch (Exception e) {
+			Log.e("PreyListCalender",
+					"Bygge kalender fra preylist adatper:"
+							+ e.getLocalizedMessage());
+		}
+	
+		adapter.notifyDataSetChanged();
+		prayGridForMonth.setItemChecked(
+				day-1, true);
+		prayGridForMonth.smoothScrollToPosition(day-1);
+		
 	}
 
 }
