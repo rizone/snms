@@ -370,7 +370,9 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 					.findViewById(R.id.row_status);
 			DateTime preyDate = item.getTime();
 			String preyText = "";
-
+			final float scale = getContext().getResources().getDisplayMetrics().density;
+			int pixels = (int) (20 * scale + 0.5f);
+			convertView.setPadding(pixels,10, 0, 10);
 			if (preyDate.isBeforeNow()) {
 				preyText = "";
 				title.setTextColor(Color.LTGRAY);
@@ -379,43 +381,9 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 				if (isActive(item) && (preyDate.getDayOfMonth()==DateTime.now().getDayOfMonth() && preyDate.getMonthOfYear()==DateTime.now().getMonthOfYear())) {
 					preyText = "";
 					title.setTextColor(Color.BLACK);
-					title.setTypeface(null,Typeface.BOLD);
 					convertView.setBackgroundResource(R.drawable.border_active_pray);
-				//	convertView.setLayoutParams(parent.getLayoutParams());
-					final float scale = getContext().getResources().getDisplayMetrics().density;
-					int pixels = (int) (20 * scale + 0.5f);
-					
-					int paddingPixles = (int) (25 * scale + 0.5f);
-					int paddingSmal = (int) (5 * scale + 0.5f);
-					pixels = (int) (100 * scale + 0.5f);
-					title.setPadding(paddingPixles, 5, 5, 5);
-					time.setTypeface(null,Typeface.BOLD);
-					time.setPadding(paddingSmal, paddingSmal, paddingSmal, paddingSmal);
-					time.setHeight(100);
-					time.setTextColor(Color.BLACK);
-					status.setPadding(paddingSmal, paddingSmal,paddingSmal ,paddingSmal);
-					  LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-					    llp.setMargins(36, 0, 0, 0); // llp.setMargins(left, top, right, bottom);
-					time.setLayoutParams(llp);    
-					status.setWidth(30);
-					status.setTypeface(null,Typeface.BOLD);
-					image.setPadding(5+paddingSmal, paddingPixles, paddingSmal, paddingSmal);
-					
-				/*	
-					time.setWidth(80);
-					status.setGravity(Gravity.CENTER_VERTICAL);
-					time.setGravity(Gravity.CENTER_VERTICAL);
-					title.setGravity(Gravity.CENTER_VERTICAL);
-					time.setPadding(paddingPixles, paddingPixles, paddingPixles, paddingPixles);
-					pixels = (int) (60 * scale + 0.5f);
-					status.setWidth(120);
-					status.setPadding(20, 0,0 , 20);
-					pixels = (int) (200 * scale + 0.5f);
-					title.setWidth(pixels);
-					title.setPadding(paddingPixles, paddingPixles, paddingPixles, paddingPixles);
-					time.setTextColor(Color.BLACK);
-					
-					*/
+					//convertView.setLayoutParams(parent.getLayoutParams());
+					convertView.setPadding(pixels, 30, 0, 30);
 					status.setTextColor(Color.BLACK);
 				
 				}

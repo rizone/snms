@@ -57,7 +57,7 @@
 
         <com.example.snms.SnmsTextView
             android:id="@+id/header_title"
-            android:layout_width="95dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"

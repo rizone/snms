@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.view.Menu;
+import android.view.View;
 import android.app.Fragment;
 import android.view.Menu;
 import android.widget.TimePicker;
@@ -43,11 +44,11 @@ public class PreyOverView extends  BaseActivity{
 
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
+		
 		if(currentFragment1 == null) {
 			currentFragment1 =  new PreyListFragment();
 			((PreyListFragment) currentFragment1).setPreyList(preyTimes);
 			currentFragment2 = new NewsListFragment();
-		
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager()
 		.beginTransaction()
@@ -75,6 +76,8 @@ public class PreyOverView extends  BaseActivity{
 		// TODO Auto-generated method stub
 		
 	}
+
+
 	
     
 //	@Override
