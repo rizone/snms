@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="wrap_content"
+android:gravity="top"
+android:orientation="vertical" >
+        <TextView
+        android:id="@+id/holyday_heddfdfdar_title"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textSize="18dp"
+        android:textColor="@color/black"
+        android:gravity="bottom"
+        android:padding="10dp"
+        android:text="Kommende helligdager"
+        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+<ListView 
+    android:id="@android:id/list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/list_padding"
+    android:paddingRight="@dimen/list_padding" />
+
+
+
+ 
+ </RelativeLayout>

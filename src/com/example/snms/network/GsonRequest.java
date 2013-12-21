@@ -1,7 +1,8 @@
-package com.example.snms;
+package com.example.snms.network;
 
 import android.util.Log;
 
+import com.example.snms.DateJsonMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
