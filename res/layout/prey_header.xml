@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
         android:background="@color/snmsDarkBlue"
         android:orientation="horizontal" >
 
@@ -15,45 +15,42 @@
             android:id="@+id/prey_prev_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
-     		android:layout_gravity="center_vertical"
             android:adjustViewBounds="true"
             android:src="@drawable/ic_left_arrow" />
-		<TextView
-		    android:id="@+id/prey_current_day"
+
+        <TextView
+            android:id="@+id/prey_current_day"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
             android:layout_weight="1"
+            android:background="@drawable/ic_daypicker"
             android:gravity="center"
             android:padding="0dp"
-            android:layout_marginTop="5dp"
             android:text="Onsdag 3"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/white"
-            android:background="@drawable/ic_daypicker"
-            android:textSize="16dp"
-		   >
-		</TextView> 
-
+            android:textSize="16dp" >
+        </TextView>
 
         <ImageView
             android:id="@+id/prey_next_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            
-            android:layout_weight="1"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:src="@drawable/ic_right_arrow" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="25dp"
         android:layout_margin="0dp"
-        android:paddingLeft="20dp"
-        android:background="@drawable/border_header_pray" 
-        android:orientation="horizontal" >
+        android:background="@drawable/border_header_pray"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp" >
 
         <com.example.snms.SnmsTextView
             android:id="@+id/header_title"
@@ -61,7 +58,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-   			android:padding="5dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="1dp"
             android:text="Bønn"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/white"
@@ -73,7 +73,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:padding="5dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="1dp"
             android:text="Tid"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/white"
@@ -84,8 +87,11 @@
             android:layout_width="78dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-       		android:padding="5dp"
             android:gravity="center_vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="1dp"
             android:text="Tid igjen"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/white"
@@ -97,7 +103,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:padding="5dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="1dp"
             android:text="Alarm"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/white"

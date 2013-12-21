@@ -1,8 +1,7 @@
 package com.example.snms;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.example.snms.domain.NewsItem;
-import com.example.snms.domain.image.ImageCacheManager;
+import com.example.snms.news.NewsItem;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -48,8 +47,9 @@ public class NewsDetailsFragment extends Fragment {
 		createdDate.setText(newsItem.getCreatedDate().toString());
 		
 		image = (NetworkImageView)rootView.findViewById(R.id.details_news_newsImage);
+		/*
 		image.setImageUrl(newsItem.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
-		
+		*/
 		
 		return rootView;
 	 }

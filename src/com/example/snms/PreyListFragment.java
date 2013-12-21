@@ -16,9 +16,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.example.snms.domain.NewsItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
+import com.example.snms.news.NewsItem;
 import com.example.snms.utils.PrayTime;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
@@ -94,7 +94,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-		return inflater.inflate(R.layout.list, null);
+		return inflater.inflate(R.layout.preylist, null);
 
 	}
 
@@ -372,7 +372,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 			String preyText = "";
 			final float scale = getContext().getResources().getDisplayMetrics().density;
 			int pixels = (int) (20 * scale + 0.5f);
-			convertView.setPadding(pixels,10, 0, 10);
+			convertView.setPadding(pixels,4, 0, 4);
 			if (preyDate.isBeforeNow()) {
 				preyText = "";
 				title.setTextColor(Color.LTGRAY);

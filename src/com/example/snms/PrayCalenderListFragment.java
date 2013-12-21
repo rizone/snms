@@ -8,12 +8,11 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.example.snms.NewsListFragment.NewsListAdapter;
-import com.example.snms.NewsListFragment.NewsScrollListner;
-import com.example.snms.domain.NewsItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
-import com.example.snms.domain.image.ImageCacheManager;
+import com.example.snms.news.NewsItem;
+import com.example.snms.news.NewsListFragment.NewsListAdapter;
+import com.example.snms.news.NewsListFragment.NewsScrollListner;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;

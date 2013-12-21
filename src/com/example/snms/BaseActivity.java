@@ -38,6 +38,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 //import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 //import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 //import com.sleepbot.datetimepicker.time.TimePickerDialog;
+import com.example.snms.news.NewsListFragment;
 
 public abstract class BaseActivity extends SlidingFragmentActivity implements OnClickListener, TimePickerDialog.OnTimeSetListener, PreyListFragment.OnHeadlineSelectedListener  {
 	
@@ -116,7 +117,6 @@ ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
             getSupportActionBar().setCustomView(v, params);
 		    
 			homeButton.setOnClickListener(this);
-		RequestManager.init(this);
 
 	}
 

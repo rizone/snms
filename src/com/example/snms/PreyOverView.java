@@ -6,6 +6,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.example.snms.domain.PreyItem;
+import com.example.snms.news.NewsListFragment;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 //import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
