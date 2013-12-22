@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:padding="0dp"
-        android:text="Medium Text"
+        android:text="Soloppgang"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 
     <com.example.snms.SnmsTextView

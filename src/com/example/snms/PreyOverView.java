@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 
 import com.example.snms.domain.PreyItem;
 import com.example.snms.news.NewsListFragment;
+import com.example.snms.preylist.PreyOverviewFragment;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 //import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -47,8 +48,8 @@ public class PreyOverView extends  BaseActivity{
 		
 		
 		if(currentFragment1 == null) {
-			currentFragment1 =  new PreyListFragment();
-			((PreyListFragment) currentFragment1).setPreyList(preyTimes);
+			currentFragment1 =  new PreyOverviewFragment();
+			//((PreyListFragment) currentFragment1).setPreyList(preyTimes);
 			currentFragment2 = new NewsListFragment();
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager()

@@ -3,6 +3,7 @@ package com.example.snms;
 import org.joda.time.DateTime;
 
 import com.example.snms.PreyListFragment.PreyListAdapter;
+import com.example.snms.preylist.PreyOverviewFragment;
 
 import android.os.CountDownTimer;
 import android.widget.TextView;
@@ -10,9 +11,9 @@ import android.widget.TextView;
 public class PreyCountDownTimer extends CountDownTimer {
 	
 	TextView textViewToUpdate; 
-	PreyListAdapter adapter;
+	PreyOverviewFragment adapter;
 	
-	public PreyCountDownTimer(long time, long interval, TextView textView,PreyListAdapter adapter) {
+	public PreyCountDownTimer(long time, long interval, TextView textView,PreyOverviewFragment adapter) {
 		super(time,interval);
 		this.textViewToUpdate = textView;
 		this.adapter = adapter;
@@ -20,7 +21,7 @@ public class PreyCountDownTimer extends CountDownTimer {
 	
 	@Override
 	public void onFinish() {
-		this.adapter.notifyDataSetChanged();
+		this.adapter.renderPreyList();
 		
 	}
 

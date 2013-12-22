@@ -4,6 +4,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.snms.news.NewsItem;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,27 +32,13 @@ public class NewsDetailsFragment extends Fragment {
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		        Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.news_widget, container, false);
-		title = (TextView)rootView.findViewById(R.id.details_news_title); 
-		title.setText(newsItem.getTitle());
-		
+		return inflater.inflate(R.layout.news_widget, null);
 	
-		text = (TextView)rootView.findViewById(R.id.details_news_text); 
-		text.setText(newsItem.getText());
 		
-		ingress = (TextView)rootView.findViewById(R.id.details_news_ingress); 
-		ingress.setText(newsItem.getIngress());
-		
-	
-		createdDate = (TextView)rootView.findViewById(R.id.details_news_createddate); 
-		createdDate.setText(newsItem.getCreatedDate().toString());
-		
-		image = (NetworkImageView)rootView.findViewById(R.id.details_news_newsImage);
 		/*
 		image.setImageUrl(newsItem.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
 		*/
 		
-		return rootView;
 	 }
 	
 	

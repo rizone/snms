@@ -146,13 +146,13 @@ DateTime dt = formatter.parseDateTime(string);
     	if(daysToFriday<0){
     		daysToFriday = 5 + day;
     	}
-    	DateTime salatTime = new DateTime();
+    	DateTime salatTime = new DateTime().plusYears(999);
     	try {
 		for(int i = 0;i<fredagsBonns.size();i++) {
 			DateTime nextFriday = currentTime.plusDays(daysToFriday);
 	    	if(fredagsBonns.get(i).isBetween(nextFriday)){
 	    		Jumma timeOfThaOne = fredagsBonns.get(i);
-	    		salatTime = currentTime.plusDays(daysToFriday).plusHours(timeOfThaOne.getHours()).plusMinutes(timeOfThaOne.getMinuttes());
+	    		salatTime = currentTime.plusDays(daysToFriday).plusHours(timeOfThaOne.getHours()).plusMinutes(timeOfThaOne.getMinuttes()).plusYears(999);
 	    		break;
 	    	}
 		}

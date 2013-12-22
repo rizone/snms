@@ -98,18 +98,6 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 
 	}
 
-//	CountDownTimer timer = new CountDownTimer(1000, 100) {
-//
-//		public void onTick(long millisUntilFinished) {
-//			// DO NOTHING
-//		}
-//
-//		public void onFinish() {
-//			adapter.notifyDataSetChanged();
-//			this.start();
-//		}
-//	};
-
 	public void updateList() {
 
 	}
@@ -221,17 +209,8 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 		adapter.setActivePreys(preyTimes);
 		for (PreyItem preyItem : preyTimes) {
 			adapter.add(preyItem);
-//
-//			if (preyItem.getAlarmBoolean() == true) {
-//				View v = getListView();
-//				ImageView image = (ImageView) v
-//						.findViewById(R.id.alarmclock_inactive);
-//				image.setImageResource(R.drawable.alarmclock);
-//			}
-//
 		}
-		// checkAlarmStateAtStartup();
-	//	timer.start();
+
 	}
 
 	private void setUpCurrentDay() {
@@ -272,32 +251,6 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 
 	}
 
-	/*
-	 * 
-	 * private void putPreyItemsOnRequestQueue() { GsonRequest<PreyItemList>
-	 * jsObjRequest = new GsonRequest<PreyItemList>( Method.GET,
-	 * "http://46.137.184.176:3000/api/prayer/year/2013/month/11/day/4",
-	 * PreyItemList.class, this.createSuccessListener(),
-	 * this.createErrorListener());
-	 * RequestManager.getRequestQueue().add(jsObjRequest); }
-	 * 
-	 * private Response.Listener<PreyItemList> createSuccessListener() { return
-	 * new Response.Listener<PreyItemList>() {
-	 * 
-	 * @Override public void onResponse(PreyItemList response) {
-	 * adapter.setActivePreys(response.getPreylist()); adapter.clear();
-	 * for(PreyItem preyItem : response.getPreylist()) { adapter.add(preyItem);
-	 * } timer.start(); // TODO Auto-generated method stub
-	 * 
-	 * } }; }
-	 * 
-	 * private Response.ErrorListener createErrorListener() { return new
-	 * Response.ErrorListener() {
-	 * 
-	 * @Override public void onErrorResponse(VolleyError error) { //TODO : Log
-	 * error and get prey times from local storage error.getStackTrace();
-	 * Log.e("error", error.getMessage()); } }; }
-	 */
 
 	public class PreyListAdapter extends ArrayAdapter<PreyItem> {
 
@@ -320,7 +273,6 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 			}
 			Collections.sort(candidates);
 			return candidates.get(candidates.size() - 1).equals(preyItem);
-			// Hvis det er større enn
 		}
 
 		private boolean isNext(PreyItem preyItem) {
@@ -397,8 +349,8 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 //					int hoursDelta = item.getTime().getHourOfDay() -now.getHourOfDay();
 //							delta.toTimeOfDay().toString();
 //					int secondsDelta = delta.getSecondOfMinute();
-					preyCountDownTimer = new PreyCountDownTimer(delta.getMillis(), 1000, status, adapter);
-					preyCountDownTimer.start();
+				//	preyCountDownTimer = new PreyCountDownTimer(delta.getMillis(), 1000, status, adapter);
+				//	preyCountDownTimer.start();
 				}
 
 			}
