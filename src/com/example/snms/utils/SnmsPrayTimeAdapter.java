@@ -103,76 +103,9 @@ public class SnmsPrayTimeAdapter {
 		LocalTime timeFromString = LocalTime.parse(timeToParse,fmt);
 		return time.plusHours(timeFromString.getHourOfDay()).plusMinutes(timeFromString.getMinuteOfHour());
 	}
-	private List<Jumma> getFredagsbonnListe() {
-		
-		/*
-		 * 
-		 * DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
-DateTime dt = formatter.parseDateTime(string);
-		 * 
-		 */
-		
-		/*
-		 * 
-		 * 01. november til 10. januar: 13:00
-11. januar til 31. januar: 13.30
-1. februar til 10. mars: 14:00
-11. mars til 31. mars: 14:30
-1. april til 31. juli: 15:30
-1. august til 10. oktober: 15:00 
-		 * 
-		 */
-		
-		
-		List <Jumma> fredagsbonnLiset = new ArrayList<Jumma>();
-	//	Jumma(int fromMonth, int toMonth, int toDay, int fromDay, long hours, long minuttes)
-		
-		
-		fredagsbonnLiset.add(new Jumma(1,11,10,1,13,0));
-		fredagsbonnLiset.add(new Jumma(11,1,31,1,13,0));
-		fredagsbonnLiset.add(new Jumma(1,2,10,3,14,00));
-		fredagsbonnLiset.add(new Jumma(11,3,31,3,14,30));
-		fredagsbonnLiset.add(new Jumma(1,4,31,7,15,30));
-		fredagsbonnLiset.add(new Jumma(1,8,10,10,15,00));
-
-		return fredagsbonnLiset;
-	}
 	
-	private void addFredagsbon(List <PreyItem> preyList, DateTime currentTime) {
-		List <Jumma> fredagsBonns = getFredagsbonnListe();
-		int day = currentTime.getDayOfWeek();
-    	int daysToFriday = 5 - day;
-    	//next friday is next week 
-    	if(daysToFriday<0){
-    		daysToFriday = 5 + day;
-    	}
-    	DateTime salatTime = new DateTime().plusYears(999);
-    	try {
-		for(int i = 0;i<fredagsBonns.size();i++) {
-			DateTime nextFriday = currentTime.plusDays(daysToFriday);
-	    	if(fredagsBonns.get(i).isBetween(nextFriday)){
-	    		Jumma timeOfThaOne = fredagsBonns.get(i);
-	    		salatTime = currentTime.plusDays(daysToFriday).plusHours(timeOfThaOne.getHours()).plusMinutes(timeOfThaOne.getMinuttes()).plusYears(999);
-	    		break;
-	    	}
-		}
-    	}
-    	catch(Exception exception) {
-    		exception.printStackTrace();
-    	}
-		PreyItem salat = new PreyItem("Jummah", salatTime, false);	
-		preyList.add(salat);
-		/*
-		 * 
-		 * 01. november til 10. januar: 13:00
-11. januar til 31. januar: 13.30
-1. februar til 10. mars: 14:00
-11. mars til 31. mars: 14:30
-1. april til 31. juli: 15:30
-1. august til 10. oktober: 15:00 
-11. oktober til 31. oktober: 14:30
-		 */
-	}
+	
+	
 	
 	private List<PreyItem> readEntry(XmlPullParser parser,DateTime time) throws XmlPullParserException, IOException {
 	    parser.require(XmlPullParser.START_TAG, ns, "Row");
@@ -228,7 +161,6 @@ DateTime dt = formatter.parseDateTime(string);
 		
 		if(true) {
 			List<PreyItem> list = readPrayItemFormXml(time);
-			addFredagsbon(list,time);
 			if(includeAlarm){
 				for(PreyItem item : list) {
 					checkAlarmStateAtStartup(item);
@@ -236,7 +168,6 @@ DateTime dt = formatter.parseDateTime(string);
 			}
 			return list;
 		}
-			
 		double latitude = 59;
 		double longitude = 10;
 		double timezone = 1;
@@ -264,31 +195,7 @@ DateTime dt = formatter.parseDateTime(string);
 		}
 		return listToReturn;
 
-		/*
-		 * public static void main(String[] args) { double latitude = 59; double
-		 * longitude = 10; double timezone = 1; // Test Prayer times here
-		 * PrayTime prayers = new PrayTime();
-		 * 
-		 * prayers.setTimeFormat(prayers.Time24);
-		 * prayers.setCalcMethod(prayers.Jafari);
-		 * prayers.setAsrJuristic(prayers.Shafii);
-		 * prayers.setAdjustHighLats(prayers.AngleBased); int[] offsets = {0, 0,
-		 * 0, 0, 0, 0, 0}; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
-		 * prayers.tune(offsets);
-		 * 
-		 * Date now = new Date(); Calendar cal = Calendar.getInstance();
-		 * cal.setTime(now);
-		 * 
-		 * ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal, latitude,
-		 * longitude, timezone); ArrayList<String> prayerNames =
-		 * prayers.getTimeNames();
-		 * 
-		 * for (int i = 0; i < prayerTimes.size(); i++) {
-		 * System.out.println(prayerNames.get(i) + " - " + prayerTimes.get(i));
-		 * }
-		 * 
-		 * }
-		 */
+	
 
 	}
 

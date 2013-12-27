@@ -5,6 +5,7 @@ package com.example.snms;
 
 
 import com.example.snms.news.NewsListFragment;
+import com.example.snms.preylist.PreyOverviewFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -51,8 +52,7 @@ public class SampleListFragment extends ListFragment {
 		switch (position) {
 		
 		case 0:
-			newContent1 = new PreyListFragment();
-			newContent2 = new NewsListFragment();
+			newContent1 = new PreyOverviewFragment();
 			break;
 		case 1:
 			newContent1 = new NewsListFragment();

@@ -39,6 +39,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 //import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 //import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.example.snms.news.NewsListFragment;
+import com.example.snms.preylist.PreyOverviewFragment;
 
 public abstract class BaseActivity extends SlidingFragmentActivity implements OnClickListener, TimePickerDialog.OnTimeSetListener, PreyListFragment.OnHeadlineSelectedListener  {
 	
@@ -184,7 +185,7 @@ ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 	@Override
 	public void onClick(View v) {
 		if(v.equals(homeButton)) {
-			switchContent(new PreyListFragment(),new NewsListFragment());
+			switchContent(new PreyOverviewFragment(),null);
 		}
 		
 	}

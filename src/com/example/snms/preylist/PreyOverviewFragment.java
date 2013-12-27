@@ -9,10 +9,20 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.snms.PreyCountDownTimer;
 import com.example.snms.R;
 import com.example.snms.PreyListFragment.PreyListAdapter;
 import com.example.snms.domain.PreyItem;
+import com.example.snms.images.ImageCacheManager;
+import com.example.snms.jumma.JummaAdaptor;
+import com.example.snms.jumma.JummaListner;
+import com.example.snms.news.NewsItem;
+import com.example.snms.news.NewsManager;
+import com.example.snms.news.NewsListFragment.NewsListAdapter;
+import com.example.snms.news.NewsListFragment.NewsScrollListner;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
@@ -20,18 +30,21 @@ import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class PreyOverviewFragment extends Fragment implements  OnClickListener,  OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+public class PreyOverviewFragment extends Fragment implements  OnClickListener,  OnDateSetListener, TimePickerDialog.OnTimeSetListener, JummaListner{
 
 	private DateTime currentDate;
 	private DateTime timeCurrentlyUsedInPreyOverView;
@@ -43,16 +56,25 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private DateTime currentDateTime;
 	DatePickerDialog datePickerDialog;
 	public static final String DATEPICKER_TAG = "datepicker";
+	private JummaAdaptor jummaAdaptor; 
 
 	private CountDownTimer preyCountDownTimer;
 
 	private LinearLayout preyRowContainer;
+	private LinearLayout jummaContainer;
+	private RelativeLayout latestNewsContainer;
 	private Map<String, View> preyNamePreyRowMap;
+	
+	private NetworkImageView newsImage1; 
+	private TextView newsText1;
+	
+	private NetworkImageView newsImage2; 
+	private TextView newsText2;
 
-	private final Integer NUMBER_OF_PRAYS = 7;
+	private final Integer NUMBER_OF_PRAYS = 6;
 
 	private final String[] PREY_LABLES = { "Fajr", "Soloppgang", "Dhuhr", "Asr",
-			"Maghrib", "Isha", "Jummah" };
+			"Maghrib", "Isha"};
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -65,13 +87,20 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		nextDay = (ImageView) root.findViewById(R.id.prey_next_day);
 		nextDay.setOnClickListener(this);
 		prevDay = (ImageView) root.findViewById(R.id.prey_prev_day);
+		latestNewsContainer = (RelativeLayout)root.findViewById(R.id.latestNewsContainer);
 		prevDay.setOnClickListener(this);
 		currentDate = new DateTime();
 		timeCurrentlyUsedInPreyOverView = currentDate;
-
+		newsImage1 = (NetworkImageView)root.findViewById(R.id.newsImage1);
+		newsImage2 = (NetworkImageView)root.findViewById(R.id.newsImage2);
+		newsText1 = (TextView)root.findViewById(R.id.newsImage2Text);
+		newsText2= (TextView)root.findViewById(R.id.newsImage2Text);
+		jummaContainer = (LinearLayout)root.findViewById(R.id.jummacontainer);
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
 		currentDay = (TextView) root.findViewById(R.id.prey_current_day);
+		jummaAdaptor = new JummaAdaptor(getActivity());
+		jummaAdaptor.addJummaListner(this);
 		return root;
 	}
 
@@ -89,8 +118,10 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		super.onResume();
 		preyTimes = loadPrayTimes(new DateTime());
 		setUpCurrentDay();
+		jummaAdaptor.fethJumma(this.timeCurrentlyUsedInPreyOverView);
 	//	mheaderView.setPadding(0, 0, 0, 0);
 		renderPreyList();
+		NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener());
 
 	}
 
@@ -124,11 +155,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			ImageView image = (ImageView) preyRow
 					.findViewById(R.id.alarmclock_inactive);
 			
-			// Special handling for Jumma. Have to imporve this
-			if (item.getName() == PREY_LABLES[6]) {
-				renderFuture(item,preyRow,title, time,status,image);
-				continue;
-			}
 			if (isPassed(item)) {
 				renderPassed(item,preyRow,title, time,status,image);
 			}
@@ -178,12 +204,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			TextView time = (TextView) preyRow.findViewById(R.id.row_time);
 			ImageView image = (ImageView) preyRow
 					.findViewById(R.id.alarmclock_inactive);
-			
-			// Special handling for Jumma. Have to imporve this
-			if (item.getName() == PREY_LABLES[6]) {
-				renderFuture(item,preyRow,title, time,status,image);
-				continue;
-			}
 			renderPassed(item,preyRow,title, time,status,image);
 			}
 		
@@ -377,5 +397,78 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private Response.ErrorListener createErrorListener() {
+	    return new Response.ErrorListener() {
+	        @Override
+	        public void onErrorResponse(VolleyError error) {
+	        	//TODO : Log error and get prey times from local storage
+	            //error.getStackTrace();
+	        	newsText2.setText("ingen nyheter er tilgjenngelig");
+	        	Log.e("error",error.toString());
+	        }
+	    };
+	}
+	
+
+			
+	private Response.Listener <NewsItem[]> createSuccessListener() {
+	    return new Response.Listener <NewsItem[]>() {
+	       
+	    	@Override
+			public void onResponse(NewsItem[] response) {
+	    		int counter = 0; 
+				for(NewsItem item : response) {
+					if(counter == 3)
+						break; 
+					if(counter ==1) {
+						newsText2.setText(item.getTitle());
+						newsText2.setHeight(30);
+						Uri uri = Uri.parse(item.getImgUrl());
+					//	text.setText(h.getText());
+						newsImage2.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
+					}
+					if(counter ==2) {
+						newsText1.setText(item.getTitle());
+						newsText1.setHeight(30);
+						Uri uri = Uri.parse(item.getImgUrl());
+					//	text.setText(h.getText());
+						newsImage1.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
+					}
+					counter++;
+				}
+				
+			}
+	    };	
+	}
+
+	@Override
+	public void updateJumma(PreyItem item) {
+		TextView jummaTime = (TextView)jummaContainer.findViewById(R.id.row_time_jumma);
+		TextView jummaStatus = (TextView)jummaContainer.findViewById(R.id.row_status_jumma);
+		TextView jummaTitle = (TextView)jummaContainer.findViewById(R.id.row_title_jumma);
+		jummaContainer.setBackgroundResource(R.drawable.border_none_active_pray);
+		final float scale = this.getResources().getDisplayMetrics().density;
+		int pixels = (int) (20 * scale + 0.5f);
+		jummaContainer.setPadding(pixels,10, 0, 10);
+		jummaTime.setText(item.getTimeOfDayAsString());
+		jummaStatus.setText("");
+		
+		String ZeroPlusHour = Integer.toString(item.getTime()
+				.getHourOfDay());
+		if (item.getTime().getHourOfDay() < 10) {
+			ZeroPlusHour = "0" + ZeroPlusHour;
+		}
+		String ZeroPlusMin = Integer.toString(item.getTime()
+				.getMinuteOfHour());
+		if (item.getTime().getMinuteOfHour() < 10) {
+			ZeroPlusMin = "0" + ZeroPlusMin;
+		}
+		jummaTime.setText(ZeroPlusHour + ":" + ZeroPlusMin);
+		jummaTitle.setText(item.getName());
+		
+	}
+	
+	
 
 }

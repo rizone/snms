@@ -8,7 +8,7 @@ public class Jumma {
 	int toMonth;
 	int fromDay;
 	int toDay;
-	 
+	DateTime updated;
 	int hours; 
 	int minuttes; 
 	
@@ -93,6 +93,12 @@ public class Jumma {
 
 	public void setMinuttes(int minuttes) {
 		this.minuttes = minuttes;
+	}
+
+
+	public DateTime getUpdated() {
+		// TODO Auto-generated method stub
+		return updated;
 	}
 	
 	

@@ -49,13 +49,11 @@ public class PreyOverView extends  BaseActivity{
 		
 		if(currentFragment1 == null) {
 			currentFragment1 =  new PreyOverviewFragment();
-			//((PreyListFragment) currentFragment1).setPreyList(preyTimes);
-			currentFragment2 = new NewsListFragment();
+		
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager()
 		.beginTransaction()
 		.add(R.id.content_frame, currentFragment1)
-		.add(R.id.content_frame2, currentFragment2)
 		.commit();
 		
 		getSlidingMenu().setSecondaryMenu(R.layout.menu_frame_two);
