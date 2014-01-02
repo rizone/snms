@@ -15,7 +15,7 @@ public class JummaManager {
 	private final String TAG = getClass().getSimpleName();
 	private static JummaManager mInstance;
 
-	private static String NEWS_BASE =  "http://46.137.184.176:3000/api/jumma";
+	private static String NEWS_BASE =  "http://46.137.184.176:3000/api/holidays";
 
 
 	public static JummaManager getInstance(){

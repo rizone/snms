@@ -118,7 +118,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		super.onResume();
 		preyTimes = loadPrayTimes(new DateTime());
 		setUpCurrentDay();
-		jummaAdaptor.fethJumma(this.timeCurrentlyUsedInPreyOverView);
+		jummaAdaptor.tryFethingJummaRemote(this.timeCurrentlyUsedInPreyOverView);
 	//	mheaderView.setPadding(0, 0, 0, 0);
 		renderPreyList();
 		NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener());
@@ -366,6 +366,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			setUpCurrentDay();
 			preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
 			renderPreyList();
+			jummaAdaptor.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
 			
 		}
 		if (v.equals(prevDay)) {
@@ -373,6 +374,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			setUpCurrentDay();
 			preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
 			renderPreyList();
+			jummaAdaptor.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
 
 		}
 
@@ -389,6 +391,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		setUpCurrentDay();
 		preyTimes = loadPrayTimes(timeCurrentlyUsedInPreyOverView);
 		renderPreyList();
+		jummaAdaptor.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
 		
 	}
 
@@ -451,6 +454,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		final float scale = this.getResources().getDisplayMetrics().density;
 		int pixels = (int) (20 * scale + 0.5f);
 		jummaContainer.setPadding(pixels,10, 0, 10);
+		
 		jummaTime.setText(item.getTimeOfDayAsString());
 		jummaStatus.setText("");
 		

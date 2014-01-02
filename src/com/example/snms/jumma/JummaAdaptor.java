@@ -23,15 +23,30 @@ public class JummaAdaptor {
 	List<JummaListner> listners = new ArrayList<JummaListner>(); 
 	SnmsDAO jummaDao; 
 	DateTime currentTime;
+	List <Jumma> currentJummaList = new ArrayList<Jumma>();
 	
 	public JummaAdaptor(Context context) {
 		jummaDao = new SnmsDAO(context);
 	}
 	
-	public void fethJumma(DateTime timeForJumma) {
+	public void tryFethingJummaRemote(DateTime timeForJumma) {
 		currentTime = timeForJumma;
 		JummaManager.getInstance().getJumma(createSuccessListener(), createErrorListener());
-		
+	}
+	
+	public void tryFetchningJummaLocally(DateTime timeForJumma) {
+		currentTime = timeForJumma;
+		//Go remote and to db if jumma list is empty
+		if(currentJummaList.size() == 0) {
+		JummaManager.getInstance().getJumma(createSuccessListener(), createErrorListener());}
+		List <Jumma> jummas = currentJummaList;
+    	if(jummas.size() == 0){
+    		jummas = getFredagsbonnListe();
+    		jummaDao.updateJummaList(jummas);
+    	}
+    	currentJummaList = jummas;
+    	PreyItem jumma = findFredagsBonn(jummas);
+    	notifyListners(jumma);
 	}
 	
 	
@@ -56,6 +71,7 @@ public class JummaAdaptor {
 	        		jummas = getFredagsbonnListe();
 	        		jummaDao.updateJummaList(jummas);
 	        	}
+	        	currentJummaList = jummas;
 	        	PreyItem jumma = findFredagsBonn(jummas);
 	        	jummaDao.closeDB();
 	        	notifyListners(jumma); 
@@ -64,6 +80,7 @@ public class JummaAdaptor {
 	}
 	
 	private PreyItem findFredagsBonn(List <Jumma> fredagsBonns ) {
+		
 		int day = currentTime.getDayOfWeek();
     	int daysToFriday = 5 - day;
     	if(daysToFriday<0){
@@ -75,7 +92,8 @@ public class JummaAdaptor {
 			DateTime nextFriday = currentTime.plusDays(daysToFriday);
 	    	if(fredagsBonns.get(i).isBetween(nextFriday)){
 	    		Jumma timeOfThaOne = fredagsBonns.get(i);
-	    		salatTime = currentTime.plusDays(daysToFriday).plusHours(timeOfThaOne.getHours()).plusMinutes(timeOfThaOne.getMinuttes()).plusYears(999);
+	    		DateTime midnightTime = currentTime.minusHours(currentTime.getHourOfDay()).minusMinutes(currentTime.getMinuteOfHour());
+	    		salatTime = midnightTime.plusDays(daysToFriday).plusHours(timeOfThaOne.getHours()).plusMinutes(timeOfThaOne.getMinuttes()).plusYears(999);
 	    		break;
 	    	}
 		}
@@ -111,6 +129,7 @@ public class JummaAdaptor {
 	    		jummaDao.updateJummaList(jummas);
 	    		PreyItem jumma = findFredagsBonn(jummas);
 	        	jummaDao.closeDB();
+	        	currentJummaList = jummas;
 	        	notifyListners(jumma); 
 	    		
 			}

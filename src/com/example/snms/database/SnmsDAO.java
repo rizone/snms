@@ -100,9 +100,9 @@ public class SnmsDAO extends  SQLiteOpenHelper {
 	        // looping through all rows and adding to list
 	        if (c.moveToFirst()) {
 	            do {
-	                Jumma td = new Jumma(c.getColumnIndex(TABLE_JUMMA_FROM_DAY),c.getColumnIndex(TABLE_JUMMA_FROM_MONTH)
-	                		,c.getColumnIndex(TABLE_JUMMA_TO_DAY),c.getColumnIndex(TABLE_JUMMA_TO_MONTH),
-	                		c.getColumnIndex(TABLE_JUMMA_HOUR),c.getColumnIndex(TABLE_JUMMA_MINUTES)
+	                Jumma td = new Jumma(c.getInt(c.getColumnIndex(TABLE_JUMMA_FROM_DAY)),c.getInt(c.getColumnIndex(TABLE_JUMMA_FROM_MONTH))
+	                		,c.getInt(c.getColumnIndex(TABLE_JUMMA_TO_DAY)),c.getInt(c.getColumnIndex(TABLE_JUMMA_TO_MONTH)),
+	                		c.getInt(c.getColumnIndex(TABLE_JUMMA_HOUR)),c.getInt(c.getColumnIndex(TABLE_JUMMA_MINUTES))
 	                		);
 	                jumma.add(td);
 	            } while (c.moveToNext());
