@@ -19,6 +19,7 @@ import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -145,6 +146,7 @@ public class PrayCalenderListFragment extends Fragment implements
 
 	}
 
+	@SuppressLint("NewApi")
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		prayTimeAdapter = new SnmsPrayTimeAdapter(getActivity().getAssets());
@@ -216,10 +218,7 @@ public class PrayCalenderListFragment extends Fragment implements
 				lables.add(asr);
 				lables.add(mag);
 				lables.add(ish);
-				date.setText(h.getDay().toString()
-						+ " "
-						+ getMonthAsText(timeCurrentlyUsedInPreyOverView
-								.getMonthOfYear()));
+				date.setText(h.getDay().toString());
 				int counter = 0;
 				try {
 					for (PreyItem item : h.getPreylist()) {
@@ -227,8 +226,7 @@ public class PrayCalenderListFragment extends Fragment implements
 							break;
 						}
 						TextView prey = lables.get(counter);
-						prey.setText(addWhiteSpaces(item.getName())
-								+ item.getTimeOfDayAsString());
+						prey.setText(item.getTimeOfDayAsString());
 						counter++;
 					}
 				} catch (Exception exception) {
@@ -333,6 +331,7 @@ public class PrayCalenderListFragment extends Fragment implements
 		
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onDateSet(DatePickerDialog datePickerDialog, int year,
 			int month, int day) {

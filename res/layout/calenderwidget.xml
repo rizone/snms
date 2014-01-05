@@ -46,11 +46,93 @@
             android:src="@drawable/ic_right_arrow" />
     </LinearLayout>
 
-   
+    <LinearLayout
+      android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+        android:background="@drawable/border_header_pray"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding ="5dp"
+            android:text="Dag"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:textSize="11dp" />
+
+        <TextView
+            android:id="@+id/prey_time"
+               android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+                     android:padding ="5dp"
+            android:text="Fajr"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+           android:textSize="11dp" />
+
+        <TextView
+            android:id="@+id/prey_time"
+                   android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+                   android:padding ="5dp"
+            android:text="Sol."
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:textSize="11dp" />
+
+        <TextView
+            android:id="@+id/prey_time"
+                    android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+                    android:padding ="5dp"
+            android:text="Dhuhr"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+              android:textSize="11dp" />
+
+        <TextView
+            android:id="@+id/prey_time"
+                      android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+                    android:padding ="5dp"
+            android:text="Asr"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+              android:textSize="11dp" />
+
+        <TextView
+            android:id="@+id/prey_time"
+                   android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+                  android:padding ="5dp"
+            android:text="Mag."
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+             android:textSize="11dp" />
+
+        <TextView
+            android:id="@+id/prey_time"
+                 android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+                    android:padding ="5dp"
+            android:text="Isha"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+             android:textSize="11dp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/preyCalender"
-        android:layout_width="match_parent"
+         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:scrollbarSize="10dp"
