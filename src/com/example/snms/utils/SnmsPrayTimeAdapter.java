@@ -161,7 +161,7 @@ public class SnmsPrayTimeAdapter {
 		
 		if(true) {
 			List<PreyItem> list = readPrayItemFormXml(time);
-			if(includeAlarm){
+			if(false){
 				for(PreyItem item : list) {
 					checkAlarmStateAtStartup(item);
 				}

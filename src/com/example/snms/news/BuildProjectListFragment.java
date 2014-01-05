@@ -38,7 +38,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class NewsListFragment extends ListFragment {
+public class BuildProjectListFragment extends ListFragment {
 
 	private NewsListAdapter adapter;
 	boolean isLoading = false; 
@@ -78,7 +78,7 @@ public class NewsListFragment extends ListFragment {
 		super.onResume();
 		if(getListView().getAdapter() == null) {
 			// Get the first page
-			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),10,0,1);
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),10,0,2);
 		}
 	}
 	

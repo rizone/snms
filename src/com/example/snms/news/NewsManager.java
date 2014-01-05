@@ -27,8 +27,12 @@ public class NewsManager {
 		return mInstance;
 	}
 
-	public void getNews(Listener< NewsItem[]> listener, ErrorListener errorListener){
-		Uri.Builder uriBuilder = Uri.parse(NEWS_BASE).buildUpon();
+	public void getNews(Listener< NewsItem[]> listener, ErrorListener errorListener, int pageSize, int pageNum,int filter){
+		Uri.Builder uriBuilder = Uri.parse(NEWS_BASE).buildUpon().appendQueryParameter("filter",String.valueOf(filter)).
+		appendQueryParameter("pageSize", String.valueOf(pageSize)).
+		appendQueryParameter("pageNumber", String.valueOf(pageNum));
+		
+		
 		String uri = uriBuilder.build().toString();
 		Log.i(TAG, "getTweetForHashtag: uri = " + uri);
 

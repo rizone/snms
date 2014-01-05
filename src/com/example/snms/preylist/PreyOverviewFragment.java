@@ -29,12 +29,16 @@ import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,10 +52,15 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 
 	private DateTime currentDate;
 	private DateTime timeCurrentlyUsedInPreyOverView;
+	private int newsPage; 
+	private int newsOffset;
+	private int filter; 
 	private List<PreyItem> preyTimes;
 	private TextView currentDay;
 	private ImageView nextDay;
 	private ImageView prevDay;
+	private ImageView nextNews;
+	private ImageView prevNews;
 	private TextView calender;
 	private DateTime currentDateTime;
 	DatePickerDialog datePickerDialog;
@@ -87,14 +96,25 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		nextDay = (ImageView) root.findViewById(R.id.prey_next_day);
 		nextDay.setOnClickListener(this);
 		prevDay = (ImageView) root.findViewById(R.id.prey_prev_day);
+		
+		nextNews = (ImageView) root.findViewById(R.id.next_news);
+		nextNews.setOnClickListener(this);
+		prevNews = (ImageView) root.findViewById(R.id.prev_news);
+		prevNews.setOnClickListener(this);
+		
+		
 		latestNewsContainer = (RelativeLayout)root.findViewById(R.id.latestNewsContainer);
 		prevDay.setOnClickListener(this);
 		currentDate = new DateTime();
 		timeCurrentlyUsedInPreyOverView = currentDate;
 		newsImage1 = (NetworkImageView)root.findViewById(R.id.newsImage1);
+		newsImage1.setVisibility(View.GONE);
 		newsImage2 = (NetworkImageView)root.findViewById(R.id.newsImage2);
-		newsText1 = (TextView)root.findViewById(R.id.newsImage2Text);
+		newsImage2.setVisibility(View.GONE);
+		newsText1 = (TextView)root.findViewById(R.id.newsImage1Text);
+		newsText1.setVisibility(View.GONE);
 		newsText2= (TextView)root.findViewById(R.id.newsImage2Text);
+		newsText2.setVisibility(View.GONE);
 		jummaContainer = (LinearLayout)root.findViewById(R.id.jummacontainer);
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
@@ -112,7 +132,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			preyNamePreyRowMap.put(PREY_LABLES[i], row);
 		}
 	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -121,7 +140,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		jummaAdaptor.tryFethingJummaRemote(this.timeCurrentlyUsedInPreyOverView);
 	//	mheaderView.setPadding(0, 0, 0, 0);
 		renderPreyList();
-		NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener());
+		NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,0,1);
 
 	}
 
@@ -182,12 +201,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			TextView time = (TextView) preyRow.findViewById(R.id.row_time);
 			ImageView image = (ImageView) preyRow
 					.findViewById(R.id.alarmclock_inactive);
-			
-			// Special handling for Jumma. Have to imporve this
-			if (item.getName() == PREY_LABLES[6]) {
-				renderFuture(item,preyRow,title, time,status,image);
-				continue;
-			}
 			renderFuture(item,preyRow,title, time,status,image);
 		// TODO: Trigger a new count down
 			}
@@ -377,6 +390,25 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			jummaAdaptor.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
 
 		}
+		if (v.equals(nextNews)) {
+			newsPage++; 
+			newsImage1.setVisibility(View.GONE);
+			newsImage2.setVisibility(View.GONE);
+			newsText1.setVisibility(View.GONE);
+			newsText2.setVisibility(View.GONE);
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,newsPage,1);
+		}
+		if (v.equals(prevNews)) {
+			newsPage--; 
+			newsImage1.setVisibility(View.GONE);
+			newsImage2.setVisibility(View.GONE);
+			newsText1.setVisibility(View.GONE);
+			newsText2.setVisibility(View.GONE);
+			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,newsPage,1);
+		}
+		
+		
+		
 
 	}
 
@@ -415,32 +447,42 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	
 
 			
+	@SuppressLint("NewApi")
 	private Response.Listener <NewsItem[]> createSuccessListener() {
 	    return new Response.Listener <NewsItem[]>() {
 	       
 	    	@Override
 			public void onResponse(NewsItem[] response) {
-	    		int counter = 0; 
-				for(NewsItem item : response) {
-					if(counter == 3)
-						break; 
-					if(counter ==1) {
-						newsText2.setText(item.getTitle());
-						newsText2.setHeight(30);
-						Uri uri = Uri.parse(item.getImgUrl());
-					//	text.setText(h.getText());
-						newsImage2.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
-					}
-					if(counter ==2) {
-						newsText1.setText(item.getTitle());
-						newsText1.setHeight(30);
-						Uri uri = Uri.parse(item.getImgUrl());
-					//	text.setText(h.getText());
-						newsImage1.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
-					}
-					counter++;
-				}
-				
+	    		
+	    		Display display = getActivity().getWindowManager().getDefaultDisplay();
+	    		Point size = new Point();
+	    		display.getSize(size);
+	    		int width = (size.x/2);
+	    	
+	    		if(response.length>0) {
+	    			NewsItem item = response[0];
+	    			newsImage1.setVisibility(View.VISIBLE);
+	    			newsText1.setVisibility(View.VISIBLE);
+	    			newsText1.setText(item.getTitle());
+					newsText1.setHeight(30);
+					newsText1.setWidth(width);
+					newsImage1.getLayoutParams().width = width;
+					Uri uri = Uri.parse(item.getImgUrl());
+				//	text.setText(h.getText());
+					newsImage1.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
+	    		}
+	    		if(response.length>1) {
+	    			NewsItem item = response[1];
+					newsText2.setText(item.getTitle());
+					newsImage2.setVisibility(View.VISIBLE);
+	    			newsText2.setVisibility(View.VISIBLE);
+					newsText2.setHeight(30);
+					newsText2.setWidth(width);
+					Uri uri = Uri.parse(item.getImgUrl());
+				//	text.setText(h.getText());
+					newsImage2.getLayoutParams().width = width;
+					newsImage2.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
+	    		}		
 			}
 	    };	
 	}

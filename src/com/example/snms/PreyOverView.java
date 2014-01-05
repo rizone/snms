@@ -46,7 +46,6 @@ public class PreyOverView extends  BaseActivity{
 
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		
-		
 		if(currentFragment1 == null) {
 			currentFragment1 =  new PreyOverviewFragment();
 		
