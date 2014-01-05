@@ -134,9 +134,14 @@ public class NewsListFragment extends ListFragment {
 			NetworkImageView image = (NetworkImageView)convertView.findViewById(R.id.newsImage);
 			NewsItem h =  getItem(position);
 			title.setText(getItem(position).getTitle());
-			Uri uri = Uri.parse(h.getImgUrl());
-		//	text.setText(h.getText());
+			try {
+			Uri uri = Uri.parse(h.getImgUrl()); 
 			image.setImageUrl(h.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+		//	text.setText(h.getText());
+		
 			return convertView;
 		}
 	

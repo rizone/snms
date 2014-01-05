@@ -12,6 +12,8 @@ import org.joda.time.DateTime;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.snms.BaseActivity;
+import com.example.snms.NewsDetailsFragment;
 import com.example.snms.PreyCountDownTimer;
 import com.example.snms.R;
 import com.example.snms.PreyListFragment.PreyListAdapter;
@@ -84,6 +86,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 
 	private final String[] PREY_LABLES = { "Fajr", "Soloppgang", "Dhuhr", "Asr",
 			"Maghrib", "Isha"};
+	protected NewsItem currentNewsItem2;
+	protected NewsItem currentNewsItem1;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -121,6 +125,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		currentDay = (TextView) root.findViewById(R.id.prey_current_day);
 		jummaAdaptor = new JummaAdaptor(getActivity());
 		jummaAdaptor.addJummaListner(this);
+		newsImage1.setOnClickListener(this);
+		newsImage2.setOnClickListener(this);
 		return root;
 	}
 
@@ -407,6 +413,15 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,newsPage,1);
 		}
 		
+		if (v.equals(newsImage1)) {
+			   NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(currentNewsItem1);
+			   switchFragment(myDetailFragment,null);
+		}
+		if (v.equals(newsImage2)) {
+			NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(currentNewsItem2);
+			switchFragment(myDetailFragment,null);
+		}
+		
 		
 		
 
@@ -425,6 +440,16 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		renderPreyList();
 		jummaAdaptor.tryFetchningJummaLocally(this.timeCurrentlyUsedInPreyOverView);
 		
+	}
+	
+	private void switchFragment(Fragment fragment1, Fragment fragment2) {
+		if (getActivity() == null)
+			return;
+		
+		if (getActivity() instanceof BaseActivity) {
+			BaseActivity fca = (BaseActivity) getActivity();
+			fca.switchContent(fragment1, fragment2);
+		} 
 	}
 
 	@Override
@@ -465,6 +490,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	    			newsText1.setVisibility(View.VISIBLE);
 	    			newsText1.setText(item.getTitle());
 					newsText1.setHeight(30);
+					currentNewsItem1 = item;
 					newsText1.setWidth(width);
 					newsImage1.getLayoutParams().width = width;
 					Uri uri = Uri.parse(item.getImgUrl());
@@ -473,6 +499,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	    		}
 	    		if(response.length>1) {
 	    			NewsItem item = response[1];
+	    			currentNewsItem2 = item;
 					newsText2.setText(item.getTitle());
 					newsImage2.setVisibility(View.VISIBLE);
 	    			newsText2.setVisibility(View.VISIBLE);
@@ -489,6 +516,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 
 	@Override
 	public void updateJumma(PreyItem item) {
+		
+	 if(isAdded()) {
 		TextView jummaTime = (TextView)jummaContainer.findViewById(R.id.row_time_jumma);
 		TextView jummaStatus = (TextView)jummaContainer.findViewById(R.id.row_status_jumma);
 		TextView jummaTitle = (TextView)jummaContainer.findViewById(R.id.row_title_jumma);
@@ -513,7 +542,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		jummaTime.setText(ZeroPlusHour + ":" + ZeroPlusMin);
 		jummaTitle.setText(item.getName());
 		
-	}
+	}}
 	
 	
 

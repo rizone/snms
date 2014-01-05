@@ -83,13 +83,17 @@ public class JummaAdaptor {
 		
 		int day = currentTime.getDayOfWeek();
     	int daysToFriday = 5 - day;
-    	if(daysToFriday<0){
-    		daysToFriday = 5 + day;
+    	if(daysToFriday==-1){
+    		daysToFriday = 6;
+    	}else if(daysToFriday == -2) {
+    		daysToFriday = 5;
     	}
     	DateTime salatTime = new DateTime().plusYears(999);
+    	
     	try {
 		for(int i = 0;i<fredagsBonns.size();i++) {
 			DateTime nextFriday = currentTime.plusDays(daysToFriday);
+			String f = nextFriday.toString();
 	    	if(fredagsBonns.get(i).isBetween(nextFriday)){
 	    		Jumma timeOfThaOne = fredagsBonns.get(i);
 	    		DateTime midnightTime = currentTime.minusHours(currentTime.getHourOfDay()).minusMinutes(currentTime.getMinuteOfHour());
@@ -107,7 +111,8 @@ public class JummaAdaptor {
 	
 	private List<Jumma> getFredagsbonnListe() {
 		List <Jumma> fredagsbonnLiset = new ArrayList<Jumma>();
-		fredagsbonnLiset.add(new Jumma(1,11,10,1,13,0));
+		fredagsbonnLiset.add(new Jumma(1,1,10,1,13,0));
+		fredagsbonnLiset.add(new Jumma(1,11,31,12,13,0));
 		fredagsbonnLiset.add(new Jumma(11,1,31,1,13,0));
 		fredagsbonnLiset.add(new Jumma(1,2,10,3,14,00));
 		fredagsbonnLiset.add(new Jumma(11,3,31,3,14,30));

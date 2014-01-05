@@ -27,7 +27,11 @@ public class Jumma {
 		int offset = fromMonth>toMonth?12:0;
 		DateTime c = time.withYear(2000); 
 		DateTime jummaFrom =new DateTime(2000, fromMonth, fromDay, 0,0); 
-		DateTime jummaTo = new DateTime(2000+offset, toMonth, toDay, 0,0); 
+		DateTime jummaTo = new DateTime(2000+offset, toMonth, toDay, 23,59); 
+		
+		String timeComp = c.toString();
+	String timefrom = jummaFrom.toString();
+	String timeTo = jummaTo.toString();
 
 		if(c.isAfter(jummaFrom) && c.isBefore(jummaTo)) {
 			return true;

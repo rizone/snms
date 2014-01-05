@@ -2,6 +2,7 @@ package com.example.snms;
 
 import org.joda.time.DateTime;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.SearchManager.OnCancelListener;
 import android.app.TimePickerDialog;
@@ -41,6 +42,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.example.snms.news.NewsListFragment;
 import com.example.snms.preylist.PreyOverviewFragment;
 
+@SuppressLint("NewApi")
 public abstract class BaseActivity extends SlidingFragmentActivity implements OnClickListener, TimePickerDialog.OnTimeSetListener, PreyListFragment.OnHeadlineSelectedListener  {
 	
 //	final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, 2007, 10, 1, false);
@@ -162,6 +164,7 @@ ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 
 		currentFragment1 = fragment1;
 		currentFragment2 = fragment2;
+		
 		getSlidingMenu().showContent();
 	}
 
@@ -174,7 +177,8 @@ ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 	
 
 	
-    public void onArticleSelected(DateTime time, String name) {
+    @SuppressLint("NewApi")
+	public void onArticleSelected(DateTime time, String name) {
         // The user selected the headline of an article from the HeadlinesFragment
         // Do something here to display that article
     	
