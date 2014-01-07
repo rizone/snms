@@ -45,6 +45,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -60,7 +62,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private List<PreyItem> preyTimes;
 	private TextView currentDay;
 	private ImageView nextDay;
-	private ImageView prevDay;
+	private ImageView  prevDay;
 	private ImageView nextNews;
 	private ImageView prevNews;
 	private TextView calender;
@@ -68,9 +70,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	DatePickerDialog datePickerDialog;
 	public static final String DATEPICKER_TAG = "datepicker";
 	private JummaAdaptor jummaAdaptor; 
-
 	private CountDownTimer preyCountDownTimer;
-
 	private LinearLayout preyRowContainer;
 	private LinearLayout jummaContainer;
 	private RelativeLayout latestNewsContainer;
@@ -489,7 +489,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	    			newsImage1.setVisibility(View.VISIBLE);
 	    			newsText1.setVisibility(View.VISIBLE);
 	    			newsText1.setText(item.getTitle());
-					newsText1.setHeight(30);
 					currentNewsItem1 = item;
 					newsText1.setWidth(width);
 					newsImage1.getLayoutParams().width = width;
@@ -497,13 +496,13 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 				//	text.setText(h.getText());
 					newsImage1.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
 	    		}
+	    		
 	    		if(response.length>1) {
 	    			NewsItem item = response[1];
 	    			currentNewsItem2 = item;
 					newsText2.setText(item.getTitle());
 					newsImage2.setVisibility(View.VISIBLE);
 	    			newsText2.setVisibility(View.VISIBLE);
-					newsText2.setHeight(30);
 					newsText2.setWidth(width);
 					Uri uri = Uri.parse(item.getImgUrl());
 				//	text.setText(h.getText());
