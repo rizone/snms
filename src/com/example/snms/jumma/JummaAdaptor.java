@@ -25,8 +25,8 @@ public class JummaAdaptor {
 	DateTime currentTime;
 	List <Jumma> currentJummaList = new ArrayList<Jumma>();
 	
-	public JummaAdaptor(Context context) {
-		jummaDao = new SnmsDAO(context);
+	public JummaAdaptor(SnmsDAO dao) {
+		jummaDao = dao;
 	}
 	
 	public void tryFethingJummaRemote(DateTime timeForJumma) {

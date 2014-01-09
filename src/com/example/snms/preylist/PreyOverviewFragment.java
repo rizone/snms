@@ -15,8 +15,12 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.snms.BaseActivity;
 import com.example.snms.NewsDetailsFragment;
 import com.example.snms.PreyCountDownTimer;
+import com.example.snms.PreyOverView;
 import com.example.snms.R;
 import com.example.snms.PreyListFragment.PreyListAdapter;
+import com.example.snms.alarm.Alarm;
+import com.example.snms.alarm.AlarmDialogFragment;
+import com.example.snms.alarm.AlarmHelper;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.images.ImageCacheManager;
 import com.example.snms.jumma.JummaAdaptor;
@@ -39,6 +43,7 @@ import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -75,6 +80,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private LinearLayout jummaContainer;
 	private RelativeLayout latestNewsContainer;
 	private Map<String, View> preyNamePreyRowMap;
+	private Map<String, ImageView> alarmButtonNameMap = new HashMap<String,ImageView>();
+	private AlarmHelper alarmHelper;
 	
 	private NetworkImageView newsImage1; 
 	private TextView newsText1;
@@ -123,7 +130,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
 		currentDay = (TextView) root.findViewById(R.id.prey_current_day);
-		jummaAdaptor = new JummaAdaptor(getActivity());
+		jummaAdaptor = new JummaAdaptor(((PreyOverView) getActivity()).getDAO());
+		alarmHelper = new AlarmHelper(((PreyOverView) getActivity()).getDAO());
 		jummaAdaptor.addJummaListner(this);
 		newsImage1.setOnClickListener(this);
 		newsImage2.setOnClickListener(this);
@@ -136,6 +144,10 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			View row = inflater.inflate(R.layout.prey_row, null);
 			preyRowContainer.addView(row);
 			preyNamePreyRowMap.put(PREY_LABLES[i], row);
+			ImageView alarmIcon = (ImageView)row.findViewById(R.id.alarmclock_inactive);
+			alarmButtonNameMap.put(PREY_LABLES[i],alarmIcon);
+			alarmIcon.setOnClickListener(this);
+			
 		}
 	}
 	@Override
@@ -146,6 +158,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		jummaAdaptor.tryFethingJummaRemote(this.timeCurrentlyUsedInPreyOverView);
 	//	mheaderView.setPadding(0, 0, 0, 0);
 		renderPreyList();
+		renderAlarmState();
 		NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,0,1);
 
 	}
@@ -154,6 +167,19 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 	}
+	
+	public void renderAlarmState() {
+		for (String key : alarmButtonNameMap.keySet()) {
+			ImageView alarmIcon = alarmButtonNameMap.get(key);
+			if(alarmHelper.hasAlarm(key)){
+				alarmIcon.setImageResource(R.drawable.alarmclock);
+			}else {
+				alarmIcon.setImageResource(R.drawable.alarmclock_inactive);
+			}
+		}
+		
+	}
+	
 	
 	
 	public void renderPreyList() {
@@ -422,6 +448,15 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			switchFragment(myDetailFragment,null);
 		}
 		
+		for(String key  :alarmButtonNameMap.keySet()){
+			if(v.equals(alarmButtonNameMap.get(key))) {
+				FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+				AlarmDialogFragment newFragment = AlarmDialogFragment.newInstance(key);
+			    newFragment.show(ft, "dialog");
+			}
+		}
+	
+		
 		
 		
 
@@ -512,7 +547,10 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			}
 	    };	
 	}
+	
+	
 
+	
 	@Override
 	public void updateJumma(PreyItem item) {
 		
@@ -543,6 +581,9 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		
 	}}
 	
-	
+	public void setAlarm(View v) {
+		v.setVisibility(View.INVISIBLE);
+		System.out.println("dfojdofjsdfjsdflj");
+	};
 
 }

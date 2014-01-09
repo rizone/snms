@@ -35,6 +35,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.example.snms.database.SnmsDAO;
 //import com.fourmob.datetimepicker.date.DatePickerDialog;
 //import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 //import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -52,7 +53,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
     
 	private int mTitleRes;
 	protected ListFragment mFrag;
-
+	
 	Fragment currentFragment1;
 	Fragment currentFragment2;
 	ImageView homeButton; 
@@ -60,7 +61,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
 	public BaseActivity(int titleRes) {
 		mTitleRes = titleRes;
+	
 	}
+	
+	
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

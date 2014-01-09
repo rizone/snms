@@ -39,7 +39,8 @@
     <ImageView 
         android:layout_height="wrap_content" 
         android:layout_width="wrap_content" 
-        android:padding="5dp" 
+        android:padding="5dp"
+        android:onClick="setAlarm" 
         android:gravity="center_vertical" 
         android:layout_weight="1" 
         android:id="@+id/alarmclock_inactive" 

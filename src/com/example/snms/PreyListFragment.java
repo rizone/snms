@@ -181,6 +181,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 			}
 		}
 
+		
 	}
 
 	public List<PreyItem> loadPrayTimes(DateTime dateTime) {
@@ -193,6 +194,7 @@ public class PreyListFragment extends ListFragment implements OnClickListener,  
 				.minusSeconds(dateTime.getSecondOfMinute());
 		return prayTimeAdapter.getPrayListForDate(midnight,true);
 
+		
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
