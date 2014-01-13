@@ -1,6 +1,13 @@
 package com.example.snms;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import org.joda.time.DateTime;
+
+import com.example.snms.domain.PreyItem;
+import com.example.snms.utils.SnmsPrayTimeAdapter;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -23,7 +30,7 @@ public class AlarmUtilities {
 		
 	}
 	
-	void SetAlarm(Calendar cal, int id, Intent intent, Context context) {
+	public void SetAlarm(Calendar cal, int id, Intent intent, Context context) {
 		// TODO Auto-generated method stub
 		
 		
@@ -34,6 +41,48 @@ public class AlarmUtilities {
 				intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
 			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+			
+			Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT).show();
+			
+		}else{
+			Toast.makeText(context, "Oops... Alarmdato har allerede passert", Toast.LENGTH_SHORT).show();
+			
+		}
+	}
+	
+	public void SetRepeatingAlarm(Calendar cal, int id, Intent intent, Context context, String name){
+		
+		if (cal.after(Calendar.getInstance())) {
+			//Get the time for the next event the day after for repeating
+			int year = cal.get(Calendar.YEAR);
+			int month = cal.get(Calendar.MONTH);
+			DateTime currentDate = new DateTime(year, month, 1, 1, 0, 0, 000); 
+			DateTime NextDay;
+			
+//			if(currentDate.getDayOfWeek()<7){
+				NextDay = currentDate.plusDays(currentDate.getDayOfWeek());
+//			}else {
+//				NextDay = 0;
+//			}
+			
+			SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter();
+			
+			DateTime midnight = NextDay.minusHours(NextDay.getHourOfDay()).minusMinutes(NextDay.getMinuteOfHour()).minusSeconds(NextDay.getSecondOfMinute());
+			
+			List<PreyItem> PreyItemList = new ArrayList<PreyItem>(); 
+			PreyItemList = prayTimeAdapter.getPrayListForDate(midnight);
+			
+			System.out.println("PreyItemList: " + PreyItemList);
+			
+			long intervalMillis = cal.getTimeInMillis() + 10000;
+
+			//End get time for next repeating alarm
+			
+//			Intent intent = new Intent(this, AlarmReceiverActivity.class);
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, id,
+				intent, PendingIntent.FLAG_CANCEL_CURRENT);
+			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+			am.setRepeating(AlarmManager.RTC_WAKEUP, intervalMillis, cal.getTimeInMillis(), pendingIntent);
 			
 			Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT).show();
 			

@@ -46,6 +46,8 @@ public class AlarmReceiverActivity extends Activity {
         stopAlarm.setOnTouchListener(new OnTouchListener() {
             public boolean onTouch(View arg0, MotionEvent arg1) {
                 mMediaPlayer.stop();
+                //sett opp neste alarm
+                
                 finish();
                 return false;
             }
