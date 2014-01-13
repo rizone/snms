@@ -101,11 +101,10 @@ public class SnmsDAO extends  SQLiteOpenHelper {
 	}
 	 * 
 	 */
-	
 	 
 	 public List<Alarm> getAlarms() {
 	       List<Alarm> alarms = new ArrayList<Alarm>();
-	        String selectQuery = "SELECT  * FROM " + TABLE_ALARM;
+	        String selectQuery = "SELECT * FROM " + TABLE_ALARM;
 	        Log.e("alarm", selectQuery);
 	        SQLiteDatabase db = this.getReadableDatabase();
 	        Cursor c = db.rawQuery(selectQuery, null);
@@ -113,7 +112,7 @@ public class SnmsDAO extends  SQLiteOpenHelper {
 	        // looping through all rows and adding to list
 	        if (c.moveToFirst()) {
 	            do {
-	                Alarm td = new Alarm(c.getString(c.getColumnIndex(TABLE_ALARM_PREY)),c.getInt(c.getColumnIndex(TABLE_ALARM_ID)));
+	                Alarm td = new Alarm(c.getString(c.getColumnIndex(TABLE_ALARM_PREY)),c.getInt(c.getColumnIndex(TABLE_ALARM_OFFSET)));
 	                alarms.add(td);
 	            } while (c.moveToNext());
 	        }
@@ -123,18 +122,21 @@ public class SnmsDAO extends  SQLiteOpenHelper {
 	 
 	 	
 	 public void deleteAlarm(String alarm) {
-	        String selectQuery = "DELETE FROM " + TABLE_ALARM + " WHERE " + TABLE_ALARM_PREY + " like " + alarm;
+	        String selectQuery = "DELETE FROM " + TABLE_ALARM + " WHERE " + TABLE_ALARM_PREY + " like '" + alarm +"'";
 	        Log.e("alarm", selectQuery);
 	        SQLiteDatabase db = this.getReadableDatabase();
-	        db.rawQuery(selectQuery, null);
+	        db.delete(TABLE_ALARM, TABLE_ALARM_PREY + "= ?", new String[]{alarm});
 	 }
 	 
 	 
 	 public void insertAlarm(Alarm alarm) {
-	        String selectQuery = "INSERT INTO " + TABLE_ALARM + "(" + TABLE_ALARM_PREY + "," + TABLE_ALARM_OFFSET +") VALUES (" + alarm.getPrey() + "," + alarm.getOffset() + ")";
+	        String selectQuery = "INSERT INTO " + TABLE_ALARM + "(" + TABLE_ALARM_PREY + "," + TABLE_ALARM_OFFSET +") VALUES ('" + alarm.getPrey() + "'," + alarm.getOffset() + ")";
 	        Log.e("alarm", selectQuery);
 	        SQLiteDatabase db = this.getReadableDatabase();
-	        db.rawQuery(selectQuery, null);
+	    	ContentValues values = new ContentValues();
+	    	values.put(TABLE_ALARM_PREY, alarm.getPrey());
+		    values.put(TABLE_ALARM_OFFSET,alarm.getOffset());
+		    db.insert(TABLE_ALARM, null, values);
 	 }
 	 
 		 

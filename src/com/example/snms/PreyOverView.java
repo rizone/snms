@@ -1,10 +1,12 @@
 package com.example.snms;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.example.snms.alarm.AlarmChangeListner;
 import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.news.NewsListFragment;
@@ -25,12 +27,13 @@ import android.app.Fragment;
 import android.view.Menu;
 import android.widget.TimePicker;
 
-public class PreyOverView extends  BaseActivity{
+public class PreyOverView extends  BaseActivity {
 	
 	private static Context context;		//Dag-Martin
-	
 	SnmsDAO snmsDAO; 
-
+	ArrayList<AlarmChangeListner> alarmChangeListners = new ArrayList<AlarmChangeListner>();
+	
+	
 	public PreyOverView() {
 		super(R.string.left_and_right);
 		snmsDAO = new SnmsDAO(this);
@@ -50,7 +53,8 @@ public class PreyOverView extends  BaseActivity{
 		
 		if(currentFragment1 == null) {
 			currentFragment1 =  new PreyOverviewFragment();
-		
+		alarmChangeListners.add((AlarmChangeListner) currentFragment1);
+			
 		setContentView(R.layout.content_frame);
 		getSupportFragmentManager()
 		.beginTransaction()
@@ -63,6 +67,12 @@ public class PreyOverView extends  BaseActivity{
 		.beginTransaction()
 		.replace(R.id.menu_frame_two, new SampleListFragment())
 		.commit();
+		}
+	}
+	
+	public void setAlarm(String alarm, int min) {
+		for(AlarmChangeListner alarmChangeListner : alarmChangeListners){
+			alarmChangeListner.alarmChanged(alarm,min);
 		}
 	}
 	

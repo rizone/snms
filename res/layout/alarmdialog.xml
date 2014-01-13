@@ -19,6 +19,8 @@
             android:textColor="@color/white"
 		   >
 		</TextView>
+		
+    	
     
     
     <LinearLayout
@@ -30,7 +32,7 @@
 
       
 		<Button
-		    android:id="@+id/button5"
+		    android:id="@+id/okAlarm"
             	 android:layout_width="wrap_content"
                   android:layout_height="80dp"
             android:layout_margin="5dp"
@@ -39,43 +41,15 @@
             android:gravity="center"
              android:padding="5dp"
             android:layout_marginTop="2.5dp"
-            android:text="5 min før bønn"
+            android:text="Sett alarm"
             android:textAppearance="@android:style/TextAppearance.Small"
             android:textColor="@color/white"
 		   >
 		</Button> 
 		
-		<Button
-		    android:id="@+id/button10"
-            	 android:layout_width="wrap_content"
-               android:layout_height="80dp"
-            android:layout_weight="1"
-            android:background="@drawable/datepickerbg"
-              android:layout_margin="5dp"
-            android:gravity="center"
-           android:padding="5dp"
-            android:layout_marginTop="2.5dp"
-            android:text="10 min før bønn"
-           android:textAppearance="@android:style/TextAppearance.Small"
-            android:textColor="@color/white"
-		   >
-		</Button> 
+	
 		
-		<Button
-		    android:id="@+id/button15"
-            	 android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:background="@drawable/datepickerbg"
-              android:layout_margin="5dp"
-            android:gravity="center"
-            android:padding="5dp"
-            android:layout_marginTop="2.5dp"
-            android:text="15 min før bønn"
-            android:textAppearance="@android:style/TextAppearance.Small"
-            android:textColor="@color/white"
-		   >
-		</Button> 
+
 		
 
 

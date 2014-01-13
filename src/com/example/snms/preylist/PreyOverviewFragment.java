@@ -19,6 +19,7 @@ import com.example.snms.PreyOverView;
 import com.example.snms.R;
 import com.example.snms.PreyListFragment.PreyListAdapter;
 import com.example.snms.alarm.Alarm;
+import com.example.snms.alarm.AlarmChangeListner;
 import com.example.snms.alarm.AlarmDialogFragment;
 import com.example.snms.alarm.AlarmHelper;
 import com.example.snms.domain.PreyItem;
@@ -57,7 +58,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class PreyOverviewFragment extends Fragment implements  OnClickListener,  OnDateSetListener, TimePickerDialog.OnTimeSetListener, JummaListner{
+public class PreyOverviewFragment extends Fragment implements  OnClickListener,  OnDateSetListener, TimePickerDialog.OnTimeSetListener, JummaListner, AlarmChangeListner{
 
 	private DateTime currentDate;
 	private DateTime timeCurrentlyUsedInPreyOverView;
@@ -220,6 +221,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 				// TODO: Trigger a new count down
 			}
 		}
+		
 
 	}
 
@@ -450,16 +452,19 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		
 		for(String key  :alarmButtonNameMap.keySet()){
 			if(v.equals(alarmButtonNameMap.get(key))) {
+				if(!alarmHelper.hasAlarm(key)) { 
 				FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 				AlarmDialogFragment newFragment = AlarmDialogFragment.newInstance(key);
 			    newFragment.show(ft, "dialog");
+			    Bundle args = new Bundle(); 
+			    args.putString("prey", key);
+			    newFragment.setArguments(args);
+			}else {
+				alarmHelper.cancelAlarm(key);
+				renderAlarmState();
+			}
 			}
 		}
-	
-		
-		
-		
-
 	}
 
 	@Override
@@ -580,10 +585,14 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		jummaTitle.setText(item.getName());
 		
 	}}
-	
 	public void setAlarm(View v) {
 		v.setVisibility(View.INVISIBLE);
-		System.out.println("dfojdofjsdfjsdflj");
+	}
+
+	@Override
+	public void alarmChanged(String alarm, int time) {
+		alarmHelper.setAlarm(alarm, time);
+		renderAlarmState();
 	};
 
 }

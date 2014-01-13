@@ -54,6 +54,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 	private int mTitleRes;
 	protected ListFragment mFrag;
 	
+	
 	Fragment currentFragment1;
 	Fragment currentFragment2;
 	ImageView homeButton; 
@@ -61,7 +62,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 
 	public BaseActivity(int titleRes) {
 		mTitleRes = titleRes;
-	
 	}
 	
 	
