@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <style name="SnmsTheme" parent="Theme.Sherlock.Light.DarkActionBar">
-        <item name="homeAsUpIndicator">@drawable/homeicon</item>
+        <item name="homeAsUpIndicator">@null</item>
         <item name="android:homeAsUpIndicator">@drawable/homeicon</item>
    		<item name="android:actionBarStyle">@style/SnmsActionBar</item>
    		<item name="actionBarSize">@dimen/snms_action_bar_default_height</item>   
@@ -19,6 +19,7 @@
     <style name="SnmsActionBar" parent="Widget.Sherlock.ActionBar">
   	   <item name="android:background">@drawable/snms_actionbar_background</item>
   	   <item name="android:titleTextStyle">@style/TextAppearance.SnmsActionBar.Title</item>
+  	   
 	</style>
 	
     <style name="TextAppearance.SnmsActionBar.Title" parent="Widget">

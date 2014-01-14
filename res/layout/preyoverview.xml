@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/snmsDarkBlue"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@color/snmsDarkBlue"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/prey_prev_day"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/leftarrow_bg" />
+
+        <TextView
+            android:id="@+id/prey_current_day"
+      		 android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/datepickerbg"
+            android:gravity="center"
+            android:padding="0dp"
+            android:layout_marginTop="2.5dp"
+            android:text="Onsdag 3"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:textSize="16dp" >
+        </TextView>
+
+        
+        <ImageView
+            android:id="@+id/prey_next_day"
+    		android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/rightarrow_bg" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_margin="0dp"
+        android:background="@drawable/border_header_pray"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp" >
+
+        <com.example.snms.SnmsTextView
+            android:id="@+id/header_title"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="1dp"
+            android:text="Bønn"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+        <com.example.snms.SnmsTextView
+            android:id="@+id/prey_time"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="1dp"
+            android:text="Tid"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+        <com.example.snms.SnmsTextView
+            android:id="@+id/status"
+            android:layout_width="78dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="1dp"
+            android:text="Tid igjen"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+        <com.example.snms.SnmsTextView
+            android:id="@+id/prey_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingBottom="3dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="1dp"
+            android:text="Alarm"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+    </LinearLayout>
+    
+	<LinearLayout 
+	  android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/list_padding"
+    android:paddingRight="@dimen/list_padding" 
+    android:orientation="vertical"
+    android:id="@+id/preyRowContainer"
+	 >
+       	</LinearLayout>
+       	
+	<LinearLayout 
+	android:id="@+id/jummacontainer"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:orientation="horizontal"
+    android:background="@drawable/border_none_active_pray" 
+    android:paddingLeft="20dp"
+    >
+	 
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_title_jumma"
+        android:layout_width="100dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:padding="0dp"
+        android:text="Jummah"
+        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_time_jumma"
+        android:layout_width="60dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="..."
+         android:textAppearance="@android:style/TextAppearance.Medium" />
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_status_jumma"
+        android:layout_width="83dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="..."
+        android:textAppearance="@android:style/TextAppearance.Medium" />
+    
+    <ImageView 
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content" 
+        android:padding="5dp" 
+        android:gravity="center_vertical" 
+        android:layout_weight="1" 
+        android:id="@+id/alarmclock_inactive" 
+        android:src="@drawable/alarmclock_inactive"/>
+    
+
+
+</LinearLayout>
+	
+	
+	
+	
+       <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="46dp"
+        android:background="@color/snmsDarkBlue"
+        android:orientation="horizontal" 
+        android:layout_gravity="center_horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/prev_news"
+           android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/leftarrow_bg"/> 
+
+        <TextView
+            android:id="@+id/prey_current_day"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:background="@color/snmsDarkBlue"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="6dp"
+            android:text="Siste nyheter"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="@color/white"
+            android:textSize="16dp" >
+        </TextView>
+
+        <ImageView
+            android:id="@+id/next_news"
+              android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/rightarrow_bg"/> 
+    </LinearLayout>    
+	    
+        
+<RelativeLayout 
+	  android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/list_padding"
+    android:paddingRight="@dimen/list_padding" 
+    android:orientation="horizontal"
+    android:paddingTop="7dp"
+    android:id="@+id/latestNewsContainer"
+    android:background="@color/white"
+	 >
+        
+	         <com.android.volley.toolbox.NetworkImageView
+	    android:id="@+id/newsImage1"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_width="200dp"
+	    android:layout_height="110dp"
+	         android:scaleType="centerCrop"
+	    android:padding="5dp"
+	 />
+        
+	 
+<TextView
+    android:id="@+id/newsImage1Text"
+  android:layout_width="200dp"
+	  android:layout_height="wrap_content"
+	 android:padding="5dp"
+    android:layout_alignLeft="@+id/newsImage1"
+    android:layout_alignRight="@+id/newsImage1"
+    android:layout_alignBottom="@+id/newsImage1"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="0dp"
+    android:gravity="bottom"
+     android:background="#99000000"
+    android:text="Hello"
+    android:textColor="@color/white" />   
+
+		         <com.android.volley.toolbox.NetworkImageView
+	    android:id="@+id/newsImage2"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	 android:layout_width="200dp"
+	    android:scaleType="centerCrop"
+	  android:layout_height="110dp"
+	    android:padding="5dp"
+	 />
+        
+	 
+<TextView
+    android:id="@+id/newsImage2Text"
+   android:layout_width="200dp"
+	  android:layout_height="wrap_content"
+	
+	 android:padding="5dp"
+    android:layout_alignLeft="@+id/newsImage2"
+    android:layout_alignRight="@+id/newsImage2"
+    android:layout_alignBottom="@+id/newsImage2"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="0dp"
+   android:gravity="bottom"
+    android:background="#99000000"
+    android:text="Hello"
+    android:textColor="@color/white" />   
+
+	     
+	  </RelativeLayout>
+	    
+
+
+      
+
+
+  
+    
+
+</LinearLayout>
+
+
+    
+   
+</ScrollView>

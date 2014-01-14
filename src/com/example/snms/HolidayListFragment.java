@@ -21,6 +21,7 @@ import com.example.snms.PreyListFragment.PreyListAdapter;
 import com.example.snms.domain.HolydayItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
+import com.example.snms.network.GsonRequest;
 
 public class HolidayListFragment extends ListFragment {
 	

@@ -4,6 +4,11 @@ package com.example.snms;
 
 
 
+import com.example.snms.news.BuildProjectListFragment;
+import com.example.snms.news.EventListFragment;
+import com.example.snms.news.NewsListFragment;
+import com.example.snms.preylist.PreyOverviewFragment;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,9 +30,9 @@ public class SampleListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		SampleAdapter adapter = new SampleAdapter(getActivity());
-		
-		adapter.add(new SampleItem("Bønnetider", android.R.drawable.ic_menu_search));
 	    adapter.add(new SampleItem("Nyheter", android.R.drawable.ic_menu_search));
+	    adapter.add(new SampleItem("Byggeprosjektet", android.R.drawable.ic_menu_search));
+	    adapter.add(new SampleItem("Events", android.R.drawable.ic_menu_search));
 	   
 	
 		setListAdapter(adapter);
@@ -48,13 +53,16 @@ public class SampleListFragment extends ListFragment {
 		Fragment newContent2 = null;
 		switch (position) {
 		
+
 		case 0:
-			newContent1 = new PreyListFragment();
-			newContent2 = new NewsListFragment();
-			break;
-		case 1:
 			newContent1 = new NewsListFragment();
 			break;
+		case 1:
+			newContent1 = new BuildProjectListFragment();
+			break;	
+		case 2:
+			newContent1 = new EventListFragment();
+			break;		
 		}
 		if (newContent1 != null)
 			switchFragment(newContent1,newContent2);

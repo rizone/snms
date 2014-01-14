@@ -1,6 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     android:layout_width="match_parent"
     android:layout_height="10dp"
     android:orientation="horizontal" >
+=======
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/calender_row_bg"
+    android:orientation="horizontal"
+    android:paddingLeft="5dp" 
+    android:gravity="center">
+
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_date"
+         android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+ android:gravity="center"
+        android:padding="5dp"
+        android:text="Medium Text"
+        android:textAppearance="@android:style/TextAppearance.Small" />
+
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_fajr"
+        android:layout_height="wrap_content"
+            android:layout_width="70dp"
+        android:layout_weight="1"
+android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="Medium Text"
+          android:textAppearance="@android:style/TextAppearance.Small" />
+
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_soloppgang"
+     android:layout_height="wrap_content"
+             android:layout_width="70dp"
+        android:layout_weight="1"
+android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="Medium Text"
+     android:textAppearance="@android:style/TextAppearance.Small" />
+
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_duhr"
+        android:layout_height="wrap_content"
+         android:layout_width="70dp"
+        android:layout_weight="1"
+android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="Ferdig"
+  android:textAppearance="@android:style/TextAppearance.Small" />
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_asr"
+      android:layout_height="wrap_content"
+        android:layout_weight="1"
+                android:layout_width="70dp"
+ android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="Ferdig"
+         android:textAppearance="@android:style/TextAppearance.Small" />
+
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_magrihb"
+      android:layout_height="wrap_content"
+       android:layout_width="70dp"
+        android:layout_weight="1"
+   android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="Ferdig"
+     android:textAppearance="@android:style/TextAppearance.Small" />
+
+    <com.example.snms.SnmsTextView
+        android:id="@+id/row_isha"
+         android:layout_height="wrap_content"
+           android:layout_width="70dp"
+        android:layout_weight="1"
+android:gravity="center_vertical"
+        android:padding="5dp"
+        android:text="Ferdig"
+            android:textAppearance="@android:style/TextAppearance.Small" />
+
+>>>>>>> remotes/origin/refactorpreyoverview
 </LinearLayout>

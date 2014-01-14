@@ -2,19 +2,29 @@ package com.example.snms;
 
 import org.joda.time.DateTime;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
+import android.app.SearchManager.OnCancelListener;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -23,13 +33,18 @@ import com.actionbarsherlock.view.MenuItem;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.example.snms.database.SnmsDAO;
 //import com.fourmob.datetimepicker.date.DatePickerDialog;
 //import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 //import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 //import com.sleepbot.datetimepicker.time.TimePickerDialog;
+import com.example.snms.news.NewsListFragment;
+import com.example.snms.preylist.PreyOverviewFragment;
 
-public abstract class BaseActivity extends SlidingFragmentActivity implements TimePickerDialog.OnTimeSetListener, PreyListFragment.OnHeadlineSelectedListener  {
+@SuppressLint("NewApi")
+public abstract class BaseActivity extends SlidingFragmentActivity implements OnClickListener, TimePickerDialog.OnTimeSetListener, PreyListFragment.OnHeadlineSelectedListener  {
 	
 //	final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, 2007, 10, 1, false);
 
@@ -38,13 +53,19 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements Ti
     
 	private int mTitleRes;
 	protected ListFragment mFrag;
-
+	
+	
 	Fragment currentFragment1;
 	Fragment currentFragment2;
+	ImageView homeButton; 
+	TextView padder; 
 
 	public BaseActivity(int titleRes) {
 		mTitleRes = titleRes;
 	}
+	
+	
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,24 +95,36 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements Ti
 		sm.setShadowWidthRes(R.dimen.shadow_width);
 		sm.setShadowDrawable(R.drawable.shadow);
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-
+		  Display display = getWindowManager().getDefaultDisplay();
+		 DisplayMetrics outMetrics = new DisplayMetrics ();
+		    display.getMetrics(outMetrics);
+		
+		int padding = (int)(outMetrics.widthPixels/5);
+		
+		
 		// sm.setSelectorDrawable(R.drawable.flamingo);
 		sm.setSelectorEnabled(false);
 		sm.setFadeDegree(0.35f);
 		sm.setTouchModeAbove(SlidingMenu.LEFT);
-
+		
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		getSupportActionBar().setIcon(R.drawable.smal);
+		getSupportActionBar().setDisplayShowCustomEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setTitle("");
-
-		//getSupportActionBar().setIcon(R.drawable.ic_logo);
-//		getSupportActionBar().set
-		
-
-		
-
-		// getSupportActionBar().setIcon(R.drawable.ic_logo);
-		// getSupportActionBar().set
-		RequestManager.init(this);
+		//getSupportActionBar() ab.setIcon(R.drawable.your_left_action_icon);
+	      LayoutInflater inflator = (LayoutInflater) this
+	                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	        View v = inflator.inflate(R.layout.snmsactionbarlayout, null);
+	    
+	      
+			homeButton = (ImageView) v.findViewById(R.id.homebutton);
+            ActionBar.LayoutParams params = new 
+ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, 
+ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER); 
+            getSupportActionBar().setCustomView(v, params);
+		    
+			homeButton.setOnClickListener(this);
 
 	}
 
@@ -102,6 +135,11 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements Ti
 			toggle();
 			return true;
 		case R.id.github:
+			switchContent(new PrayCalenderListFragment(),null);
+//		     datePickerDialog.setYearRange(1985, 2028);
+//             datePickerDialog.show(getSupportFragmentManager(), "datepicker");
+			return true;
+		case R.id.homebutton:
 			switchContent(new PrayCalenderListFragment(),null);
 //		     datePickerDialog.setYearRange(1985, 2028);
 //             datePickerDialog.show(getSupportFragmentManager(), "datepicker");
@@ -131,7 +169,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements Ti
 
 		currentFragment1 = fragment1;
 		currentFragment2 = fragment2;
-
+		
 		getSlidingMenu().showContent();
 	}
 
@@ -144,7 +182,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements Ti
 	
 
 	
-    public void onArticleSelected(DateTime time, String name) {
+    @SuppressLint("NewApi")
+	public void onArticleSelected(DateTime time, String name) {
         // The user selected the headline of an article from the HeadlinesFragment
         // Do something here to display that article
     	
@@ -152,7 +191,13 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements Ti
         newFragment.show(getFragmentManager(), "timePicker");
 
     }
-    
+	@Override
+	public void onClick(View v) {
+		if(v.equals(homeButton)) {
+			switchContent(new PreyOverviewFragment(),null);
+		}
+		
+	}
  
 
 

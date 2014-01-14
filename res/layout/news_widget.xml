@@ -1,55 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    
+    
+    <RelativeLayout 
+	  android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/list_padding"
+    android:paddingRight="@dimen/list_padding" 
+    android:orientation="horizontal"
+    android:id="@+id/latestNewsContainer"
+    android:background="@color/white"
+	 >
+        
+	         <com.android.volley.toolbox.NetworkImageView
+	    android:id="@+id/headerImage1"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_width="fill_parent"
+	    android:layout_height="150dp"
+	     android:scaleType="centerCrop"
+	    android:padding="0dp"
+	 />
+        
+	 
+<TextView
+    android:id="@+id/headerText1"
+  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+	  android:padding="5dp"
+    android:layout_alignLeft="@+id/headerImage1"
+    android:layout_alignRight="@+id/headerImage1"
+    android:layout_alignBottom="@+id/headerImage1"
+    android:layout_margin="0dp"
+    
+    android:gravity="bottom"
+     android:background="#99000000"
+    android:text="Hello"
+    android:textColor="@color/white" 
+     android:textAppearance="@android:style/TextAppearance.Large" />
+    />   
+    
+    
     <TextView
-        android:id="@+id/details_news_title"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="fill_vertical"
-        android:padding="1dp"
-        android:textSize="20dp"
-        android:text="Medium Text"
-        android:textAppearance="@android:style/TextAppearance.Large" />
-
+    android:id="@+id/newsIngress"
+  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+ 	 android:layout_marginTop="5dp"
+   	 android:layout_marginLeft="15dp"
+ 	 android:layout_marginRight="15dp"
+    android:layout_below="@+id/headerText1"
+    android:gravity="bottom"
+    android:text="Hello dette er teste ingress"
+    android:textColor="@color/black" 
+     android:textAppearance="@android:style/TextAppearance.Medium" 
+     android:textStyle="italic"
+     />
+     
+    
     <TextView
-        android:id="@+id/details_news_createddate"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-           android:gravity="fill_vertical"
-        android:padding="1dp"
-        android:text="Medium Text"
-        android:textAppearance="@android:style/TextAppearance.Medium" />
+    android:id="@+id/created"
+  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+ 	 android:layout_marginTop="0dp"
+ 	  	 android:layout_marginLeft="15dp"
+ 	 android:layout_marginRight="15dp"
+    android:layout_below="@+id/newsIngress"
+    android:gravity="bottom"
+    android:text="Created 10.01.120 av Massom"
+    android:textColor="@color/black" 
+    android:textStyle="italic"
+     android:textAppearance="@android:style/TextAppearance.Small" />
+    /> 
+    
+    
 
-    <TextView
-        android:id="@+id/details_news_ingress"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:gravity="fill_vertical"
-        android:padding="1dp"
-        android:text="Medium Text"
-        android:textAppearance="@android:style/TextAppearance.Medium" />
 
+ 	   <TextView
+    android:id="@+id/Newstext"
+  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+	  	 android:layout_marginLeft="15dp"
+ 	 android:layout_marginRight="15dp"
+ 	 android:layout_marginTop="20dp"
+    android:layout_below="@+id/created"
+    android:gravity="bottom"
+    android:text="lorod dfd dfjdf d kdjfdkfj  dkfjdkfj dkfj kdfjdkfj kdf  kdfjdkfj dfj kdfj dfj kdfj kdjff djkf  djfkdj fdfj kdjfkdfj"
+    android:textColor="@color/black" 
+     android:textAppearance="@android:style/TextAppearance.Small" />
+    /> 
+    
+          <TextView
+    android:id="@+id/imageText"
+  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+ 	 android:layout_marginBottom="2dp"
+ 	  	 android:layout_marginLeft="15dp"
+ 	 android:layout_marginRight="15dp"
+ 	  android:layout_marginTop="20dp"
+    android:layout_below="@+id/Newstext"
+    android:gravity="left"
+    android:text="Dette er fin dato"
+    android:textColor="@color/black" 
+    android:textStyle="italic"
+     android:textAppearance="@android:style/TextAppearance.Small" />
+    /> 
+    
+    
     <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/details_news_newsImage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:padding="5dp"
-        android:scaleType="fitXY" />
+	    android:id="@+id/newsImage"
+	    android:layout_below="@+id/imageText"
+	    android:layout_marginTop="0dp"
+	    android:layout_height="150dp"
+	    android:layout_width="150dp"
+	    android:scaleType="fitStart"
+	    android:layout_alignLeft="@+id/Newstext"
+	    android:padding="0dp"
+	 />
 
-    <TextView
-        android:id="@+id/details_news_text"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:padding="5dp"
-        android:text="Medium Text"
-        android:textAppearance="@android:style/TextAppearance.Medium" />
+	     
+	  </RelativeLayout>
 
-</LinearLayout>
+    
+    
+    
+ </ScrollView>   

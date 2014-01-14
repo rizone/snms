@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-
-    <TextView
+    android:layout_height="100dip"
+    android:orientation="horizontal"
+    android:background="@drawable/border_none_active_pray" 
+    android:paddingLeft="20dp"
+    >
+	 
+    <com.example.snms.SnmsTextView
         android:id="@+id/row_title"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_width="100dp"
+        android:layout_height="fill_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
-        android:padding="5dp"
-        android:text="Medium Text"
+        android:padding="0dp"
+        android:text="Soloppgang"
         android:textAppearance="@android:style/TextAppearance.Medium" />
 
-    <TextView
+    <com.example.snms.SnmsTextView
         android:id="@+id/row_time"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_width="60dip"
+        android:layout_height="fill_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:padding="5dp"
         android:text="Medium Text"
-        android:textAppearance="@android:style/TextAppearance.Medium" />
-
-    <TextView
+         android:textAppearance="@android:style/TextAppearance.Medium" />
+    <com.example.snms.SnmsTextView
         android:id="@+id/row_status"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_width="83dip"
+        android:layout_height="fill_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:padding="5dp"
@@ -35,9 +37,10 @@
         android:textAppearance="@android:style/TextAppearance.Medium" />
     
     <ImageView 
-        android:layout_height="match_parent" 
-        android:layout_width="0dp" 
-        android:padding="5dp" 
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content" 
+        android:padding="5dp"
+        android:onClick="setAlarm" 
         android:gravity="center_vertical" 
         android:layout_weight="1" 
         android:id="@+id/alarmclock_inactive" 
