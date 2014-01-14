@@ -93,7 +93,7 @@ public void onTimeSet(TimePicker view, int hour, int minute) {
 		// set calender date:
 		final Calendar cal = Util.GregorianCalender(date);
 		final Calendar cal2 = Util.GregorianCalender(date2);
-		Util.SetRepeatingAlarm(cal, Util.getAlarmId(cal2), intent, context);
+		Util.SetRepeatingAlarm(cal, Util.getAlarmId(cal2), intent, context, name);
 		
 		//Store alarm
 		DBAdapter db = new DBAdapter(context);

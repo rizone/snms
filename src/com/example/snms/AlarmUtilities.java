@@ -55,7 +55,7 @@ public class AlarmUtilities {
 		if (cal.after(Calendar.getInstance())) {
 			//Get the time for the next event the day after for repeating
 			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH);
+			int month = cal.get(Calendar.MONTH)+1;
 			DateTime currentDate = new DateTime(year, month, 1, 1, 0, 0, 000); 
 			DateTime NextDay;
 			
@@ -74,15 +74,34 @@ public class AlarmUtilities {
 			
 			System.out.println("PreyItemList: " + PreyItemList);
 			
-			long intervalMillis = cal.getTimeInMillis() + 10000;
-
+			DateTime nextPrey = new DateTime();
+			
+			for(PreyItem item : PreyItemList) {
+				if(item.getName().equals(name)){
+					nextPrey = item.getTime();
+				}
+			}
+			
+			
+			long intervalMillis = nextPrey.getMillis() - cal.getTimeInMillis();
+			long hoursToNextPray = intervalMillis/(1000*60*60);
+			long minutesToNextPray = intervalMillis/(1000*60);
+			System.out.println("NextPray.getTime: " + nextPrey);
+			System.out.println("Tid til bønn: " + cal.getTimeInMillis());
+			System.out.println("Tid til neste bønn millis: " + nextPrey.getMillis());
+			System.out.println("Tid til neste bønn: " + intervalMillis);
+			System.out.println("timer :" + hoursToNextPray);
+			System.out.println("minutter :" + minutesToNextPray);
+			
+			
+//			long intervalMillis = 10000;	//for test
 			//End get time for next repeating alarm
 			
 //			Intent intent = new Intent(this, AlarmReceiverActivity.class);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, id,
 				intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-			am.setRepeating(AlarmManager.RTC_WAKEUP, intervalMillis, cal.getTimeInMillis(), pendingIntent);
+			am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), intervalMillis, pendingIntent);
 			
 			Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT).show();
 			
