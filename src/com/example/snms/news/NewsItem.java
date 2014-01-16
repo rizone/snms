@@ -13,6 +13,14 @@ public class NewsItem {
 	String author; 
 	String imgUrl; 
 	String _id; 
+	Integer cat;
+	String address;
+	DateTime from;
+	DateTime to;
+	Double lat;
+	Double lng;
+	Boolean showMap;
+
 	
 	
 	public String getIngress() {
@@ -68,6 +76,68 @@ public class NewsItem {
 	public void setCreatedDate(DateTime createdDate) {
 		this.createdDate = createdDate;
 	}
+
+	public int getCat() {
+		return cat;
+	}
+
+	public void setCat(int cat) {
+		this.cat = cat;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public DateTime getFrom() {
+		return from;
+	}
+
+	public void setFrom(DateTime from) {
+		this.from = from;
+	}
+
+	public DateTime getTo() {
+		return to;
+	}
+
+	public void setTo(DateTime to) {
+		this.to = to;
+	}
+
+	public Double getLat() {
+		return lat;
+	}
+
+	public void setLat(Double lat) {
+		this.lat = lat;
+	}
+
+	public Double getLng() {
+		return lng;
+	}
+
+	public void setLng(Double lng) {
+		this.lng = lng;
+	}
+
+	public Boolean getShowMap() {
+		return showMap;
+	}
+
+	public void setShowMap(Boolean showMap) {
+		this.showMap = showMap;
+	}
+
+	public void setCat(Integer cat) {
+		this.cat = cat;
+	}
+	
+	
 	
 	
 }

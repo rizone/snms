@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    
+    
+    <RelativeLayout 
+	  android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/list_padding"
+    android:paddingRight="@dimen/list_padding" 
+    android:orientation="horizontal"
+    android:id="@+id/latestNewsContainer"
+    android:background="@color/white"
+	 >
+        
+	         <com.android.volley.toolbox.NetworkImageView
+	    android:id="@+id/headerImage1"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_width="fill_parent"
+	    android:layout_height="250dp"
+	     android:scaleType="centerCrop"
+	    android:padding="0dp"
+	 />
+        
+	 
+<TextView
+    android:id="@+id/headerText1"
+  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+	  android:padding="5dp"
+    android:layout_alignBottom="@+id/headerImage1"
+    android:layout_margin="0dp"
+    android:gravity="bottom"
+    android:text="Hello"
+    android:textColor="@color/white" 
+     android:background="@color/snmsDarkBlue"
+     android:textAppearance="@android:style/TextAppearance.Large" />
+    />   
+    
+
+    
+  <LinearLayout
+    android:layout_width="fill_parent"
+      android:id="@+id/addressWrapper"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="5dp" 
+    android:background="@drawable/border"
+   	android:layout_marginTop="30dp"
+   	android:layout_below="@+id/headerText1"
+   	android:layout_marginLeft="15dp"
+ 	android:layout_marginRight="15dp"
+    android:gravity="left">
+    
+      
+    
+    <TextView
+    android:id="@+id/addressLine1"
+  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:text="Stensbergaten 17a"
+    android:textColor="@color/black" 
+     android:textAppearance="@android:style/TextAppearance.Medium" 
+     />
+    
+    <TextView
+    android:id="@+id/addressLine2"
+  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:text="Oslo"
+    android:textColor="@color/black" 
+     android:textAppearance="@android:style/TextAppearance.Small" 
+     />
+    
+     
+    </LinearLayout>
+    
+  	
+  
+  	  <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+       android:id="@+id/timeWrapper"
+    android:paddingLeft="5dp" 
+    android:background="@drawable/border"
+   	android:layout_marginTop="15dp"
+   	android:layout_below="@+id/addressWrapper"
+   	android:layout_marginLeft="15dp"
+ 	android:layout_marginRight="15dp"
+ 	     android:layout_gravity="left"
+ 	      android:paddingBottom="13dp"
+    android:gravity="left">
+
+  	      <ImageView
+  	          android:id="@+id/timeImage"
+  	          android:layout_width="25dp"
+  	          android:layout_height="25dp"
+  	          android:gravity="bottom"
+  	          android:padding="0dp"
+  	          android:layout_marginRight="10dp"
+  	          android:src="@drawable/alarmclock_inactive" />
+    
+    <TextView
+    android:id="@+id/timeText"
+  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:layout_gravity="left"
+    android:paddingTop="3dp"
+    android:text="Søndag 19, 20:30"
+    android:textColor="@color/black" 
+     android:textAppearance="@android:style/TextAppearance.Small" 
+     />
+    
+     
+    </LinearLayout>
+
+
+ 	   <TextView
+    android:id="@+id/Newstext"
+  android:layout_width="fill_parent"
+	  android:layout_height="wrap_content"
+	  	 android:layout_marginLeft="15dp"
+ 	 android:layout_marginRight="15dp"
+ 	 android:layout_marginTop="10dp"
+    android:layout_below="@+id/timeWrapper"
+    android:gravity="bottom"
+    android:padding="5dp"
+    android:text="lorod dfd dfjdf d kdjfdkfj  dkfjdkfj dkfj kdfjdkfj kdf  kdfjdkfj dfj kdfj dfj kdfj kdjff djkf  djfkdj fdfj kdjfkdfj"
+    android:textColor="@color/black" 
+     android:textAppearance="@android:style/TextAppearance.Medium" />
+    /> 
+    
+    
+
+	     
+	  </RelativeLayout>
+
+    
+    
+    
+ </ScrollView>   

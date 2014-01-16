@@ -13,12 +13,14 @@ import com.example.snms.utils.SnmsPrayTimeAdapter;
 //import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.app.Activity;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.app.Fragment;
@@ -40,7 +42,7 @@ public class PreyOverView extends  BaseActivity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		PreyOverView.context = getApplicationContext();		//Dag-Martin
 		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
 

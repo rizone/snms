@@ -56,6 +56,12 @@ public class EventListFragment extends ListFragment {
 	@Override
 	  public void onListItemClick(ListView l, View v, int position, long id) {
 	   NewsItem clickedDetail = (NewsItem)l.getItemAtPosition(position);
+	   /*
+		startActivity(
+				new Intent(
+				    android.content.Intent.ACTION_VIEW, 
+				    Uri.parse("geo:51.49234,7.43045")));
+	   */
 	   NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(clickedDetail);
 	   switchFragment(myDetailFragment,null);
 
