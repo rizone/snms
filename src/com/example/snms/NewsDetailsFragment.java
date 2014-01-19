@@ -13,8 +13,10 @@ import com.example.snms.news.NewsManager;
 import com.example.snms.news.EventListFragment.NewsScrollListner;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,6 +47,8 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 	TextView timeFrom;
 	TextView addressLine1;
 	TextView addressLine2;
+	TextView monthText; 
+	TextView monthNumber; 
 
 	public NewsDetailsFragment() {
 		super();
@@ -75,7 +79,10 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 					.findViewById(R.id.mapImage);
 			addressLine1 = (TextView) root.findViewById(R.id.addressLine1);
 			addressLine2 = (TextView) root.findViewById(R.id.addressLine2);
+			monthText = (TextView) root.findViewById(R.id.dateWrapMonthText);
+			monthNumber = (TextView) root.findViewById(R.id.dateWrapMonthNumber); 
 			timeFrom = (TextView) root.findViewById(R.id.timeText);
+			timeFrom.setOnClickListener(this);
 			text = (TextView) root.findViewById(R.id.Newstext);
 			return root;
 		}
@@ -117,8 +124,18 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			from = from.plusHours(1);
 			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE, MMM d");
 			DateTimeFormatter formatter2 = DateTimeFormat.forPattern("kk:mm");
+			DateTimeFormatter formatterMonth = DateTimeFormat.forPattern("MM");
+			DateTimeFormatter formatterDay = DateTimeFormat.forPattern("dd");
+			
 			String formattedDate = formatter.print(from);
 			String formatedTime = formatter2.print(from);
+			
+			String formatedMonth = formatterMonth.print(from);
+			String formatedDay = formatterDay.print(from);
+			
+			monthNumber.setText(formatedDay);
+			monthText.setText(formatedMonth.toUpperCase());
+			
 			timeFrom.setText(formattedDate + " klokken " + formatedTime);
 			text.setText(newsItem.getText());
 			String [] address =  newsItem.getAddress().split(",");
@@ -153,6 +170,32 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			String uri = String.format(Locale.ENGLISH, "geo:%f,%f?z=%d&q=%f,%f (%s)", newsItem.getLat(), newsItem.getLng(),10,  newsItem.getLat(), newsItem.getLng(), newsItem.getTitle());
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 			getActivity().startActivity(intent);
+		}
+		if(v.equals(timeFrom)){
+			String[] projection = new String[] { "_id", "name" };
+			Uri calendars = Uri.parse("content://calendar/calendars");
+			     
+			Cursor managedCursor =
+			   getActivity().managedQuery(calendars, projection, null, null, null);
+			if (managedCursor.moveToFirst()) {
+				 String calName; 
+				 String calId; 
+				 int nameColumn = managedCursor.getColumnIndex("name"); 
+				 int idColumn = managedCursor.getColumnIndex("_id");
+				 do {
+				    calName = managedCursor.getString(nameColumn);
+				    calId = managedCursor.getString(idColumn);
+				 } while (managedCursor.moveToNext());
+				 ContentValues event = new ContentValues();
+				 event.put("calendar_id", calId);
+				 event.put("title", newsItem.getTitle());
+				 event.put("description", newsItem.getText());
+				 event.put("eventLocation",newsItem.getAddress());
+				 event.put("dtstart", newsItem.getFrom().getMillis());
+				 event.put("dtend", newsItem.getTo().getMillis());
+				  Uri eventsUri = Uri.parse("content://calendar/events");
+				  Uri url = getActivity().getContentResolver().insert(eventsUri, event);
+			}
 		}
 		
 	}
