@@ -38,6 +38,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 	TextView ingress;
 	NetworkImageView imageHeader;
 	NetworkImageView image;
+	NetworkImageView mapImage;
 	TextView imageText;
 
 	// Event stuff
@@ -70,6 +71,8 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			imageText = (TextView) root.findViewById(R.id.headerText1);
 			imageHeader = (NetworkImageView) root
 					.findViewById(R.id.headerImage1);
+			mapImage = (NetworkImageView) root
+					.findViewById(R.id.mapImage);
 			addressLine1 = (TextView) root.findViewById(R.id.addressLine1);
 			addressLine2 = (TextView) root.findViewById(R.id.addressLine2);
 			timeFrom = (TextView) root.findViewById(R.id.timeText);
@@ -103,9 +106,11 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			text.setText(newsItem.getText());
 		} else {
 		String gmapsUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+newsItem.getLat()+","+newsItem.getLng()+"&zoom=15&size=600x500&sensor=false&markers=color:blue%7Clabel:S%7C"+newsItem.getLat()+","+newsItem.getLng();	
-			imageHeader.setImageUrl(gmapsUrl, ImageCacheManager
+			mapImage.setImageUrl(gmapsUrl, ImageCacheManager
 					.getInstance().getImageLoader());
-			imageHeader.setOnClickListener(this);
+			mapImage.setOnClickListener(this);
+			imageHeader.setImageUrl(newsItem.getImgUrl(), ImageCacheManager
+					.getInstance().getImageLoader());
 			DateTime from = newsItem.getFrom();
 			DateTime to = newsItem.getTo();
 			imageText.setText(newsItem.getTitle());
@@ -144,7 +149,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		if(v.equals(imageHeader)){
+		if(v.equals(mapImage)){
 			String uri = String.format(Locale.ENGLISH, "geo:%f,%f?z=%d&q=%f,%f (%s)", newsItem.getLat(), newsItem.getLng(),10,  newsItem.getLat(), newsItem.getLng(), newsItem.getTitle());
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
 			getActivity().startActivity(intent);

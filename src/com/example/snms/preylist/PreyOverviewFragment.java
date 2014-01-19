@@ -160,7 +160,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	//	mheaderView.setPadding(0, 0, 0, 0);
 		renderPreyList();
 		renderAlarmState();
-		NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,0,1);
+		NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,0,0);
 
 	}
 
