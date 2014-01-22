@@ -35,7 +35,10 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.example.snms.database.SnmsDAO;
+import com.example.snms.network.RequestManager;
 //import com.fourmob.datetimepicker.date.DatePickerDialog;
 //import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 //import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -44,33 +47,31 @@ import com.example.snms.news.NewsListFragment;
 import com.example.snms.preylist.PreyOverviewFragment;
 
 @SuppressLint("NewApi")
-public abstract class BaseActivity extends SlidingFragmentActivity implements OnClickListener, TimePickerDialog.OnTimeSetListener, PreyListFragment.OnHeadlineSelectedListener  {
-	
-//	final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, 2007, 10, 1, false);
+public abstract class BaseActivity extends SlidingFragmentActivity implements
+		OnClickListener, TimePickerDialog.OnTimeSetListener {
 
+	// final DatePickerDialog datePickerDialog =
+	// DatePickerDialog.newInstance(this, 2007, 10, 1, false);
 
-//    final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, 0 ,0, false);
-    
+	// final TimePickerDialog timePickerDialog =
+	// TimePickerDialog.newInstance(this, 0 ,0, false);
+
 	private int mTitleRes;
 	protected ListFragment mFrag;
-	
-	
+
 	Fragment currentFragment1;
 	Fragment currentFragment2;
-	ImageView homeButton; 
-	TextView padder; 
+	ImageView homeButton;
+	TextView padder;
 
 	public BaseActivity(int titleRes) {
 		mTitleRes = titleRes;
 	}
-	
-	
-	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);        
-        
+		super.onCreate(savedInstanceState);
+
 		setTitle(mTitleRes);
 
 		// set the Behind View
@@ -85,9 +86,6 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 			mFrag = (ListFragment) this.getSupportFragmentManager()
 					.findFragmentById(R.id.menu_frame);
 		}
-		
-
-		
 
 		// customize the SlidingMenu
 		SlidingMenu sm = getSlidingMenu();
@@ -95,36 +93,34 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements On
 		sm.setShadowWidthRes(R.dimen.shadow_width);
 		sm.setShadowDrawable(R.drawable.shadow);
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-		  Display display = getWindowManager().getDefaultDisplay();
-		 DisplayMetrics outMetrics = new DisplayMetrics ();
-		    display.getMetrics(outMetrics);
-		
-		int padding = (int)(outMetrics.widthPixels/5);
-		
-		
+		Display display = getWindowManager().getDefaultDisplay();
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		display.getMetrics(outMetrics);
+
+		int padding = (int) (outMetrics.widthPixels / 5);
+
 		// sm.setSelectorDrawable(R.drawable.flamingo);
 		sm.setSelectorEnabled(false);
 		sm.setFadeDegree(0.35f);
 		sm.setTouchModeAbove(SlidingMenu.LEFT);
-		
+
 		getSupportActionBar().setDisplayShowCustomEnabled(true);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		getSupportActionBar().setIcon(R.drawable.smal);
 		getSupportActionBar().setDisplayShowCustomEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		//getSupportActionBar() ab.setIcon(R.drawable.your_left_action_icon);
-	      LayoutInflater inflator = (LayoutInflater) this
-	                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	        View v = inflator.inflate(R.layout.snmsactionbarlayout, null);
-	    
-	      
-			homeButton = (ImageView) v.findViewById(R.id.homebutton);
-            ActionBar.LayoutParams params = new 
-ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, 
-ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER); 
-            getSupportActionBar().setCustomView(v, params);
-		    
-			homeButton.setOnClickListener(this);
+		// getSupportActionBar() ab.setIcon(R.drawable.your_left_action_icon);
+		LayoutInflater inflator = (LayoutInflater) this
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View v = inflator.inflate(R.layout.snmsactionbarlayout, null);
+
+		homeButton = (ImageView) v.findViewById(R.id.homebutton);
+		ActionBar.LayoutParams params = new ActionBar.LayoutParams(
+				ActionBar.LayoutParams.MATCH_PARENT,
+				ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+		getSupportActionBar().setCustomView(v, params);
+
+		homeButton.setOnClickListener(this);
 
 	}
 
@@ -135,41 +131,47 @@ ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 			toggle();
 			return true;
 		case R.id.github:
-			switchContent(new PrayCalenderListFragment(),null);
-//		     datePickerDialog.setYearRange(1985, 2028);
-//             datePickerDialog.show(getSupportFragmentManager(), "datepicker");
+			switchContent(new PrayCalenderListFragment(), null);
+			// datePickerDialog.setYearRange(1985, 2028);
+			// datePickerDialog.show(getSupportFragmentManager(), "datepicker");
 			return true;
 		case R.id.homebutton:
-			switchContent(new PrayCalenderListFragment(),null);
-//		     datePickerDialog.setYearRange(1985, 2028);
-//             datePickerDialog.show(getSupportFragmentManager(), "datepicker");
+			switchContent(new PrayCalenderListFragment(), null);
+			// datePickerDialog.setYearRange(1985, 2028);
+			// datePickerDialog.show(getSupportFragmentManager(), "datepicker");
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	public void switchContent(Fragment fragment1, Fragment fragment2) {
-
+		RequestManager.getRequestQueue().cancelAll(
+				new RequestQueue.RequestFilter() {
+					@Override
+					public boolean apply(Request<?> request) {
+						return true;
+					}
+		});
 		if (fragment2 == null) {
 			if (currentFragment2 != null) {
-				getSupportFragmentManager().beginTransaction()
-						.remove(currentFragment1).remove(currentFragment2)
-						.replace(R.id.content_frame, fragment1).commit();
+				getSupportFragmentManager().beginTransaction().
+						 remove(currentFragment1).remove(currentFragment2)
+						.replace(R.id.content_frame, fragment1).addToBackStack("tag").commit();
 			} else {
 				getSupportFragmentManager().beginTransaction()
 						.remove(currentFragment1)
-						.replace(R.id.content_frame, fragment1).commit();
+						.replace(R.id.content_frame, fragment1).addToBackStack("tag").commit();
 			}
 		} else {
 			getSupportFragmentManager().beginTransaction()
 					.remove(currentFragment1)
 					.replace(R.id.content_frame, fragment1)
-					.replace(R.id.content_frame2, fragment2).commit();
+					.replace(R.id.content_frame2, fragment2).addToBackStack("tag").commit();
 		}
 
 		currentFragment1 = fragment1;
 		currentFragment2 = fragment2;
-		
+
 		getSlidingMenu().showContent();
 	}
 
@@ -179,34 +181,30 @@ ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 		return true;
 	}
 
-	
-
-	
-    @SuppressLint("NewApi")
+	@SuppressLint("NewApi")
 	public void onArticleSelected(DateTime time, String name) {
-        // The user selected the headline of an article from the HeadlinesFragment
-        // Do something here to display that article
-    	
-        DialogFragment newFragment = new TimePickerFragment(time, name);
-        newFragment.show(getFragmentManager(), "timePicker");
+		// The user selected the headline of an article from the
+		// HeadlinesFragment
+		// Do something here to display that article
 
-    }
+		DialogFragment newFragment = new TimePickerFragment(time, name);
+		newFragment.show(getFragmentManager(), "timePicker");
+
+	}
+
 	@Override
 	public void onClick(View v) {
-		if(v.equals(homeButton)) {
-			switchContent(new PreyOverviewFragment(),null);
+		if (v.equals(homeButton)) {
+			switchContent(new PreyOverviewFragment(), null);
 		}
-		
+
 	}
- 
 
-
-//	@Override
-//	public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
-	
+	// @Override
+	// public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute)
+	// {
+	// // TODO Auto-generated method stub
+	//
+	// }
 
 }

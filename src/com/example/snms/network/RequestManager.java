@@ -32,7 +32,7 @@ public class RequestManager {
 	public static void init(Context context) {
 		mRequestQueue = Volley.newRequestQueue(context);
 	}
-
+	
 	/**
 	 * @return
 	 * 		instance of the queue

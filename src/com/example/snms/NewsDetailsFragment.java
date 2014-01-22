@@ -110,6 +110,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			DateTime to = newsItem.getTo();
 			imageText.setText(newsItem.getTitle());
 			from = from.plusHours(1);
+			
 			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE, MMM d");
 			DateTimeFormatter formatter2 = DateTimeFormat.forPattern("kk:mm");
 			String formattedDate = formatter.print(from);

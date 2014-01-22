@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.android.volley.*;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.Volley;
-import com.example.snms.PreyListFragment.PreyListAdapter;
 import com.example.snms.domain.HolydayItem;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;

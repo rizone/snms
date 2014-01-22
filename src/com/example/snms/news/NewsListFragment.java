@@ -36,19 +36,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class NewsListFragment extends ListFragment {
 
 	private NewsListAdapter adapter;
 	boolean isLoading = false; 
+	ProgressBar progressBar;
+	TextView errorMessage;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		   super.onCreateView(inflater, container,
 			        savedInstanceState);
 
-		   return inflater.inflate(R.layout.listnews, container,false);
+		  View root = inflater.inflate(R.layout.listnews, container,false);
+		  progressBar = (ProgressBar)root.findViewById(R.id.progress);
+		  return root; 
 
 	}
 	
@@ -91,9 +96,10 @@ public class NewsListFragment extends ListFragment {
 			
 	private Response.Listener <NewsItem[]> createSuccessListener() {
 	    return new Response.Listener <NewsItem[]>() {
-	       
 	    	@Override
 			public void onResponse(NewsItem[] response) {
+	    		
+	    		progressBar.setVisibility(View.GONE);
 	    		adapter = new NewsListAdapter(getActivity());
 	    		setListAdapter(adapter);
 	    		adapter.clear();
@@ -110,6 +116,7 @@ public class NewsListFragment extends ListFragment {
 	    return new Response.ErrorListener() {
 	        @Override
 	        public void onErrorResponse(VolleyError error) {
+	        	progressBar.setVisibility(View.GONE);
 	        	//TODO : Log error and get prey times from local storage
 	            //error.getStackTrace();
 	        	Log.e("error",error.toString());

@@ -129,6 +129,25 @@
 	 >
        	</LinearLayout>
        	
+ 
+	<LinearLayout 
+	android:id="@+id/newsJummaSpinnerProgress"
+    android:layout_width="match_parent"
+    android:layout_height="50dip"
+    android:orientation="horizontal"
+       android:layout_gravity="center"
+    android:background="@drawable/border_none_active_pray" 
+    android:paddingLeft="20dp">	
+	
+<ProgressBar
+            android:id="@+id/newsJummaSpinnerProgress2"
+            style="@style/AppTheme"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+   </ProgressBar>  
+   
+</LinearLayout>
 	<LinearLayout 
 	android:id="@+id/jummacontainer"
     android:layout_width="match_parent"
@@ -224,7 +243,16 @@
             android:adjustViewBounds="true"
             android:src="@drawable/rightarrow_bg"/> 
     </LinearLayout>    
-	    
+    
+       
+     
+     <ProgressBar
+            android:id="@+id/newsSpinnerProgress"
+            style="@style/AppTheme"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </ProgressBar>    
         
 <RelativeLayout 
 	  android:layout_width="match_parent"

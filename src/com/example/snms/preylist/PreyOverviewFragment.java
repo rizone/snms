@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
@@ -17,7 +19,6 @@ import com.example.snms.NewsDetailsFragment;
 import com.example.snms.PreyCountDownTimer;
 import com.example.snms.PreyOverView;
 import com.example.snms.R;
-import com.example.snms.PreyListFragment.PreyListAdapter;
 import com.example.snms.alarm.Alarm;
 import com.example.snms.alarm.AlarmChangeListner;
 import com.example.snms.alarm.AlarmDialogFragment;
@@ -26,6 +27,7 @@ import com.example.snms.domain.PreyItem;
 import com.example.snms.images.ImageCacheManager;
 import com.example.snms.jumma.JummaAdaptor;
 import com.example.snms.jumma.JummaListner;
+import com.example.snms.network.RequestManager;
 import com.example.snms.news.NewsItem;
 import com.example.snms.news.NewsManager;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
@@ -55,6 +57,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -79,10 +82,12 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private CountDownTimer preyCountDownTimer;
 	private LinearLayout preyRowContainer;
 	private LinearLayout jummaContainer;
+	private LinearLayout newsJummaSpinnerProgress;
 	private RelativeLayout latestNewsContainer;
 	private Map<String, View> preyNamePreyRowMap;
 	private Map<String, ImageView> alarmButtonNameMap = new HashMap<String,ImageView>();
 	private AlarmHelper alarmHelper;
+	private ProgressBar newsSpinnerProgress;
 	
 	private NetworkImageView newsImage1; 
 	private TextView newsText1;
@@ -114,8 +119,11 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		prevNews = (ImageView) root.findViewById(R.id.prev_news);
 		prevNews.setOnClickListener(this);
 		
-		
+		newsSpinnerProgress = (ProgressBar) root.findViewById(R.id.newsSpinnerProgress);
+		newsJummaSpinnerProgress = (LinearLayout) root.findViewById(R.id.newsJummaSpinnerProgress);
 		latestNewsContainer = (RelativeLayout)root.findViewById(R.id.latestNewsContainer);
+		latestNewsContainer.setVisibility(View.GONE);
+	
 		prevDay.setOnClickListener(this);
 		currentDate = new DateTime();
 		timeCurrentlyUsedInPreyOverView = currentDate;
@@ -128,6 +136,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		newsText2= (TextView)root.findViewById(R.id.newsImage2Text);
 		newsText2.setVisibility(View.GONE);
 		jummaContainer = (LinearLayout)root.findViewById(R.id.jummacontainer);
+		jummaContainer.setVisibility(View.GONE);
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
 		currentDay = (TextView) root.findViewById(R.id.prey_current_day);
@@ -154,17 +163,30 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		cancelAllPreviousRequest();
 		preyTimes = loadPrayTimes(new DateTime());
 		setUpCurrentDay();
 		jummaAdaptor.tryFethingJummaRemote(this.timeCurrentlyUsedInPreyOverView);
 	//	mheaderView.setPadding(0, 0, 0, 0);
 		renderPreyList();
 		renderAlarmState();
+		
+		
 		NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,0,1);
 
 	}
 
 	
+	private void cancelAllPreviousRequest() {
+		RequestManager.getRequestQueue().cancelAll(new RequestQueue.RequestFilter() {
+		    @Override
+		        public boolean apply(Request<?> request) {
+		            return true;
+		        }
+		 });
+	}
+
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 	}
@@ -504,6 +526,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	        public void onErrorResponse(VolleyError error) {
 	        	//TODO : Log error and get prey times from local storage
 	            //error.getStackTrace();
+	        	newsSpinnerProgress.setVisibility(View.GONE);
+	        	latestNewsContainer.setVisibility(View.VISIBLE);
 	        	newsText2.setText("ingen nyheter er tilgjenngelig");
 	        	Log.e("error",error.toString());
 	        }
@@ -518,7 +542,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	       
 	    	@Override
 			public void onResponse(NewsItem[] response) {
-	    		
+	    		newsSpinnerProgress.setVisibility(View.GONE);
+	    		latestNewsContainer.setVisibility(View.VISIBLE);
 	    		Display display = getActivity().getWindowManager().getDefaultDisplay();
 	    		Point size = new Point();
 	    		display.getSize(size);
@@ -558,7 +583,9 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	
 	@Override
 	public void updateJumma(PreyItem item) {
+		newsJummaSpinnerProgress.setVisibility(View.GONE);
 		
+		jummaContainer.setVisibility(View.VISIBLE);
 	 if(isAdded()) {
 		TextView jummaTime = (TextView)jummaContainer.findViewById(R.id.row_time_jumma);
 		TextView jummaStatus = (TextView)jummaContainer.findViewById(R.id.row_status_jumma);
