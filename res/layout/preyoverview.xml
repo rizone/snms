@@ -228,7 +228,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:paddingBottom="6dp"
-            android:text="Siste nyheter"
+            android:text="Siste nytt"
             android:textAppearance="@android:style/TextAppearance.Medium"
             android:textColor="@color/white"
             android:textSize="16dp" >

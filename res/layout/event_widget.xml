@@ -20,39 +20,104 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true"
 	    android:layout_width="fill_parent"
-	    android:layout_height="250dp"
+	    android:layout_height="180dp"
 	     android:scaleType="centerCrop"
 	    android:padding="0dp"
 	 />
-        
+ 
+	         
+<LinearLayout
+      android:layout_width="fill_parent"
+      android:id="@+id/titleWrapper"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dp" 
+    android:background="@drawable/border2"
+     android:layout_alignBottom="@+id/headerImage1"
+    android:gravity="left">	 
+    
+    
+    <LinearLayout
+      android:layout_width="60dp"
+      android:id="@+id/titleWrapper"
+    android:layout_height="60dp"
+    android:paddingLeft="0dp" 
+    android:orientation="vertical"
+    android:background="@drawable/eventstimebg"
+    android:gravity="center">	 
+    
+    <TextView
+    android:id="@+id/dateWrapMonthText"
+  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	  android:padding="0dp"
+    android:layout_margin="0dp"
+    android:text="FEB"
+      android:gravity="center"
+    android:textColor="@color/white" 
+    android:textStyle="bold"
+     android:textAppearance="@android:style/TextAppearance.Small" />
+    />   
+    
+        <TextView
+    android:id="@+id/dateWrapMonthNumber"
+  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+	   android:textStyle="bold"
+    android:layout_margin="0dp"
+      android:gravity="center"
+      android:padding="0dp"
+    android:text="22"
+    android:textColor="@color/white" 
+     android:textAppearance="@android:style/TextAppearance.Large" />
+    /> 
+    
+	 </LinearLayout>
 	 
 <TextView
     android:id="@+id/headerText1"
-  android:layout_width="fill_parent"
-	  android:layout_height="wrap_content"
+  android:layout_width="wrap_content"
+	  android:layout_height="60dp"
 	  android:padding="5dp"
-    android:layout_alignBottom="@+id/headerImage1"
-    android:layout_margin="0dp"
-    android:gravity="bottom"
+    android:layout_marginLeft="30dp"
+    android:gravity="center"
     android:text="Hello"
-    android:textColor="@color/white" 
-     android:background="@color/snmsDarkBlue"
+    android:textColor="@color/black" 
      android:textAppearance="@android:style/TextAppearance.Large" />
     />   
     
+	
 
-    
-  <LinearLayout
-    android:layout_width="fill_parent"
+   </LinearLayout> 
+
+
+<LinearLayout
+      android:layout_width="fill_parent"
       android:id="@+id/addressWrapper"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingLeft="5dp" 
-    android:background="@drawable/border"
-   	android:layout_marginTop="30dp"
-   	android:layout_below="@+id/headerText1"
+   	android:layout_marginTop="10dp"
+   	android:layout_below="@+id/titleWrapper"
    	android:layout_marginLeft="15dp"
  	android:layout_marginRight="15dp"
+    android:gravity="left">
+    
+    <ImageView
+  	          android:id="@+id/timeImage1"
+  	          android:layout_width="25dp"
+  	          android:layout_height="25dp"
+  	          android:gravity="bottom"
+  	          android:paddingTop="5dp"
+  	          android:layout_marginRight="10dp"
+  	          android:src="@drawable/ic_action_place" />
+
+
+  <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+   	android:layout_below="@+id/headerText1"
     android:gravity="left">
     
       
@@ -77,10 +142,44 @@
      android:textAppearance="@android:style/TextAppearance.Small" 
      />
     
+    
+    
      
     </LinearLayout>
     
+   
+     
+    
+  	</LinearLayout>
   	
+
+		  <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+       android:id="@+id/mapWrapper"
+    android:background="@drawable/border"
+   	android:layout_marginTop="3dp"
+   	android:layout_below="@+id/addressWrapper"
+   	android:layout_marginLeft="0dp"
+ 	android:layout_marginRight="0dp"
+ 	     android:layout_gravity="left"
+ 	      android:paddingBottom="13dp"
+    android:gravity="left">
+        
+		           <com.android.volley.toolbox.NetworkImageView
+	    android:id="@+id/mapImage"
+	    android:layout_marginLeft="0dp"
+	    android:layout_width="fill_parent"
+	    android:layout_height="100dp"
+	     android:scaleType="centerCrop"
+	    android:padding="0dp"
+	 />
+		      
+		      
+		      </LinearLayout>
+
+
   
   	  <LinearLayout
     android:layout_width="fill_parent"
@@ -90,7 +189,7 @@
     android:paddingLeft="5dp" 
     android:background="@drawable/border"
    	android:layout_marginTop="15dp"
-   	android:layout_below="@+id/addressWrapper"
+   	android:layout_below="@+id/mapWrapper"
    	android:layout_marginLeft="15dp"
  	android:layout_marginRight="15dp"
  	     android:layout_gravity="left"
