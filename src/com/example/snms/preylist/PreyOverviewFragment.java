@@ -15,7 +15,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.snms.BaseActivity;
-import com.example.snms.NewsDetailsFragment;
 import com.example.snms.PreyCountDownTimer;
 import com.example.snms.PreyOverView;
 import com.example.snms.R;
@@ -28,6 +27,7 @@ import com.example.snms.images.ImageCacheManager;
 import com.example.snms.jumma.JummaAdaptor;
 import com.example.snms.jumma.JummaListner;
 import com.example.snms.network.RequestManager;
+import com.example.snms.news.NewsDetailsFragment;
 import com.example.snms.news.NewsItem;
 import com.example.snms.news.NewsManager;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
@@ -70,10 +70,10 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private int filter; 
 	private List<PreyItem> preyTimes;
 	private TextView currentDay;
-	private ImageView nextDay;
-	private ImageView  prevDay;
-	private ImageView nextNews;
-	private ImageView prevNews;
+	private ImageButton nextDay;
+	private ImageButton  prevDay;
+	private ImageButton nextNews;
+	private ImageButton prevNews;
 	private TextView calender;
 	private DateTime currentDateTime;
 	DatePickerDialog datePickerDialog;
@@ -110,13 +110,13 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		addPreyRowsToContainerAndStoreInMap(inflater);
 		currentDay = (TextView) root.findViewById(R.id.prey_current_day);
 		currentDay.setOnClickListener(this);
-		nextDay = (ImageView) root.findViewById(R.id.prey_next_day);
+		nextDay = (ImageButton) root.findViewById(R.id.prey_next_day);
 		nextDay.setOnClickListener(this);
-		prevDay = (ImageView) root.findViewById(R.id.prey_prev_day);
+		prevDay = (ImageButton) root.findViewById(R.id.prey_prev_day);
 		
-		nextNews = (ImageView) root.findViewById(R.id.next_news);
+		nextNews = (ImageButton) root.findViewById(R.id.next_news);
 		nextNews.setOnClickListener(this);
-		prevNews = (ImageView) root.findViewById(R.id.prev_news);
+		prevNews = (ImageButton) root.findViewById(R.id.prev_news);
 		prevNews.setOnClickListener(this);
 		
 		newsSpinnerProgress = (ProgressBar) root.findViewById(R.id.newsSpinnerProgress);
@@ -151,7 +151,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private void addPreyRowsToContainerAndStoreInMap(LayoutInflater inflater) {
 		preyNamePreyRowMap = new HashMap<String, View>();
 		for (int i = 0; i < NUMBER_OF_PRAYS; i++) {
-			View row = inflater.inflate(R.layout.prey_row, null);
+			View row = inflater.inflate(R.layout.prey_row, preyRowContainer,false);
 			preyRowContainer.addView(row);
 			preyNamePreyRowMap.put(PREY_LABLES[i], row);
 			ImageView alarmIcon = (ImageView)row.findViewById(R.id.alarmclock_inactive);
@@ -329,7 +329,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		int pixels = (int) (20 * scale + 0.5f);
 		title.setTextColor(Color.BLACK);
 		container.setBackgroundResource(R.drawable.border_active_pray);
-		container.setPadding(pixels, 30, 0, 30);
 		status.setTextColor(Color.BLACK);
 	}
 
@@ -373,9 +372,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		title.setText(item.getName());
 		status.setText("");
 		convertView.setBackgroundResource(R.drawable.border_none_active_pray);
-		final float scale = this.getResources().getDisplayMetrics().density;
-		int pixels = (int) (20 * scale + 0.5f);
-		convertView.setPadding(pixels,10, 0, 10);
 	}
 
 	private void setUpCurrentDay() {

@@ -12,6 +12,8 @@ public class NewsItem {
 	String imageText;
 	String author; 
 	String imgUrl; 
+	String articleImageUrl;
+	String articleImageText;
 	String _id; 
 	Integer cat;
 	String address;
@@ -135,6 +137,22 @@ public class NewsItem {
 
 	public void setCat(Integer cat) {
 		this.cat = cat;
+	}
+
+	public String getArticleImageUrl() {
+		return articleImageUrl;
+	}
+
+	public void setArticleImageUrl(String articleImageUrl) {
+		this.articleImageUrl = articleImageUrl;
+	}
+
+	public String getArticleImageText() {
+		return articleImageText;
+	}
+
+	public void setArticleImageText(String articleImageText) {
+		this.articleImageText = articleImageText;
 	}
 	
 	

@@ -16,7 +16,7 @@
 
 <resources>
 	<!-- Default height of an action bar. -->
-    <dimen name="snms_action_bar_default_height">55dip</dimen>
+    <dimen name="snms_action_bar_default_height">60dp</dimen>
     <!-- Minimum width for an action button in the menu area of an action bar -->
     <dimen name="snms_action_button_min_width">48dip</dimen>
     

@@ -3,7 +3,7 @@
 
     
     
-     <item android:drawable="@drawable/rightarrow_active" android:state_pressed="true"/>
+    <item android:drawable="@drawable/rightarrow_active" android:state_pressed="true"/>
     <item android:drawable="@drawable/rightarrow_active" android:state_focused="true"/>
 	<item android:drawable="@drawable/rightarrow"/>
 </selector>

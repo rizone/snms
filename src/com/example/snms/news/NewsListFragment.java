@@ -9,7 +9,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 import com.example.snms.BaseActivity;
-import com.example.snms.NewsDetailsFragment;
 import com.example.snms.R;
 import com.example.snms.HolidayListFragment.HolidayListAdapter;
 import com.example.snms.R.id;

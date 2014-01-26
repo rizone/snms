@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="red">#900</color>
     <color name="green">#090</color>
     <color name="blue">#009</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="snmsActivePreyColor">#789f4b</color>
-    <color name="snmsActionBar">#1c2c3b</color>  
-    <color name="snmHeaderBar">#2b3d36</color>  
-     <color name="snmHeaderBorder">#c5c7c8</color>  
-    <color name="snmsDarkBlue">#182531</color>
+    <color name="snmsActionBar">#1c2c3b</color>
+    <color name="snmHeaderBar">#2b3d36</color>
+    <color name="snmHeaderBorder">#c5c7c8</color>
+    <color name="snmsDarkBlue">#172430</color>
+    <color name="snmsLightBlue">#273a4b</color>
+    <color name="snmsActiveGreen">#789f4b</color>
     <color name="snmsWhite">#F6F6F6</color>
     <color name="snmsGrey">#e2e2e3</color>
     <color name="snmsDarkGreen">#789F4B</color>
-     <color name="snmsEventGrey">#ECECEC</color>
-   <color name="snmsLightGray">#f8f8f8</color>
-   <color name="snmsDarkGray">#f5f5f5</color>
-   <color name="snmsEventDarkGray">#DCDCDD</color>
-   
+    <color name="snmsEventGrey">#ECECEC</color>
+    <color name="snmsLightGray">#dedede</color>
+    <color name="snmsDarkGray">#f5f5f5</color>
+    <color name="snmsEventDarkGray">#DCDCDD</color>
     <color name="snmsSelectedColor">#dfe6d6</color>
+
 </resources>

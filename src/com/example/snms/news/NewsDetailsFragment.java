@@ -1,16 +1,18 @@
-package com.example.snms;
+package com.example.snms.news;
 
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.snms.R;
+import com.example.snms.R.id;
+import com.example.snms.R.layout;
 import com.example.snms.images.ImageCacheManager;
-import com.example.snms.news.NewsItem;
-import com.example.snms.news.NewsManager;
-import com.example.snms.news.EventListFragment.NewsScrollListner;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -35,7 +37,9 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 	// News stuff
 	TextView createdDate;
 	TextView text;
+	TextView newstext2;
 	TextView title;
+	TextView authorTag;
 
 	TextView ingress;
 	NetworkImageView imageHeader;
@@ -62,10 +66,12 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			imageHeader = (NetworkImageView) root
 					.findViewById(R.id.headerImage1);
 			image = (NetworkImageView) root.findViewById(R.id.newsImage);
+			authorTag =(TextView) root.findViewById(R.id.authorTag);
 			imageText = (TextView) root.findViewById(R.id.headerText1);
-			createdDate = (TextView) root.findViewById(R.id.created);
+			createdDate = (TextView) root.findViewById(R.id.createdTag);
 			ingress = (TextView) root.findViewById(R.id.newsIngress);
 			text = (TextView) root.findViewById(R.id.Newstext);
+			newstext2 =  (TextView) root.findViewById(R.id.Newstext2); 
 			// ingress = (TextView) root.findViewById(R.id.newsIngress);
 			// text = (TextView) root.findViewById(R.id.newsIngress);
 			return root;
@@ -81,6 +87,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			addressLine2 = (TextView) root.findViewById(R.id.addressLine2);
 			monthText = (TextView) root.findViewById(R.id.dateWrapMonthText);
 			monthNumber = (TextView) root.findViewById(R.id.dateWrapMonthNumber); 
+			
 			timeFrom = (TextView) root.findViewById(R.id.timeText);
 			timeFrom.setOnClickListener(this);
 			text = (TextView) root.findViewById(R.id.Newstext);
@@ -102,15 +109,32 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			Uri uri = Uri.parse(newsItem.getImgUrl());
 			imageHeader.setImageUrl(newsItem.getImgUrl(), ImageCacheManager
 					.getInstance().getImageLoader());
-			image.setImageUrl(newsItem.getImgUrl(), ImageCacheManager
-					.getInstance().getImageLoader());
+			if(newsItem.articleImageUrl!=null) {
+				image.setImageUrl(newsItem.getArticleImageUrl(), ImageCacheManager
+						.getInstance().getImageLoader());
+			}
 			imageText.setText(newsItem.getTitle());
-			String created = "Publisert "
-					+ newsItem.getCreatedDate().toString() + " av "
-					+ newsItem.getAuthor();
+			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE MM.dd hh:mm");
+			String created = formatter.print(newsItem.getCreatedDate());
+			
+			String newsText1 = "";
+			String newsText2 = "";
+		
+			
+			if(newsItem.getText().split("#avsnitt").length>0){
+				newsText1 =newsItem.getText().split("#avsnitt")[0];
+			    for(int i = 1;i<newsItem.getText().split("#avsnitt").length;i++) {
+			    	newsText2+=newsItem.getText().split("#avsnitt")[i];
+			    }
+			}else {
+				newsText1 = newsItem.getText();
+			}
+			
 			createdDate.setText(created);
 			ingress.setText(newsItem.getIngress());
-			text.setText(newsItem.getText());
+			authorTag.setText(newsItem.getAuthor());
+			text.setText(newsText1);
+			newstext2.setText(newsText2);
 		} else {
 		String gmapsUrl = "http://maps.googleapis.com/maps/api/staticmap?center="+newsItem.getLat()+","+newsItem.getLng()+"&zoom=15&size=600x500&sensor=false&markers=color:blue%7Clabel:S%7C"+newsItem.getLat()+","+newsItem.getLng();	
 			mapImage.setImageUrl(gmapsUrl, ImageCacheManager
