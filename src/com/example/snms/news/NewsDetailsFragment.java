@@ -46,6 +46,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 	NetworkImageView image;
 	NetworkImageView mapImage;
 	TextView imageText;
+	TextView articleImageText;
 
 	// Event stuff
 	TextView timeFrom;
@@ -72,6 +73,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			ingress = (TextView) root.findViewById(R.id.newsIngress);
 			text = (TextView) root.findViewById(R.id.Newstext);
 			newstext2 =  (TextView) root.findViewById(R.id.Newstext2); 
+			articleImageText = (TextView)root.findViewById(R.id.articleImageText); 
 			// ingress = (TextView) root.findViewById(R.id.newsIngress);
 			// text = (TextView) root.findViewById(R.id.newsIngress);
 			return root;
@@ -119,7 +121,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			
 			String newsText1 = "";
 			String newsText2 = "";
-		
+			articleImageText.setText(newsItem.getArticleImageText());
 			
 			if(newsItem.getText().split("#avsnitt").length>0){
 				newsText1 =newsItem.getText().split("#avsnitt")[0];

@@ -4,10 +4,12 @@ package com.example.snms;
 
 
 
+import com.example.snms.about.AboutSnmsFragment;
 import com.example.snms.news.BuildProjectListFragment;
 import com.example.snms.news.EventListFragment;
 import com.example.snms.news.NewsListFragment;
 import com.example.snms.preylist.PreyOverviewFragment;
+import com.example.snms.qibla.QiblaFragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -33,7 +35,8 @@ public class SampleListFragment extends ListFragment {
 	    adapter.add(new SampleItem("Nyheter", android.R.drawable.ic_menu_search));
 	    adapter.add(new SampleItem("Byggeprosjektet", android.R.drawable.ic_menu_search));
 	    adapter.add(new SampleItem("Events", android.R.drawable.ic_menu_search));
-	   
+	    adapter.add(new SampleItem("Om snms", android.R.drawable.ic_menu_search));
+	    adapter.add(new SampleItem("Qibla", android.R.drawable.ic_menu_search));
 	
 		setListAdapter(adapter);
 	}
@@ -62,8 +65,16 @@ public class SampleListFragment extends ListFragment {
 			break;	
 		case 2:
 			newContent1 = new EventListFragment();
+			break;	
+		case 3:
+			newContent1 = new AboutSnmsFragment();
 			break;		
+		case 4:
+			newContent1 = new QiblaFragment();
+			break;		
+			
 		}
+		
 		if (newContent1 != null)
 			switchFragment(newContent1,newContent2);
 	}
