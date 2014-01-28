@@ -7,7 +7,7 @@
     android:weightSum="1.0"
     >
 	 
-    <com.example.snms.SnmsTextView
+    <TextView
         android:paddingLeft="20dp"
         android:id="@+id/row_title"
         android:layout_width="0dp"
@@ -15,33 +15,34 @@
         android:layout_weight=".4"
         android:gravity="center_vertical"
         android:text="Soloppgang"
-        android:textAppearance="@android:style/TextAppearance.Small" />
+       android:textSize="@dimen/snms_text_small" />
 
-    <com.example.snms.SnmsTextView
+    <TextView
         android:id="@+id/row_time"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight=".2"
         android:gravity="center_vertical"
         android:text="Medium Text"
-         android:textAppearance="@android:style/TextAppearance.Small" />
-    <com.example.snms.SnmsTextView
+        android:textSize="@dimen/snms_text_small" />
+    <TextView
         android:id="@+id/row_status"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:layout_weight=".2"
+        android:layout_weight=".25"
         android:gravity="center_vertical"
         android:text="Ferdig"
-        android:textAppearance="@android:style/TextAppearance.Small" />
+         android:textSize="@dimen/snms_text_small" />
     
-    <ImageView 
-        android:layout_height="wrap_content" 
+    <ImageButton 
+        android:layout_height="fill_parent" 
         android:layout_width="0dp" 
         android:onClick="setAlarm" 
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_weight=".2" 
+        android:gravity="center"
+        android:layout_weight=".15" 
+        android:background="@drawable/snmsalarmbutton"
         android:id="@+id/alarmclock_inactive" 
-        android:src="@drawable/alarmclock_inactive"/>
+       android:src="@drawable/ic_alarm_clock"/>
     
 
 

@@ -195,9 +195,9 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		for (String key : alarmButtonNameMap.keySet()) {
 			ImageView alarmIcon = alarmButtonNameMap.get(key);
 			if(alarmHelper.hasAlarm(key)){
-				alarmIcon.setImageResource(R.drawable.alarmclock);
+				alarmIcon.setImageResource(R.drawable.ic_alarm_clock_active);
 			}else {
-				alarmIcon.setImageResource(R.drawable.alarmclock_inactive);
+				alarmIcon.setImageResource(R.drawable.ic_alarm_clock);
 			}
 		}
 		
@@ -326,9 +326,11 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 
 	private void renderActive(PreyItem key,View container, TextView title, TextView time, TextView status, ImageView image) {
 		final float scale = this.getResources().getDisplayMetrics().density;
-		int pixels = (int) (20 * scale + 0.5f);
+		int pixels = (int) (7 * scale + 0.5f);
 		title.setTextColor(Color.BLACK);
+		time.setTextColor(Color.BLACK);
 		container.setBackgroundResource(R.drawable.border_active_pray);
+	//	container.setPadding(0, pixels, 0, pixels);
 		status.setTextColor(Color.BLACK);
 	}
 
@@ -587,10 +589,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		TextView jummaStatus = (TextView)jummaContainer.findViewById(R.id.row_status_jumma);
 		TextView jummaTitle = (TextView)jummaContainer.findViewById(R.id.row_title_jumma);
 		jummaContainer.setBackgroundResource(R.drawable.border_none_active_pray);
-		final float scale = this.getResources().getDisplayMetrics().density;
-		int pixels = (int) (20 * scale + 0.5f);
-		jummaContainer.setPadding(pixels,10, 0, 10);
-		
 		jummaTime.setText(item.getTimeOfDayAsString());
 		jummaStatus.setText("");
 		

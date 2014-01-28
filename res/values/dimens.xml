@@ -11,18 +11,19 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <resources>
-	<!-- Default height of an action bar. -->
+
+    <!-- Default height of an action bar. -->
     <dimen name="snms_action_bar_default_height">60dp</dimen>
     <!-- Minimum width for an action button in the menu area of an action bar -->
     <dimen name="snms_action_button_min_width">48dip</dimen>
-    
     <dimen name="slidingmenu_offset">60dp</dimen>
     <dimen name="list_padding">0dp</dimen>
     <dimen name="shadow_width">15dp</dimen>
+    <dimen name="snms_text_small">16sp</dimen>
 
     <integer name="num_cols">1</integer>
 
