@@ -151,7 +151,7 @@ public class NewsDetailsFragment extends Fragment implements OnClickListener {
 			
 			DateTimeFormatter formatter = DateTimeFormat.forPattern("EEEE, MMM d");
 			DateTimeFormatter formatter2 = DateTimeFormat.forPattern("kk:mm");
-			DateTimeFormatter formatterMonth = DateTimeFormat.forPattern("MM");
+			DateTimeFormatter formatterMonth = DateTimeFormat.forPattern("MMM");
 			DateTimeFormatter formatterDay = DateTimeFormat.forPattern("dd");
 			
 			String formattedDate = formatter.print(from);

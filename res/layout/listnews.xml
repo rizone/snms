@@ -3,23 +3,40 @@
 android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 android:gravity="center"
+android:background="@color/white"
 android:orientation="vertical" >
-
+	 <TextView
+        android:id="@+id/newslistheader"
+        android:layout_width="fill_parent"
+        android:layout_height="32dp"
+        android:layout_weight="1"
+        android:textSize="18dp"
+        android:paddingLeft="5dp"
+        android:textColor="@color/white"
+        android:gravity="center_vertical"
+        android:text="NYHETER"
+        android:background="@color/snmsLightBlue"
+        android:textAppearance="@android:style/TextAppearance.Medium" />
+    
+    
     <ProgressBar
             android:id="@+id/progress"
             style="@style/AppTheme"
            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
+            android:background="@color/white"
+            android:layout_below="@+id/newslistheader"
             android:layout_height="wrap_content" >
    </ProgressBar>
     
     <ListView 
     android:id="@android:id/list"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/list_padding"
     android:paddingRight="@dimen/list_padding" 
-    android:layout_below="@+id/newsheader"
+    android:layout_below="@+id/newslistheader"
     />
 
     

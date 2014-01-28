@@ -44,6 +44,7 @@ public class EventListFragment extends ListFragment {
 	boolean isLoading = false;
 	ProgressBar progressBar;
 	TextView errorMessage;
+	TextView newslistheader;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +52,7 @@ public class EventListFragment extends ListFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 
 		View root = inflater.inflate(R.layout.listnews, container, false);
+		 newslistheader= (TextView) root.findViewById(R.id.newslistheader);
 		progressBar = (ProgressBar) root.findViewById(R.id.progress);
 		return root;
 
@@ -81,6 +83,7 @@ public class EventListFragment extends ListFragment {
 
 	@Override
 	public void onResume() {
+		newslistheader.setText("EVENTS");
 		super.onResume();
 		if (getListView().getAdapter() == null) {
 			// Get the first page
