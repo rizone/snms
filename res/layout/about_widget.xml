@@ -159,22 +159,61 @@
     android:gravity="left">
 
   	      <ImageView
-  	          android:id="@+id/timeImage"
+  	          android:id="@+id/facebookImage"
   	          android:layout_width="25dp"
   	          android:layout_height="25dp"
   	          android:gravity="bottom"
   	          android:padding="0dp"
   	          android:layout_marginRight="10dp"
-  	          android:src="@drawable/facebook_like_icon" />
+  	          android:src="@drawable/ic_settings" />
     
     <TextView
-    android:id="@+id/timeText"
+    android:id="@+id/faceText"
   android:layout_width="wrap_content"
 	  android:layout_height="wrap_content"
     android:gravity="bottom"
     android:layout_gravity="center"
     android:paddingTop="0dp"
     android:text="Lik oss på facebook"
+    android:textColor="@color/black" 
+     android:textAppearance="@android:style/TextAppearance.Small" 
+     />
+    
+     
+    </LinearLayout>
+    
+  	    	  <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+       android:id="@+id/webpageContainer"
+    android:paddingLeft="5dp" 
+    android:background="@drawable/border"
+   	android:layout_marginTop="15dp"
+   	android:layout_below="@+id/timeWrapper"
+   	android:layout_marginLeft="15dp"
+ 	android:layout_marginRight="15dp"
+ 	     android:layout_gravity="left"
+ 	      android:paddingBottom="13dp"
+    android:gravity="left">
+
+  	      <ImageView
+  	          android:id="@+id/webpageImageLink"
+  	          android:layout_width="25dp"
+  	          android:layout_height="25dp"
+  	          android:gravity="bottom"
+  	          android:padding="0dp"
+  	          android:layout_marginRight="10dp"
+  	          android:src="@drawable/ic_settings" />
+    
+    <TextView
+    android:id="@+id/webpageText"
+  android:layout_width="wrap_content"
+	  android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:layout_gravity="center"
+    android:paddingTop="0dp"
+    android:text="Besøk vår webside"
     android:textColor="@color/black" 
      android:textAppearance="@android:style/TextAppearance.Small" 
      />
@@ -190,7 +229,7 @@
 	  	 android:layout_marginLeft="15dp"
  	 android:layout_marginRight="15dp"
  	 android:layout_marginTop="10dp"
-    android:layout_below="@+id/timeWrapper"
+    android:layout_below="@+id/webpageContainer"
     android:gravity="left"
     android:padding="5dp"
     android:text="Søndre Nordstrand Muslimske Senter (SNMS) er et muslimsk trossamfunn i Bydel Søndre Nordstrand."
