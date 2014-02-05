@@ -5,6 +5,7 @@ package com.example.snms;
 
 
 import com.example.snms.about.AboutSnmsFragment;
+import com.example.snms.donation.DonationFragment;
 import com.example.snms.news.BuildProjectListFragment;
 import com.example.snms.news.EventListFragment;
 import com.example.snms.news.NewsListFragment;
@@ -37,6 +38,7 @@ public class SampleListFragment extends ListFragment {
 	    adapter.add(new SampleItem("Events", android.R.drawable.ic_menu_search));
 	    adapter.add(new SampleItem("Om snms", android.R.drawable.ic_menu_search));
 	    adapter.add(new SampleItem("Qibla", android.R.drawable.ic_menu_search));
+	    adapter.add(new SampleItem("Donasjon", android.R.drawable.ic_menu_search));
 	
 		setListAdapter(adapter);
 	}
@@ -72,6 +74,9 @@ public class SampleListFragment extends ListFragment {
 		case 4:
 			newContent1 = new QiblaFragment();
 			break;		
+		case 5:
+			newContent1 = new DonationFragment();
+			break;	
 			
 		}
 		

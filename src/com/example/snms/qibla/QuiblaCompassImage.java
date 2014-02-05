@@ -3,6 +3,7 @@ package com.example.snms.qibla;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.AttributeSet;
 import android.widget.ImageView;
 
 public class QuiblaCompassImage extends ImageView{
@@ -10,10 +11,12 @@ public class QuiblaCompassImage extends ImageView{
 	
 	   Float angle = null;  
 	
-	   public QuiblaCompassImage(Context context) {
-	        super(context);
+	   public QuiblaCompassImage(Context context,AttributeSet attributeSet) {
+	        super(context,attributeSet);
 	        // TODO Auto-generated constructor stub
 	    }
+	   
+
 
 	    @Override
 	    protected void onDraw(Canvas canvas) {

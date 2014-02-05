@@ -25,7 +25,7 @@ public class DiskLruImageCache  {
 
     private DiskLruCache mDiskCache;
     private CompressFormat mCompressFormat = CompressFormat.JPEG;
-    private static int IO_BUFFER_SIZE = 16*1024;
+    private static int IO_BUFFER_SIZE = 3*1024;
     private int mCompressQuality = 70;
     private static final int APP_VERSION = 1;
     private static final int VALUE_COUNT = 1;
