@@ -47,12 +47,13 @@ import android.widget.ImageView.ScaleType;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-public class DonationFragment extends Fragment implements OnClickListener {
+public class DonationFragment extends Fragment implements OnClickListener, NumberPicker.OnValueChangeListener  {
 	
 	
 	private NumberPicker picker; 
 	private Button donationButton; 
 	private String[] nums = new String[100];
+	private TextView dontationText; 
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -60,7 +61,8 @@ public class DonationFragment extends Fragment implements OnClickListener {
 		View root = inflater.inflate(R.layout.donation_wigdet, null);
 		picker = (NumberPicker)root.findViewById(R.id.donationPicker);
 		donationButton =(Button)root.findViewById(R.id.donerButton);
-
+		dontationText = (TextView)root.findViewById(R.id.donationSum);
+		picker.setOnValueChangedListener(this);
 		 
 		for(int i=0; i<nums.length; i++)
 		   nums[i] = Integer.toString(i*50);
@@ -104,11 +106,17 @@ public class DonationFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		if(v.equals(donationButton)){
 			 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-			    smsIntent.putExtra("sms_body", "Jeg donerer " + picker.getValue() +" nok. Melding generet av snmsapp"); 
+			    smsIntent.putExtra("sms_body", "Jeg donerer " + picker.getValue()*50 +" kr."); 
 			    smsIntent.putExtra("address", "93892904");
 			    smsIntent.setType("vnd.android-dir/mms-sms");
 			    startActivity(smsIntent);
 		}
+		
+	}
+
+	@Override
+	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+		dontationText.setText(newVal*50 + "kr");
 		
 	}
 

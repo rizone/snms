@@ -1,32 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff" >
+    android:background="#fff"
+    android:orientation="vertical" >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3" >
 
+        <RelativeLayout
+            android:id="@+id/latestNewsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/list_padding"
+            android:paddingRight="@dimen/list_padding" >
+
+            <ImageView
+                android:id="@+id/headerImage1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/moskebg" />
+
+            <TextView
+                android:id="@+id/headerText1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/headerImage1"
+                android:layout_alignLeft="@+id/headerImage1"
+                android:layout_alignRight="@+id/headerImage1"
+                android:layout_margin="0dp"
+                android:background="#99000000"
+                android:gravity="bottom"
+                android:padding="5dp"
+                android:text="Gi en gave til felleskapet"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="3dp" >
         
-        
-    <NumberPicker
-        android:id="@+id/donationPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-		   android:layout_centerVertical="true"
-        android:layout_marginTop="0dp" />
-    
-    <Button
-        android:id="@+id/donerButton"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:background="@drawable/snmsbutton"
-         android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-        android:layout_below="@+id/donationPicker"
-        android:textColor="@color/white"
-        android:layout_marginTop="10dp"
-        android:text="Gi din gave" />
-        
+        <TextView
+            android:id="@+id/donationText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:gravity="center_vertical"
+            android:text="Vi mottar daglig donasjoner som går til å skape enda bedre tilbud for oss alle. Nå kan man også donere rett fra vår app! Velg beløpet du ønsker under, og klikk “Gi din gave!”"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/black" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:background="@color/snmsActionBar"
+        android:orientation="horizontal"
+        android:weightSum="1" >
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/snmsLightBlue"
+            android:orientation="vertical"
+            android:layout_weight="0.3" >
+            
+                  <ImageView
+                android:id="@+id/placeHolder"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/abs__ab_solid_dark_holo" />
+
+            <NumberPicker
+                android:id="@+id/donationPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:background="@color/snmsDarkBlue" />
+            
+                  <ImageView
+                android:id="@+id/placeHolder2"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/abs__ab_solid_dark_holo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/snmsLightBlue"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="0.7" >
+            
+              <TextView
+            android:id="@+id/donation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:gravity="center_horizontal"
+            android:text="Valgt beløp”"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/white" />
+              
+             <TextView
+            android:id="@+id/donationSum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:gravity="center_horizontal"
+            android:text="250kr”"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@color/white" /> 
+              
+
+            <Button
+                android:id="@+id/donerButton"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:background="@drawable/snmsbutton"
+                android:text="Gi din gave"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
