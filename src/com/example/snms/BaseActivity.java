@@ -165,8 +165,8 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements
 		} else {
 			getSupportFragmentManager().beginTransaction()
 					.remove(currentFragment1)
-					.replace(R.id.content_frame, fragment1)
-					.replace(R.id.content_frame2, fragment2).addToBackStack("tag").commit();
+					.replace(R.id.content_frame, fragment1);
+					
 		}
 
 		currentFragment1 = fragment1;
