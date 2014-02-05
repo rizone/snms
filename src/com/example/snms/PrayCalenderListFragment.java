@@ -200,7 +200,7 @@ public class PrayCalenderListFragment extends Fragment implements
 
 			if (!hasBeenRendered(h.getDay())) {
 				convertView = LayoutInflater.from(getContext()).inflate(
-						R.layout.calender_row, null);
+						R.layout.calender_row, parent, false);
 
 				date = (TextView) convertView.findViewById(R.id.row_date);
 				asr = (TextView) convertView.findViewById(R.id.row_asr);
