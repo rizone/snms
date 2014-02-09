@@ -29,20 +29,34 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/moskebg" />
 
-            <TextView
-                android:id="@+id/headerText1"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/headerImage1"
                 android:layout_alignLeft="@+id/headerImage1"
                 android:layout_alignRight="@+id/headerImage1"
-                android:layout_margin="0dp"
                 android:background="#99000000"
-                android:gravity="bottom"
-                android:padding="5dp"
-                android:text="Gi en gave til felleskapet"
-                android:textAppearance="@android:style/TextAppearance.Large"
-                android:textColor="@color/white" />
+                android:orientation="horizontal"
+                android:padding="5dp" >
+
+                <ImageView
+                    android:id="@+id/headerImage12"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="0dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_donation" />
+
+                <TextView
+                    android:id="@+id/headerText1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:gravity="bottom"
+                    android:text="Gi en gave til felleskapet"
+                    android:textAppearance="@android:style/TextAppearance.Large"
+                    android:textColor="@color/white" />
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 
@@ -50,10 +64,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.2"
-        android:background="@color/white"
+        android:background="@drawable/border_donation"
         android:orientation="vertical"
         android:padding="3dp" >
-        
+
         <TextView
             android:id="@+id/donationText"
             android:layout_width="match_parent"
@@ -69,80 +83,126 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5"
-        android:background="@color/snmsActionBar"
+        android:background="@color/snmsBackgroundBlue"
         android:orientation="horizontal"
         android:weightSum="1" >
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/snmsLightBlue"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.3"
+            android:background="@color/snmsDarkBlue"
+            android:gravity="center"
             android:orientation="vertical"
-            android:layout_weight="0.3" >
-            
-                  <ImageView
+            android:paddingBottom="5dp"
+            android:paddingTop="10dp" >
+
+            <ImageView
                 android:id="@+id/placeHolder"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:padding="0dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/abs__ab_solid_dark_holo" />
+                android:src="@drawable/ic_slider_arrow_up" />
 
             <NumberPicker
                 android:id="@+id/donationPicker"
-                android:layout_width="wrap_content"
+                style="@style/CustomNPStyle"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                android:background="@color/snmsDarkBlue" />
-            
-                  <ImageView
+                android:background="@color/snmsDarkBlue"
+                android:textColor="@color/white" />
+
+            <ImageView
                 android:id="@+id/placeHolder2"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
                 android:padding="0dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/abs__ab_solid_dark_holo" />
+                android:src="@drawable/ic_slider_arrow_down" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/snmsLightBlue"
-            android:orientation="vertical"
+            android:layout_weight="0.7"
+            android:background="@color/snmsBackgroundBlue"
             android:gravity="center"
-            android:layout_weight="0.7" >
-            
-              <TextView
-            android:id="@+id/donation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:gravity="center_horizontal"
-            android:text="Valgt beløp”"
-            android:textAppearance="@android:style/TextAppearance.Small"
-            android:textColor="@color/white" />
-              
-             <TextView
-            android:id="@+id/donationSum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:gravity="center_horizontal"
-            android:text="250kr”"
-            android:textAppearance="@android:style/TextAppearance.Small"
-            android:textColor="@color/white" /> 
-              
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/donation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:gravity="center_horizontal"
+                android:text="Valgt beløp"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/white"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/donationSum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:gravity="center_horizontal"
+                android:text="250kr"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/white"
+                android:textSize="35dp" />
 
             <Button
                 android:id="@+id/donerButton"
-                android:layout_width="200dp"
-                android:layout_height="60dp"
-                android:gravity="center"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
                 android:background="@drawable/snmsbutton"
-                android:text="Gi din gave"
+                android:gravity="center"
+                android:text="Gi din gave!"
                 android:textColor="@color/white" />
+            
+             <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/snmsBackgroundBlue"
+            android:layout_marginTop="30dp"
+            android:gravity="right"
+            android:orientation="horizontal" >
+                
+          
+                
+                    <TextView
+                android:id="@+id/moreInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:text="Mer info"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:textColor="@color/white"
+                android:textSize="13dp" />
+                    
+                                   <ImageView
+                android:id="@+id/placeHolder3"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                  android:layout_margin="3dp"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_info" />
+                
+                 
+            </LinearLayout>     
+            
+            
+            
+            
         </LinearLayout>
     </LinearLayout>
 

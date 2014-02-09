@@ -154,6 +154,7 @@
    	android:layout_below="@+id/mapWrapper"
    	android:layout_marginLeft="15dp"
  	android:layout_marginRight="15dp"
+ 	        android:paddingTop="13dp"
  	     android:layout_gravity="left"
  	      android:paddingBottom="13dp"
     android:gravity="left">
@@ -165,7 +166,7 @@
   	          android:gravity="bottom"
   	          android:padding="0dp"
   	          android:layout_marginRight="10dp"
-  	          android:src="@drawable/ic_settings" />
+  	          android:src="@drawable/ic_like_button" />
     
     <TextView
     android:id="@+id/faceText"
@@ -194,6 +195,7 @@
    	android:layout_marginLeft="15dp"
  	android:layout_marginRight="15dp"
  	     android:layout_gravity="left"
+ 	          android:paddingTop="13dp"
  	      android:paddingBottom="13dp"
     android:gravity="left">
 
@@ -204,7 +206,7 @@
   	          android:gravity="bottom"
   	          android:padding="0dp"
   	          android:layout_marginRight="10dp"
-  	          android:src="@drawable/ic_settings" />
+  	          android:src="@drawable/ic_home_webpage" />
     
     <TextView
     android:id="@+id/webpageText"
@@ -234,7 +236,7 @@
     android:padding="5dp"
     android:text="Søndre Nordstrand Muslimske Senter (SNMS) er et muslimsk trossamfunn i Bydel Søndre Nordstrand."
     android:textColor="@color/black" 
-     android:textAppearance="@android:style/TextAppearance.Medium" />
+     android:textAppearance="@android:style/TextAppearance.Small" />
     /> 
     
     
