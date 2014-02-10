@@ -16,12 +16,12 @@ public class PreyCountDownTimer extends CountDownTimer {
 		super(time,interval);
 		this.textViewToUpdate = textView;
 		this.adapter = adapter;
+		
 	}
 	
 	@Override
 	public void onFinish() {
 		this.adapter.renderPreyList();
-		
 	}
 
 	@Override
@@ -29,7 +29,6 @@ public class PreyCountDownTimer extends CountDownTimer {
 		DateTime delta = new DateTime(millisUntilFinished);
 		String preyText = delta.minusHours(1).toTimeOfDay().toString("HH:mm:ss");
 		this.textViewToUpdate.setText(preyText);
-		
 	}
 
 }

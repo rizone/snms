@@ -15,7 +15,9 @@
     <!-- >style name="SnmsActionBar" parent="Theme.Sherlock.Light.DarkActionBar">
         <item name="android:background">@drawable/snms_actionbar_background</item>
     </style-->
-    
+<style name="CustomNPStyle">
+  <item name="android:textColor">@color/white</item>
+</style>
     <style name="SnmsActionBar" parent="Widget.Sherlock.ActionBar">
   	   <item name="android:background">@drawable/snms_actionbar_background</item>
   	   <item name="android:titleTextStyle">@style/TextAppearance.SnmsActionBar.Title</item>

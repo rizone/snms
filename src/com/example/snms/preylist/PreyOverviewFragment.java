@@ -135,8 +135,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		newsText1.setVisibility(View.GONE);
 		newsText2= (TextView)root.findViewById(R.id.newsImage2Text);
 		newsText2.setVisibility(View.GONE);
-		jummaContainer = (LinearLayout)root.findViewById(R.id.jummacontainer);
-		jummaContainer.setVisibility(View.GONE);
+	
         final Calendar calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
 		currentDay = (TextView) root.findViewById(R.id.prey_current_day);
@@ -159,6 +158,11 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			alarmIcon.setOnClickListener(this);
 			
 		}
+		View row = inflater.inflate(R.layout.prey_row, preyRowContainer,false);
+		jummaContainer = (LinearLayout) row;
+		jummaContainer.setVisibility(View.GONE);
+		preyRowContainer.addView(jummaContainer);
+		
 	}
 	@Override
 	public void onResume() {
@@ -585,9 +589,9 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		
 		jummaContainer.setVisibility(View.VISIBLE);
 	 if(isAdded()) {
-		TextView jummaTime = (TextView)jummaContainer.findViewById(R.id.row_time_jumma);
-		TextView jummaStatus = (TextView)jummaContainer.findViewById(R.id.row_status_jumma);
-		TextView jummaTitle = (TextView)jummaContainer.findViewById(R.id.row_title_jumma);
+		TextView jummaTime = (TextView)jummaContainer.findViewById(R.id.row_time);
+		TextView jummaStatus = (TextView)jummaContainer.findViewById(R.id.row_status);
+		TextView jummaTitle = (TextView)jummaContainer.findViewById(R.id.row_title);
 		jummaContainer.setBackgroundResource(R.drawable.border_none_active_pray);
 		jummaTime.setText(item.getTimeOfDayAsString());
 		jummaStatus.setText("");

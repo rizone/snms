@@ -16,9 +16,11 @@ import com.example.snms.images.ImageCacheManager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -47,12 +49,15 @@ import android.widget.ImageView.ScaleType;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-public class DonationFragment extends Fragment implements OnClickListener {
+public class DonationFragment extends Fragment implements OnClickListener, NumberPicker.OnValueChangeListener  {
 	
 	
 	private NumberPicker picker; 
 	private Button donationButton; 
 	private String[] nums = new String[100];
+	private TextView dontationText; 
+	private TextView infoButton;
+	private ImageView infoImage;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -60,8 +65,12 @@ public class DonationFragment extends Fragment implements OnClickListener {
 		View root = inflater.inflate(R.layout.donation_wigdet, null);
 		picker = (NumberPicker)root.findViewById(R.id.donationPicker);
 		donationButton =(Button)root.findViewById(R.id.donerButton);
-
-		 
+		infoButton =(TextView)root.findViewById(R.id.moreInfo);
+		dontationText = (TextView)root.findViewById(R.id.donationSum);
+		infoImage = (ImageView)root.findViewById(R.id.placeHolder3);
+		picker.setOnValueChangedListener(this);
+		infoButton.setOnClickListener(this);
+		infoImage.setOnClickListener(this);
 		for(int i=0; i<nums.length; i++)
 		   nums[i] = Integer.toString(i*50);
 
@@ -82,6 +91,8 @@ public class DonationFragment extends Fragment implements OnClickListener {
 		picker.setMinValue(0);
 		picker.setWrapSelectorWheel(false);
 		picker.setDisplayedValues(nums);
+		picker.setValue(1);
+		dontationText.setText("50kr");
 
 	}
 
@@ -104,11 +115,29 @@ public class DonationFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		if(v.equals(donationButton)){
 			 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-			    smsIntent.putExtra("sms_body", "Jeg donerer " + picker.getValue() +" nok. Melding generet av snmsapp"); 
+			    smsIntent.putExtra("sms_body", "Jeg donerer " + picker.getValue()*50 +" kr."); 
 			    smsIntent.putExtra("address", "93892904");
 			    smsIntent.setType("vnd.android-dir/mms-sms");
 			    startActivity(smsIntent);
 		}
+		
+		if(v.equals(infoButton) ||v.equals(infoImage)){
+			// 1. Instantiate an AlertDialog.Builder with its constructor
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			// 2. Chain together various setter methods to set the dialog characteristics
+			builder.setMessage("Donasjons beløp under 100..");
+			// 3. Get the AlertDialog from create()
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		}
+		
+		
+		
+	}
+
+	@Override
+	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+		dontationText.setText(newVal*50 + "kr");
 		
 	}
 
