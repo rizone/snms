@@ -44,14 +44,14 @@ import com.example.snms.news.NewsListFragment;
 import com.example.snms.preylist.PreyOverviewFragment;
 
 @SuppressLint("NewApi")
-public abstract class BaseActivity extends SlidingFragmentActivity implements OnClickListener, TimePickerDialog.OnTimeSetListener, PreyListFragment.OnHeadlineSelectedListener  {
+public abstract class BaseActivity extends SlidingFragmentActivity implements OnClickListener, TimePickerDialog.OnTimeSetListener  {
 	
 //	final DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, 2007, 10, 1, false);
 
 
 //    final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, 0 ,0, false);
     
-	private int mTitleRes;
+	private int mTitleRes;	
 	protected ListFragment mFrag;
 	
 	
@@ -187,8 +187,8 @@ ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
         // The user selected the headline of an article from the HeadlinesFragment
         // Do something here to display that article
     	
-        DialogFragment newFragment = new TimePickerFragment(time, name);
-        newFragment.show(getFragmentManager(), "timePicker");
+//        DialogFragment newFragment = new TimePickerFragment(time, name);
+//        newFragment.show(getFragmentManager(), "timePicker");
 
     }
 	@Override

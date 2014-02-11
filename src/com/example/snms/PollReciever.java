@@ -1,7 +1,18 @@
 package com.example.snms;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
+import org.joda.time.DateTime;
+
+import com.example.snms.alarm.Alarm;
+import com.example.snms.alarm.AlarmDialogFragment;
+import com.example.snms.database.SnmsDAO;
+import com.example.snms.domain.PreyItem;
+import com.example.snms.preylist.PreyOverviewFragment;
+import com.example.snms.utils.SnmsPrayTimeAdapter;
 
 
 import android.content.BroadcastReceiver;
@@ -13,55 +24,76 @@ import android.database.CursorIndexOutOfBoundsException;
 
 public class PollReciever extends BroadcastReceiver {
 
+	private SnmsDAO dao;
+	List<Alarm> alarms;
+	PreyItem prey; 
+	PreyOverviewFragment prayOverview = new PreyOverviewFragment();
+	
+//	public PollReciever(SnmsDAO snmsDAO){
+//		this.dao = snmsDAO; 
+//	}
+	
+	
+	
+	@Override
+	public void onReceive(Context context, Intent myIntent) {
+		  
+		dao = new SnmsDAO(context); 
+		
 
-	  @Override
-	  public void onReceive(Context context, Intent myIntent) {
-		  
-		  
-		  Intent intent = new Intent(context, AlarmReceiverActivity.class);
-		  AlarmUtilities Util = new AlarmUtilities();
-//		  context.startActivity(myIntent);
 		  
 		//Get alarms after reboot
-			DBAdapter db = new DBAdapter(context);
-			db.open();
+		AlarmUtilities Util = new AlarmUtilities(dao);  
+
+		alarms = dao.getAlarms(); 
+		
+		
+		
+
+		if(alarms != null){
 			
-			Cursor cursor = db.getAllAlarms();
+			DateTime ThisDay = Util.getDateTimeNow();
+			ThisDay = ThisDay.minusHours(ThisDay.getHourOfDay()).minusMinutes(ThisDay.getMinuteOfHour()).minusSeconds(ThisDay.getSecondOfMinute());
 			
-			try{
-				cursor.moveToLast();
-				do{
-					
-					String Alarmdate = cursor.getString(1);
-					int id = cursor.getInt(2);
-					int id_nr = cursor.getInt(0);
-					System.out.println("data from boot. Alarmdate: " + 
-					Alarmdate + " id: " + id + "id-nr: " + id_nr);
-					
-					final Calendar cal = Util.GregorianCalender(Util.RefactorToIntegerForSettingRebootAlarm(Alarmdate));
-					Util.SetAlarm(cal, Util.getAlarmId(cal), intent, context);					
-					
-					if (cal.before(Calendar.getInstance())) {
-						db.deleteAlarmsInDatabase(id); //TEST DETTE
-						System.out.println("After boot, alarm has been removed from database: " + 
-								Alarmdate + " id: " + id + "Id nr: " + id_nr);
-					}
-					
-				}while(cursor.moveToPrevious() && cursor.getInt(0)>0);
-			
-				System.out.println("Alarms have been set after reboot");
-				
-			}catch(CursorIndexOutOfBoundsException e){
-		    	System.out.println("There are no alarms to be set...");
-			
-			db.close();
-			
+			List<PreyItem> PreyItemList = new ArrayList<PreyItem>(); 
+			PreyItemList = loadPrayTimes(ThisDay, context);
 			
 
+			for(Alarm alarm : alarms){
+				for(PreyItem item : PreyItemList) {
+					if(item.getName().equals(alarm.getPrey())){
+						prey = item;
+						Util.SetRepeatingAlarm(prey, alarm.getId(), getAppContext(), alarm.getPrey(), alarm.getOffset());
+						System.out.println("Alarm has been set on reboot!");
+					}
+				}
+				
+			}
+	  	}else{
+	  		System.out.println("There are no alarms to be set on reboot!");
+	  	}
 			
-	  }
+		dao.closeDB();	
+			
+			
 	}
+	
+	public static Context getAppContext() {
+		return MainApplication.getAppContext();
+	}
+
+	public List<PreyItem> loadPrayTimes(DateTime dateTime, Context context) {
+		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter(
+				context.getAssets());
+		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay())
+				.minusMinutes(dateTime.getMinuteOfHour())
+				.minusSeconds(dateTime.getSecondOfMinute());
+		return prayTimeAdapter.getPrayListForDate(midnight);
+
+	}		
 }
+	
+
 
 
 	

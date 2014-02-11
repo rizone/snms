@@ -26,11 +26,11 @@ public class SnmsDAO extends  SQLiteOpenHelper {
     
     private static final String TABLE_JUMMA_ID = "jummaid";
     
-    private static final String TABLE_ALARM_ID = "alarmid";
-    
     private static final String TABLE_ALARM_PREY = "prey";
     
     private static final String TABLE_ALARM_OFFSET = "offset";
+    
+    private static final String TABLE_ALARM_ID = "alarmid";    
     
     private static final String TABLE_JUMMA_FROM_MONTH = "jummafrommonth";
     
@@ -60,7 +60,7 @@ public class SnmsDAO extends  SQLiteOpenHelper {
 	 
 	 private static final String CREATE_TABLE_ALARM = "CREATE TABLE "
 	            + TABLE_ALARM + "( ID INTEGER PRIMARY KEY   AUTOINCREMENT," +  TABLE_ALARM_PREY
-	            + " TEXT," + TABLE_ALARM_OFFSET + " INTEGER" + ")";
+	            + " TEXT, " + TABLE_ALARM_OFFSET + " INTEGER, " + TABLE_ALARM_ID + " INTEGER" +" )";
 	
 	
 	@Override
@@ -112,8 +112,9 @@ public class SnmsDAO extends  SQLiteOpenHelper {
 	        // looping through all rows and adding to list
 	        if (c.moveToFirst()) {
 	            do {
-	                Alarm td = new Alarm(c.getString(c.getColumnIndex(TABLE_ALARM_PREY)),c.getInt(c.getColumnIndex(TABLE_ALARM_OFFSET)));
+	                Alarm td = new Alarm(c.getString(c.getColumnIndex(TABLE_ALARM_PREY)),c.getInt(c.getColumnIndex(TABLE_ALARM_OFFSET)),c.getInt(c.getColumnIndex(TABLE_ALARM_ID)));
 	                alarms.add(td);
+	                System.out.println("Prey: " + c.getString(c.getColumnIndex(TABLE_ALARM_PREY)) + "Offset: " + c.getInt(c.getColumnIndex(TABLE_ALARM_OFFSET)) + "id: " + c.getInt(c.getColumnIndex(TABLE_ALARM_ID)));
 	            } while (c.moveToNext());
 	        }
 	        return alarms;
@@ -130,12 +131,13 @@ public class SnmsDAO extends  SQLiteOpenHelper {
 	 
 	 
 	 public void insertAlarm(Alarm alarm) {
-	        String selectQuery = "INSERT INTO " + TABLE_ALARM + "(" + TABLE_ALARM_PREY + "," + TABLE_ALARM_OFFSET +") VALUES ('" + alarm.getPrey() + "'," + alarm.getOffset() + ")";
+	        String selectQuery = "INSERT INTO " + TABLE_ALARM + " (" + TABLE_ALARM_PREY + "," + TABLE_ALARM_OFFSET + "," + TABLE_ALARM_ID + ")" +  " VALUES ('" + alarm.getPrey() + "'," + alarm.getOffset() + "," + alarm.getId() + ")";
 	        Log.e("alarm", selectQuery);
 	        SQLiteDatabase db = this.getReadableDatabase();
 	    	ContentValues values = new ContentValues();
 	    	values.put(TABLE_ALARM_PREY, alarm.getPrey());
 		    values.put(TABLE_ALARM_OFFSET,alarm.getOffset());
+		    values.put(TABLE_ALARM_ID,alarm.getId());
 		    db.insert(TABLE_ALARM, null, values);
 	 }
 	 

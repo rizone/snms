@@ -1,12 +1,16 @@
 package com.example.snms;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.example.snms.alarm.Alarm;
+import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.PreyItem;
+import com.example.snms.preylist.PreyOverviewFragment;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 
 import android.app.Activity;
@@ -14,63 +18,135 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.util.Log;
 import android.widget.Toast;
 
 public class AlarmUtilities {
 	
-	public void RemoveAlarm(int id, Intent intent, Context context){
+	private SnmsDAO dao; 
+	List<Alarm> alarms;
+//	private DateTime currentDate; 
+	final Calendar cal = Calendar.getInstance(); 
+	
+	public AlarmUtilities(SnmsDAO snmsDAO){
+		this.dao = snmsDAO; 
+	}
+	
+	public void RemoveAlarm(int id, Context context, String name){
 //		Intent intent = new Intent(this, AlarmReceiverActivity.class);
-		
+		Intent intent = new Intent(context, AlarmReceiverActivity.class);
         PendingIntent sender = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
         alarmManager.cancel(sender);
         
         Toast.makeText(context, "Alarm er blitt deaktivert.", Toast.LENGTH_SHORT).show();
         System.out.println("Alarm with ID:" + id + " canceled");
-		
-	}
-	
-	public void SetAlarm(Calendar cal, int id, Intent intent, Context context) {
-		// TODO Auto-generated method stub
-		
-		
-		if (cal.after(Calendar.getInstance())) {
-			
-//			Intent intent = new Intent(this, AlarmReceiverActivity.class);
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, id,
-				intent, PendingIntent.FLAG_CANCEL_CURRENT);
-			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-			
-			Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT).show();
-			
-		}else{
-			Toast.makeText(context, "Oops... Alarmdato har allerede passert", Toast.LENGTH_SHORT).show();
-			
+        
+		if(hasAlarm(name)) {
+			dao.deleteAlarm(name); 
+			alarms = dao.getAlarms(); 
+			dao.closeDB();
 		}
+        
+        System.out.println("Alarm with name:" + name + " removed from DB");
+        
 	}
 	
-	public void SetRepeatingAlarm(Calendar cal, int id, Intent intent, Context context, String name){
+//	public void SetAlarm(Calendar cal, int id, Intent intent, Context context) {
+//		// TODO Auto-generated method stub
+//		
+//		
+//		if (cal.after(Calendar.getInstance())) {
+//			
+////			Intent intent = new Intent(this, AlarmReceiverActivity.class);
+//			PendingIntent pendingIntent = PendingIntent.getActivity(context, id,
+//				intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+//			am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+//			
+//			Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT).show();
+//			
+//		}else{
+//			Toast.makeText(context, "Oops... Alarmdato har allerede passert", Toast.LENGTH_SHORT).show();
+//			
+//		}
+//	}
+	
+	public boolean hasAlarm(String name) {
 		
-		if (cal.after(Calendar.getInstance())) {
+		
+			alarms = dao.getAlarms();
+//		try{
+			for(Alarm alarm : alarms) {
+//				System.out.println("Dette er alarm name: " + name);
+//				System.out.println("Dette er alarm name: " + alarm.getPrey());
+//				System.out.println("Dette er alarm id: " + alarm.getId());
+				if(alarm.getPrey().equals(name)){
+					
+					return true;
+					}
+//				else{
+//					System.out.println("Det er ingen alarmer i databasen");
+//					r = false;
+//				}
+			}
+//		}catch(Exception e){
+//			Log.e("e", "exception", e);
+//			
+//		}
+
+		
+		
+		return false; 
+	}
+	
+	public Alarm getAlarm(String name){
+		if(alarms == null) 
+			alarms = dao.getAlarms();
+		
+		for(Alarm alarm : alarms) {
+			System.out.println("Dette er alarm name: " + name);
+			System.out.println("Dette er alarm name: " + alarm.getPrey());
+			System.out.println("Dette er alarm id: " + alarm.getId());
+			if(alarm.getPrey().equals(name)){
+				return alarm;} 
+		}
+		dao.closeDB(); 
+		
+		return null; 
+		
+	}
+	
+	
+	
+	public void SetRepeatingAlarm(PreyItem prey, int id, Context context, String name, int offset){
+		
+//		if (cal.after(Calendar.getInstance())) {
+//		DateTime DateTime;
+		DateTime ThisDay = getDateTimeNow();
+		DateTime NextDay = org.joda.time.DateTime.now().plusDays(ThisDay.getDayOfWeek());
+//		PreyOverviewFragment prayOverview = new PreyOverviewFragment();
+		SnmsPrayTimeAdapter snmspraytimeadapter = new SnmsPrayTimeAdapter(context.getAssets());
+		
+		if(prey.getTime().isAfter(org.joda.time.DateTime.now())){
 			//Get the time for the next event the day after for repeating
-			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH)+1;
-			DateTime currentDate = new DateTime(year, month, 1, 1, 0, 0, 000); 
-			DateTime NextDay;
+			ThisDay = NextDay;
+			NextDay = NextDay.plusDays(NextDay.getDayOfWeek());
+			List<PreyItem> PreyItemList2 = new ArrayList<PreyItem>(); 
+			PreyItemList2 = snmspraytimeadapter.getPrayListForDate(ThisDay);
 			
-//			if(currentDate.getDayOfWeek()<7){
-				NextDay = currentDate.plusDays(currentDate.getDayOfWeek());
-//			}else {
-//				NextDay = 0;
-//			}
+			for(PreyItem item : PreyItemList2) {
+				if(item.getName().equals(name)){
+					prey = item;
+				}
+			}
+		}
 			
-			SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter();
-			
-			DateTime midnight = NextDay.minusHours(NextDay.getHourOfDay()).minusMinutes(NextDay.getMinuteOfHour()).minusSeconds(NextDay.getSecondOfMinute());
+			NextDay = NextDay.minusHours(NextDay.getHourOfDay()).minusMinutes(NextDay.getMinuteOfHour()).minusSeconds(NextDay.getSecondOfMinute());
 			
 			List<PreyItem> PreyItemList = new ArrayList<PreyItem>(); 
-			PreyItemList = prayTimeAdapter.getPrayListForDate(midnight);
+			PreyItemList = snmspraytimeadapter.getPrayListForDate(NextDay);
 			
 			System.out.println("PreyItemList: " + PreyItemList);
 			
@@ -83,7 +159,7 @@ public class AlarmUtilities {
 			}
 			
 			
-			long intervalMillis = nextPrey.getMillis() - cal.getTimeInMillis();
+			long intervalMillis = nextPrey.getMillis() - prey.getTime().getMillis();
 			long hoursToNextPray = intervalMillis/(1000*60*60);
 			long minutesToNextPray = intervalMillis/(1000*60);
 			System.out.println("NextPray.getTime: " + nextPrey);
@@ -98,26 +174,71 @@ public class AlarmUtilities {
 			//End get time for next repeating alarm
 			
 //			Intent intent = new Intent(this, AlarmReceiverActivity.class);
+			Intent intent = new Intent(context, AlarmReceiverActivity.class);
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, id,
 				intent, PendingIntent.FLAG_CANCEL_CURRENT);
 			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-			am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), intervalMillis, pendingIntent);
+			am.setRepeating(AlarmManager.RTC_WAKEUP, prey.getTime().getMillis(), intervalMillis, pendingIntent);
+			
+//			ThisDay = ThisDay.plusSeconds(10);
+//			
+//			System.out.println("Dagyear: " + ThisDay.getYear());
+//
+//			System.out.println("Dagmonth: " + ThisDay.getMonthOfYear());
+//
+//			System.out.println("DagDay: " + ThisDay.getDayOfMonth());
+//
+//			System.out.println("DagHour: " + ThisDay.getHourOfDay());
+//
+//			System.out.println("DagMin: " + ThisDay.getMinuteOfHour());
+//			
+//			System.out.println("DagSec: " + ThisDay.getSecondOfMinute());
+			
+//			AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+//			am.setRepeating(AlarmManager.RTC_WAKEUP, ThisDay.getMillis(), 50000, pendingIntent);
+			
+			
+			Alarm alarm = new Alarm(name, offset, id);
+			dao.insertAlarm(alarm); 
+			dao.closeDB();
+//			alarms = dao.getAlarms(); 
+//			dao.closeDB();
 			
 			Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT).show();
 			
-		}else{
-			Toast.makeText(context, "Oops... Alarmdato har allerede passert", Toast.LENGTH_SHORT).show();
+//			PreyOverviewFragment povf = new PreyOverviewFragment();
+//			
+//			povf.renderAlarmState();
 			
-		}
+			
+			dao.getAlarms(); //Fjern denne
+
+			
+			dao.closeDB(); //Fjern denne
+			
+			
+//		}else{
+//			Toast.makeText(context, "Oops... Alarmdato har allerede passert", Toast.LENGTH_SHORT).show();
+//			
+//		}
+}
+
+	public DateTime getDateTimeNow(){
+		DateTime ThisDay = DateTime.now();
+		
+		return ThisDay;
+		
 	}
 	
-	public int getAlarmId(Calendar cal){
+	public int getAlarmId(DateTime alarmId){
+
+
 		
-		int id = Integer.parseInt(Integer.toString(cal.get(Calendar.YEAR)-2012) +
-				Integer.toString(cal.get(Calendar.MONTH)) + 
-				Integer.toString(cal.get(Calendar.DAY_OF_MONTH)) +
-				Integer.toString(cal.get(Calendar.HOUR_OF_DAY)) + 
-				Integer.toString(cal.get(Calendar.MINUTE)));
+		int id = Integer.parseInt(Integer.toString(alarmId.getYear()-2012) +
+				Integer.toString(alarmId.getMonthOfYear()) + 
+				Integer.toString(alarmId.getDayOfMonth()) +
+				Integer.toString(alarmId.getHourOfDay()) + 
+				Integer.toString(alarmId.getMinuteOfHour()));
 		 
 		System.out.println("ID:" + id);
 		return id;

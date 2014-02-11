@@ -9,6 +9,14 @@ public class Alarm {
 	public void setPrey(String prey) {
 		this.prey = prey;
 	}
+	
+	public void setId(int id){
+		this.Id = id;
+	}
+	
+	public int getId(){
+		return Id;
+	}
 
 	public int getOffset() {
 		return offset;
@@ -20,10 +28,12 @@ public class Alarm {
 
 	String prey; 
 	
-	int offset; 
+	int offset;
+	int Id;
 	
-	public Alarm(String p, int o) {
+	public Alarm(String p, int o, int id) {
 		this.prey = p; 
 		this.offset = o;
+		this.Id = id;
 	}
 }

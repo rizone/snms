@@ -12,16 +12,17 @@ import org.joda.time.DateTime;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.snms.AlarmUtilities;
 import com.example.snms.BaseActivity;
+import com.example.snms.MainApplication;
 import com.example.snms.NewsDetailsFragment;
 import com.example.snms.PreyCountDownTimer;
 import com.example.snms.PreyOverView;
 import com.example.snms.R;
-import com.example.snms.PreyListFragment.PreyListAdapter;
 import com.example.snms.alarm.Alarm;
 import com.example.snms.alarm.AlarmChangeListner;
 import com.example.snms.alarm.AlarmDialogFragment;
-import com.example.snms.alarm.AlarmHelper;
+import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.images.ImageCacheManager;
 import com.example.snms.jumma.JummaAdaptor;
@@ -35,8 +36,11 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
+import com.sleepbot.datetimepicker.time.TimePickerDialog.OnTimeSetListener;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -58,7 +62,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class PreyOverviewFragment extends Fragment implements  OnClickListener,  OnDateSetListener, TimePickerDialog.OnTimeSetListener, JummaListner, AlarmChangeListner{
+public class PreyOverviewFragment extends Fragment implements  OnClickListener,  OnDateSetListener, OnTimeSetListener, JummaListner, AlarmChangeListner{
 
 	private DateTime currentDate;
 	private DateTime timeCurrentlyUsedInPreyOverView;
@@ -82,7 +86,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private RelativeLayout latestNewsContainer;
 	private Map<String, View> preyNamePreyRowMap;
 	private Map<String, ImageView> alarmButtonNameMap = new HashMap<String,ImageView>();
-	private AlarmHelper alarmHelper;
 	
 	private NetworkImageView newsImage1; 
 	private TextView newsText1;
@@ -96,7 +99,9 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			"Maghrib", "Isha"};
 	protected NewsItem currentNewsItem2;
 	protected NewsItem currentNewsItem1;
-
+	Intent intent = new Intent(getAppContext(), PreyOverviewFragment.class);
+	 
+	AlarmUtilities Util;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.preyoverview, null);
@@ -132,7 +137,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
 		currentDay = (TextView) root.findViewById(R.id.prey_current_day);
 		jummaAdaptor = new JummaAdaptor(((PreyOverView) getActivity()).getDAO());
-		alarmHelper = new AlarmHelper(((PreyOverView) getActivity()).getDAO());
+
+		Util = new AlarmUtilities(((PreyOverView) getActivity()).getDAO());
 		jummaAdaptor.addJummaListner(this);
 		newsImage1.setOnClickListener(this);
 		newsImage2.setOnClickListener(this);
@@ -172,7 +178,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	public void renderAlarmState() {
 		for (String key : alarmButtonNameMap.keySet()) {
 			ImageView alarmIcon = alarmButtonNameMap.get(key);
-			if(alarmHelper.hasAlarm(key)){
+			if(Util.hasAlarm(key) == true){
 				alarmIcon.setImageResource(R.drawable.alarmclock);
 			}else {
 				alarmIcon.setImageResource(R.drawable.alarmclock_inactive);
@@ -392,13 +398,13 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		currentDay.setText(day);
 	}
 
-	private List<PreyItem> loadPrayTimes(DateTime dateTime) {
+	public List<PreyItem> loadPrayTimes(DateTime dateTime) {
 		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter(
 				getActivity().getAssets());
 		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay())
 				.minusMinutes(dateTime.getMinuteOfHour())
 				.minusSeconds(dateTime.getSecondOfMinute());
-		return prayTimeAdapter.getPrayListForDate(midnight, true);
+		return prayTimeAdapter.getPrayListForDate(midnight);
 
 	}
 
@@ -452,19 +458,34 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		
 		for(String key  :alarmButtonNameMap.keySet()){
 			if(v.equals(alarmButtonNameMap.get(key))) {
-				if(!alarmHelper.hasAlarm(key)) { 
-				FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-				AlarmDialogFragment newFragment = AlarmDialogFragment.newInstance(key);
-			    newFragment.show(ft, "dialog");
-			    Bundle args = new Bundle(); 
-			    args.putString("prey", key);
-			    newFragment.setArguments(args);
+				if(!Util.hasAlarm(key)) { 
+					for(PreyItem preyItem:preyTimes){
+						if(preyItem.getName().equals(key)){
+					
+							FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction(); //endre dette til å bruke setReapeting
+							AlarmDialogFragment newFragment = AlarmDialogFragment.newInstance(preyItem); //var key
+							newFragment.show(ft, "dialog");
+							Bundle args = new Bundle(); 
+							args.putString("prey", key);
+							newFragment.setArguments(args);
+							
+						}
+					}
+				
 			}else {
-				alarmHelper.cancelAlarm(key);
+				
+				AlarmUtilities Util = new AlarmUtilities(((PreyOverView) getActivity()).getDAO());
+				Alarm alarm = Util.getAlarm(key);
+				Util.RemoveAlarm(alarm.getId(), getAppContext(), alarm.getPrey());
 				renderAlarmState();
-			}
+				}
+				
 			}
 		}
+	}
+		
+	public static Context getAppContext() {
+	    return MainApplication.getAppContext();
 	}
 
 	@Override
@@ -588,11 +609,11 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	public void setAlarm(View v) {
 		v.setVisibility(View.INVISIBLE);
 	}
-
+	
 	@Override
-	public void alarmChanged(String alarm, int time) {
-		alarmHelper.setAlarm(alarm, time);
+	public void alarmChanged() {
+//		Util.SetRepeatingAlarm(prey, id, context, alarm, offset);
 		renderAlarmState();
-	};
+	}
 
 }
