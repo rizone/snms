@@ -28,18 +28,20 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.util.Xml;
 import android.widget.ImageView;
 
-import com.example.snms.AlarmUtilities;
-import com.example.snms.DBAdapter;
+//import com.example.snms.DBAdapter;
 import com.example.snms.PreyOverView;
-import com.example.snms.R;
+import com.example.snms.alarm.AlarmUtilities;
+import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.Jumma;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
 
 public class SnmsPrayTimeAdapter {
-
+	
+	
 	AssetManager assetManager;
 	private static final String ns = null;
+	
 
 
 	public SnmsPrayTimeAdapter(AssetManager assetManager) {
@@ -51,7 +53,7 @@ public class SnmsPrayTimeAdapter {
 		List<PreyItemList> dayPreyListMap = new ArrayList<PreyItemList>();
 		for (int i = 1; i <= dateTime.dayOfMonth().getMaximumValue(); i++) {
 			DateTime dateTime2 = new DateTime(year, month, i, 1, 0, 0, 000);
-			List<PreyItem> items = this.getPrayListForDate(dateTime2,includeAlarm);
+			List<PreyItem> items = this.getPrayListForDate(dateTime2);
 			PreyItemList list = new PreyItemList(items, i);
 			dayPreyListMap.add(list);
 		}
@@ -98,10 +100,45 @@ public class SnmsPrayTimeAdapter {
 	}
 	
 	
+
+
+		
+		/*
+	    public static void main(String[] args) {
+	        double latitude = 59;
+	        double longitude = 10;
+	        double timezone = 1;
+	        // Test Prayer times here
+	        PrayTime prayers = new PrayTime();
+
+	        prayers.setTimeFormat(prayers.Time24);
+	        prayers.setCalcMethod(prayers.Jafari);
+	        prayers.setAsrJuristic(prayers.Shafii);
+	        prayers.setAdjustHighLats(prayers.AngleBased);
+	        int[] offsets = {0, 0, 0, 0, 0, 0, 0}; // {Fajr,Sunrise,Dhuhr,Asr,Sunset,Maghrib,Isha}
+	        prayers.tune(offsets);
+
+	        Date now = new Date();
+	        Calendar cal = Calendar.getInstance();
+	        cal.setTime(now);
+
+	        ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal,
+	                latitude, longitude, timezone);
+	        ArrayList<String> prayerNames = prayers.getTimeNames();
+
+	        for (int i = 0; i < prayerTimes.size(); i++) {
+	            System.out.println(prayerNames.get(i) + " - " + prayerTimes.get(i));
+	        }
+
+	    }
+		*/
+		
+
 	private DateTime getPrayTimeFromString(DateTime time, String timeToParse) {
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("h:mm:ss aa");
 		LocalTime timeFromString = LocalTime.parse(timeToParse,fmt);
 		return time.plusHours(timeFromString.getHourOfDay()).plusMinutes(timeFromString.getMinuteOfHour());
+
 	}
 	
 	
@@ -157,13 +194,17 @@ public class SnmsPrayTimeAdapter {
 		return null;
 	}
 
-	public List<PreyItem> getPrayListForDate(DateTime time, boolean includeAlarm) {
+	public List<PreyItem> getPrayListForDate(DateTime time) {
 		
 		if(true) {
 			List<PreyItem> list = readPrayItemFormXml(time);
 			if(false){
 				for(PreyItem item : list) {
-					checkAlarmStateAtStartup(item);
+//					if(Util.hasAlarm==true){
+					
+//						checkAlarmStateAtStartup(item);
+//					}
+					
 				}
 			}
 			return list;
@@ -191,7 +232,7 @@ public class SnmsPrayTimeAdapter {
 			PreyItem preyItem = new PreyItem(prayerNames.get(i), timeToAdd,
 					false);
 			listToReturn.add(preyItem);
-			checkAlarmStateAtStartup(preyItem);
+//			checkAlarmStateAtStartup(preyItem);
 		}
 		return listToReturn;
 
@@ -199,53 +240,6 @@ public class SnmsPrayTimeAdapter {
 
 	}
 
-	public void checkAlarmStateAtStartup(PreyItem preyItem) {
-
-		Context context = PreyOverView.getAppContext();
-		// Intent intent = new Intent(context, AlarmReceiverActivity.class);
-		AlarmUtilities Util = new AlarmUtilities();
-		// context.startActivity(myIntent);
-
-		// Get alarms after reboot
-		DBAdapter db = new DBAdapter(context);
-		db.open();
-
-		Cursor cursor = db.getAllAlarms();
-
-		try {
-			cursor.moveToLast();
-			do {
-				Integer[] AlarmDate = Util.RefactorToIntegerFromDatabase(cursor
-						.getString(1));
-				DateTime dateTimeFromDB = new DateTime(AlarmDate[0],
-						AlarmDate[1] + 1, AlarmDate[2], AlarmDate[3],
-						AlarmDate[4], AlarmDate[5] - 1, 0);
-				String dateTimeFromDBString = dateTimeFromDB.getYear() + ":"
-						+ dateTimeFromDB.getMonthOfYear() + ":"
-						+ dateTimeFromDB.getDayOfMonth() + ":"
-						+ dateTimeFromDB.getHourOfDay() + ":"
-						+ dateTimeFromDB.getMinuteOfHour() + ":"
-						+ dateTimeFromDB.getSecondOfMinute();
-				DateTime dateTimeFromEvent = preyItem.getTime();
-				// Set correct alarm image at start-up
-				String dateTimeFromEventString = dateTimeFromEvent.getYear()
-						+ ":" + dateTimeFromEvent.getMonthOfYear() + ":"
-						+ dateTimeFromEvent.getDayOfMonth() + ":"
-						+ dateTimeFromEvent.getHourOfDay() + ":"
-						+ dateTimeFromEvent.getMinuteOfHour() + ":"
-						+ dateTimeFromEvent.getSecondOfMinute();
-				if (dateTimeFromEventString.equals(dateTimeFromDBString) == true) {
-
-					preyItem.setAlarmBoolean(true);
-				}
-			} while (cursor.moveToPrevious() && cursor.getInt(0) > 0);
-
-		} catch (CursorIndexOutOfBoundsException e) {
-			e.printStackTrace();
-			db.close();
-
-		}
-
-	}
+	
 
 }
