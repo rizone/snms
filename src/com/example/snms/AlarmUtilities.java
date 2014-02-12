@@ -124,32 +124,42 @@ public class AlarmUtilities {
 		
 //		if (cal.after(Calendar.getInstance())) {
 //		DateTime DateTime;
-		DateTime ThisDay = getDateTimeNow();
-		DateTime NextDay = org.joda.time.DateTime.now().plusDays(ThisDay.getDayOfWeek());
+		DateTime ThisDay = org.joda.time.DateTime.now();
+		DateTime NextDay = org.joda.time.DateTime.now().plusDays(1);
 //		PreyOverviewFragment prayOverview = new PreyOverviewFragment();
 		SnmsPrayTimeAdapter snmspraytimeadapter = new SnmsPrayTimeAdapter(context.getAssets());
+		ThisDay = ThisDay.minusHours(ThisDay.getHourOfDay()).minusMinutes(ThisDay.getMinuteOfHour()).minusSeconds(ThisDay.getSecondOfMinute());
 		
-		if(prey.getTime().isAfter(org.joda.time.DateTime.now())){
+		NextDay = NextDay.minusHours(NextDay.getHourOfDay()).minusMinutes(NextDay.getMinuteOfHour()).minusSeconds(NextDay.getSecondOfMinute());
+		
+		List<PreyItem> PreyItemList = new ArrayList<PreyItem>(); 
+		
+		PreyItemList = snmspraytimeadapter.getPrayListForDate(ThisDay);
+		
+		for(PreyItem item : PreyItemList) {
+			if(item.getName().equals(name)){
+				prey = item;
+			}
+		}
+		
+		if(prey.getTime().isBefore(org.joda.time.DateTime.now())){
 			//Get the time for the next event the day after for repeating
 			ThisDay = NextDay;
-			NextDay = NextDay.plusDays(NextDay.getDayOfWeek());
-			List<PreyItem> PreyItemList2 = new ArrayList<PreyItem>(); 
-			PreyItemList2 = snmspraytimeadapter.getPrayListForDate(ThisDay);
+			NextDay = NextDay.plusDays(1);
 			
-			for(PreyItem item : PreyItemList2) {
+			PreyItemList = snmspraytimeadapter.getPrayListForDate(ThisDay);
+			
+			for(PreyItem item : PreyItemList) {
 				if(item.getName().equals(name)){
 					prey = item;
 				}
 			}
+
 		}
 			
-			NextDay = NextDay.minusHours(NextDay.getHourOfDay()).minusMinutes(NextDay.getMinuteOfHour()).minusSeconds(NextDay.getSecondOfMinute());
+
 			
-			List<PreyItem> PreyItemList = new ArrayList<PreyItem>(); 
 			PreyItemList = snmspraytimeadapter.getPrayListForDate(NextDay);
-			
-			System.out.println("PreyItemList: " + PreyItemList);
-			
 			DateTime nextPrey = new DateTime();
 			
 			for(PreyItem item : PreyItemList) {
@@ -160,15 +170,29 @@ public class AlarmUtilities {
 			
 			
 			long intervalMillis = nextPrey.getMillis() - prey.getTime().getMillis();
-			long hoursToNextPray = intervalMillis/(1000*60*60);
-			long minutesToNextPray = intervalMillis/(1000*60);
-			System.out.println("NextPray.getTime: " + nextPrey);
-			System.out.println("Tid til bønn: " + cal.getTimeInMillis());
-			System.out.println("Tid til neste bønn millis: " + nextPrey.getMillis());
-			System.out.println("Tid til neste bønn: " + intervalMillis);
-			System.out.println("timer :" + hoursToNextPray);
-			System.out.println("minutter :" + minutesToNextPray);
+//			long hoursToNextPray = intervalMillis/(1000*60*60);
+//			long minutesToNextPray = intervalMillis/(1000*60);
+//			System.out.println("NextPray.getTime: " + nextPrey);
+//			System.out.println("Tid til bønn: " + cal.getTimeInMillis());
+//			System.out.println("Tid til neste bønn millis: " + nextPrey.getMillis());
+//			System.out.println("Tid til neste bønn: " + intervalMillis);
+//			System.out.println("timer :" + hoursToNextPray);
+//			System.out.println("minutter :" + minutesToNextPray);
 			
+			System.out.println("Satt alarm :" + prey.getTime().getYear() + " " + prey.getTime().getMonthOfYear()
+					+ " " + prey.getTime().getDayOfMonth() + " " + prey.getTime().getHourOfDay() + " " + 
+					prey.getTime().getMinuteOfHour() + " " + prey.getTime().getSecondOfMinute());
+			
+			System.out.println("Neste alarm :" + nextPrey.getYear() + " " + nextPrey.getMonthOfYear()
+					+ " " + nextPrey.getDayOfMonth() + " " + nextPrey.getHourOfDay() + " " + 
+					nextPrey.getMinuteOfHour() + " " + nextPrey.getSecondOfMinute());
+			
+			Toast.makeText(context, "Satt alarm :" + prey.getTime().getYear() + " " + prey.getTime().getMonthOfYear()
+					+ " " + prey.getTime().getDayOfMonth() + " " + prey.getTime().getHourOfDay() + " " + 
+					prey.getTime().getMinuteOfHour() + " " + prey.getTime().getSecondOfMinute(), Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Neste alarm :" + nextPrey.getYear() + " " + nextPrey.getMonthOfYear()
+					+ " " + nextPrey.getDayOfMonth() + " " + nextPrey.getHourOfDay() + " " + 
+					nextPrey.getMinuteOfHour() + " " + nextPrey.getSecondOfMinute(), Toast.LENGTH_LONG).show();
 			
 //			long intervalMillis = 10000;	//for test
 			//End get time for next repeating alarm
