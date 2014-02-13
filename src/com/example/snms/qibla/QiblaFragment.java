@@ -209,6 +209,7 @@ var brng = Math.atan2(y, x).toDeg();
 //		    	tc1 = 0.0;
 //		  }
 		
+		
 		double angle = (Math.atan2(y, x) % 2*Math.PI)*180/Math.PI;
 //		angle = angle + 360 % 360;
 		
