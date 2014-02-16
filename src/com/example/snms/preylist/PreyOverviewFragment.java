@@ -25,15 +25,20 @@ import com.example.snms.alarm.AlarmDialogFragment;
 import com.example.snms.alarm.AlarmUtilities;
 import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.PreyItem;
+import com.example.snms.donation.DonationFragment;
 import com.example.snms.images.ImageCacheManager;
 import com.example.snms.jumma.JummaAdaptor;
 import com.example.snms.jumma.JummaListner;
 import com.example.snms.network.RequestManager;
+import com.example.snms.news.BuildProjectListFragment;
+import com.example.snms.news.EventListFragment;
 import com.example.snms.news.NewsDetailsFragment;
 import com.example.snms.news.NewsItem;
+import com.example.snms.news.NewsListFragment;
 import com.example.snms.news.NewsManager;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
 import com.example.snms.news.NewsListFragment.NewsScrollListner;
+import com.example.snms.qibla.QiblaFragment;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
@@ -80,6 +85,14 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	private ImageButton  prevDay;
 	private ImageButton nextNews;
 	private ImageButton prevNews;
+	
+	private Button eventsShortCut;
+	private Button buildShortcut;
+	private Button settingsShortCut;
+	private Button qiblaDonationShortCut;
+	private Button	qiblaShortcut;
+	private Button newsShortCut;
+	
 	private TextView calender;
 	private DateTime currentDateTime;
 	DatePickerDialog datePickerDialog;
@@ -130,12 +143,30 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		latestNews = (Button) root.findViewById(R.id.latestNews);
 		shortCuts.setOnClickListener(this);
 		latestNews.setOnClickListener(this);
+		
+		eventsShortCut = (Button) root.findViewById(R.id.eventsShortCut);
+		buildShortcut = (Button) root.findViewById(R.id.buildShortcut);
+		settingsShortCut = (Button) root.findViewById(R.id.settingsShortCut);
+		qiblaDonationShortCut = (Button) root.findViewById(R.id.qiblaDonationShortCut);
+		settingsShortCut = (Button) root.findViewById(R.id.settingsShortCut);
+		qiblaShortcut  = (Button) root.findViewById(R.id.qiblaShortcut);
+		newsShortCut = (Button) root.findViewById(R.id.newsShortCut);
+		
+		eventsShortCut.setOnClickListener(this);
+		buildShortcut.setOnClickListener(this);
+		settingsShortCut.setOnClickListener(this);
+		
+		qiblaDonationShortCut.setOnClickListener(this);
+		qiblaShortcut.setOnClickListener(this);
+		newsShortCut.setOnClickListener(this);
+		
+		
 	//	nextNews = (ImageButton) root.findViewById(R.id.next_news);
 	//	nextNews.setOnClickListener(this);
 	//	prevNews = (ImageButton) root.findViewById(R.id.prev_news);
 	//	prevNews.setOnClickListener(this);
 		
-		newsSpinnerProgress = (ProgressBar) root.findViewById(R.id.newsSpinnerProgress);
+		//newsSpinnerProgress = (ProgressBar) root.findViewById(R.id.newsSpinnerProgress);
 		newsJummaSpinnerProgress = (LinearLayout) root.findViewById(R.id.newsJummaSpinnerProgress);
 		latestNewsContainer = (LinearLayout)root.findViewById(R.id.latestNewsContainer);
 	//	latestNewsContainer.setVisibility(View.GONE);
@@ -474,14 +505,17 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			NewsManager.getInstance().getNews(createSuccessListener(), createErrorListener(),2,newsPage,1);
 		}
 		if(v.equals(shortCuts)){
+			shortCuts.setSelected(true);
+			latestNews.setSelected(false);
 			shortCutContainer.setVisibility(View.VISIBLE);
 			latesetNewsScrollView.setVisibility(View.GONE);
 		}
 		if(v.equals(latestNews)){
+			latestNews.setSelected(true);
+			shortCuts.setSelected(false);
 			shortCutContainer.setVisibility(View.GONE);
 			latesetNewsScrollView.setVisibility(View.VISIBLE);
 		}
-		
 		
 		if (v.equals(newsImage1)) {
 			   NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(currentNewsItem1);
@@ -491,6 +525,32 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(currentNewsItem2);
 			switchFragment(myDetailFragment,null);
 		}
+		if (v.equals(eventsShortCut)) {
+			EventListFragment myDetailFragment = new EventListFragment();
+			switchFragment(myDetailFragment,null);
+		}
+		if (v.equals(buildShortcut)) {
+			BuildProjectListFragment myDetailFragment = new BuildProjectListFragment();
+			switchFragment(myDetailFragment,null);
+		}
+		if (v.equals(settingsShortCut)) {
+			NewsDetailsFragment myDetailFragment = new NewsDetailsFragment();
+			switchFragment(myDetailFragment,null);
+		}
+		if (v.equals(qiblaShortcut)) {
+			QiblaFragment myDetailFragment = new QiblaFragment();
+			switchFragment(myDetailFragment,null);
+		}
+		if (v.equals(newsShortCut)) {
+			NewsListFragment myDetailFragment = new NewsListFragment();
+			switchFragment(myDetailFragment,null);
+		}
+		if (v.equals(qiblaDonationShortCut)) {
+			DonationFragment myDetailFragment = new DonationFragment();
+			switchFragment(myDetailFragment,null);
+		}
+		
+		
 		
 		for(String key  :alarmButtonNameMap.keySet()){
 			if(v.equals(alarmButtonNameMap.get(key))) {
@@ -575,15 +635,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	       
 	    	@Override
 			public void onResponse(NewsItem[] response) {
-	    		newsSpinnerProgress.setVisibility(View.GONE);
-	    	//	latestNewsContainer.setVisibility(View.VISIBLE);
-	    		Display display = getActivity().getWindowManager().getDefaultDisplay();
-	    		Point size = new Point();
-	    		display.getSize(size);
-	    		int width = (size.x/2);
-	    		
+	    	//	newsSpinnerProgress.setVisibility(View.GONE);
 	    		LayoutInflater inflater = getActivity().getLayoutInflater();
-	    		
 	    		for(NewsItem item : response) {
 	    			RelativeLayout latestNews = (RelativeLayout) inflater.inflate(R.layout.recent_news,null,false);
 	    			TextView newsText = (TextView) latestNews.findViewById(R.id.newsText);
