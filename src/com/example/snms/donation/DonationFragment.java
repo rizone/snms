@@ -20,6 +20,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -120,6 +121,8 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 			    smsIntent.setType("vnd.android-dir/mms-sms");
 			    startActivity(smsIntent);
 		}
+		
+		//SharedPreferences p = getActivity().get
 		
 		if(v.equals(infoButton) ||v.equals(infoImage)){
 			// 1. Instantiate an AlertDialog.Builder with its constructor

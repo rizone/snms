@@ -119,7 +119,7 @@ public class AlarmUtilities {
 		DateTime NextDay = org.joda.time.DateTime.now().plusDays(1);
 		// PreyOverviewFragment prayOverview = new PreyOverviewFragment();
 		SnmsPrayTimeAdapter snmspraytimeadapter = new SnmsPrayTimeAdapter(
-				context.getAssets());
+				context.getAssets(),dao);
 		ThisDay = ThisDay.minusHours(ThisDay.getHourOfDay())
 				.minusMinutes(ThisDay.getMinuteOfHour())
 				.minusSeconds(ThisDay.getSecondOfMinute());

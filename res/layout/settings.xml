@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical" >
+
+    <CheckBox
+        android:id="@+id/hanafi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Oslo - Hanafi tider (JUN)" />
+
+    <CheckBox
+        android:id="@+id/icc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Oslo - Shafi tider (ICC)" />
+
+    <CheckBox
+        android:id="@+id/avansert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Avansert" />
+
+    <RelativeLayout
+        android:id="@+id/avansertContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:visibility="gone"
+        android:orientation="vertical" >
+        		
+             <TextView
+        android:id="@+id/calcMethodText"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+         android:gravity="bottom"
+        android:paddingLeft="5dp"
+        android:layout_alignParentLeft="true"
+              android:textColor="@color/black"
+        android:text="Beregningsmetode"
+        android:textSize="17sp" />
+        
+              <Spinner
+                android:id="@+id/calcMethod"
+                style="@style/CustomNPStyle"
+                android:layout_width="150dp"
+                   android:gravity="bottom"
+                       android:layout_alignParentRight="true"
+                                android:layout_height="55dp"
+                android:layout_marginTop="0dp"
+                android:textColor="@color/white" />
+              
+             <TextView
+        android:id="@+id/jurMethodText"
+               android:layout_width="230dp"
+            android:layout_height="50dp"
+        android:gravity="bottom"
+        android:paddingLeft="5dp"
+        android:layout_below="@+id/calcMethodText"
+        android:layout_alignParentLeft="true"
+            android:textColor="@color/black"
+        android:text="Lovskole"
+        android:textSize="17sp" />
+        
+              <Spinner
+                android:id="@+id/jurMethod"
+                style="@style/CustomNPStyle"
+            android:layout_width="150dp"
+               android:gravity="bottom"
+                 android:layout_below="@+id/calcMethod"
+                           android:layout_height="55dp"
+                        android:layout_alignParentRight="true"
+                android:layout_marginTop="0dp"
+                android:textColor="@color/white" />     
+                
+              
+                          <TextView
+        android:id="@+id/adjustText"
+               android:layout_width="230dp"
+           android:layout_height="50dp"
+     android:gravity="bottom"
+        android:paddingLeft="5dp"
+        android:layout_below="@+id/jurMethodText"
+        android:layout_alignParentLeft="true"
+               android:textColor="@color/black"
+        android:text="Tilpassingsmetode"
+        android:textSize="17sp" />
+        
+              <Spinner
+                android:id="@+id/adjustMethod"
+                style="@style/CustomNPStyle"
+               android:layout_width="150dp"
+                  android:gravity="bottom"
+                 android:layout_below="@+id/jurMethod"
+                      android:layout_height="55dp"
+                            android:layout_alignParentRight="true"
+                android:layout_marginTop="0dp"
+                android:textColor="@color/white" />  
+                
+              
+                              <TextView
+        android:id="@+id/locationText"
+               android:layout_width="230dp"
+           android:layout_height="50dp"
+           android:gravity="bottom"
+        android:paddingLeft="5dp"
+        android:layout_below="@+id/adjustText"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/black"
+        android:text="Lokasjon"
+        android:textSize="17sp" />
+        
+              <Spinner
+                android:id="@+id/location"
+                style="@style/CustomNPStyle"
+                android:layout_width="150dp"
+                   android:gravity="bottom"
+                 android:layout_below="@+id/adjustMethod"
+                      android:layout_height="55dp"
+                         android:layout_alignParentRight="true"
+                android:layout_marginTop="0dp"
+                android:textColor="@color/white" />          
+              
+              
+              
+              
+        
+
+    </RelativeLayout>
+
+</LinearLayout>

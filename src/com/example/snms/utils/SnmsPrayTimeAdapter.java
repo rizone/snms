@@ -35,19 +35,63 @@ import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.Jumma;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.domain.PreyItemList;
+import com.example.snms.settings.PreySettings;
 
 public class SnmsPrayTimeAdapter {
 	
 	
 	AssetManager assetManager;
 	private static final String ns = null;
-	
+	SnmsDAO dao; 
 
 
-	public SnmsPrayTimeAdapter(AssetManager assetManager) {
+	public SnmsPrayTimeAdapter(AssetManager assetManager, SnmsDAO dao) {
 		this.assetManager = assetManager;
+		this.dao = dao; 
+	}
+	
+	
+	public List<PreyItem> getPrayListForDate(DateTime time) {
+		
+		PreySettings settings = dao.getAllSettings();
+		
+		if(!settings.getHasAvansertPreyCalenderSet()){
+			return readPrayItemFormXml(time);
+		}else {
+			PrayTime prayers = new PrayTime();
+			prayers.setTimeFormat(prayers.Time24);
+			double latitude = 59;
+			double longitude = 10;
+			double timezone = 1;
+			Calendar cal = Calendar.getInstance();
+			cal.set(time.getYear(),time.getMonthOfYear(), time.getDayOfMonth());
+			prayers.setCalcMethod(settings.getCalculationMethodNo());
+			prayers.setAsrJuristic(settings.getJuristicMethodsNo());
+			prayers.setLat(latitude);
+			prayers.setLng(longitude);
+			//prayers.setAsrJuristic(settings.getAdjustingMethodNo());
+			ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal, latitude,
+					longitude, timezone);
+			ArrayList<String> prayerNames = prayers.getTimeNames();
+			List<PreyItem> listToReturn = new ArrayList<PreyItem>();
+			for (int i = 0; i < prayerTimes.size(); i++) {
+
+				DateTime timeToAdd = time.plusHours(
+						Integer.valueOf(prayerTimes.get(i).split(":")[0]))
+						.plusMinutes(
+								Integer.valueOf(prayerTimes.get(i).split(":")[1]));
+				PreyItem preyItem = new PreyItem(prayerNames.get(i), timeToAdd,
+						false);
+				listToReturn.add(preyItem);
+//				checkAlarmStateAtStartup(preyItem);
+			}
+			return listToReturn;
+		}
+
 	}
 
+	
+	
 	public List<PreyItemList> getPrayGridForMonthIndYear(int month, int year, boolean includeAlarm) {
 		DateTime dateTime = new DateTime(year, month, 1, 1, 0, 0, 000);
 		List<PreyItemList> dayPreyListMap = new ArrayList<PreyItemList>();
@@ -99,9 +143,6 @@ public class SnmsPrayTimeAdapter {
 		}
 	}
 	
-	
-
-
 		
 		/*
 	    public static void main(String[] args) {
@@ -169,6 +210,9 @@ public class SnmsPrayTimeAdapter {
 	    return preyList;
 	}
 
+	
+	
+	
 	private List<PreyItem> readPrayItemFormXml(DateTime time) {
 		InputStream inputStream = null;
 		try {
@@ -194,51 +238,6 @@ public class SnmsPrayTimeAdapter {
 		return null;
 	}
 
-	public List<PreyItem> getPrayListForDate(DateTime time) {
-		
-		if(true) {
-			List<PreyItem> list = readPrayItemFormXml(time);
-			if(false){
-				for(PreyItem item : list) {
-//					if(Util.hasAlarm==true){
-					
-//						checkAlarmStateAtStartup(item);
-//					}
-					
-				}
-			}
-			return list;
-		}
-		double latitude = 59;
-		double longitude = 10;
-		double timezone = 1;
-		PrayTime prayers = new PrayTime();
-		prayers.setTimeFormat(prayers.Time24);
-		prayers.setCalcMethod(prayers.Jafari);
-		prayers.setAsrJuristic(prayers.Shafii);
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(time.toDate());
-		ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal, latitude,
-				longitude, timezone);
-		ArrayList<String> prayerNames = prayers.getTimeNames();
-		List<PreyItem> listToReturn = new ArrayList<PreyItem>();
-		for (int i = 0; i < prayerTimes.size(); i++) {
-
-			DateTime timeToAdd = time.plusHours(
-					Integer.valueOf(prayerTimes.get(i).split(":")[0]))
-					.plusMinutes(
-							Integer.valueOf(prayerTimes.get(i).split(":")[1]));
-			PreyItem preyItem = new PreyItem(prayerNames.get(i), timeToAdd,
-					false);
-			listToReturn.add(preyItem);
-//			checkAlarmStateAtStartup(preyItem);
-		}
-		return listToReturn;
-
-	
-
-	}
 
 	
 

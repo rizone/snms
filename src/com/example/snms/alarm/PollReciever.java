@@ -67,7 +67,7 @@ public class PollReciever extends BroadcastReceiver {
 
 	public List<PreyItem> loadPrayTimes(DateTime dateTime, Context context) {
 		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter(
-				context.getAssets());
+				context.getAssets(),dao);
 		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay())
 				.minusMinutes(dateTime.getMinuteOfHour())
 				.minusSeconds(dateTime.getSecondOfMinute());

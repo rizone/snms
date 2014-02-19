@@ -39,6 +39,7 @@ import com.example.snms.news.NewsManager;
 import com.example.snms.news.NewsListFragment.NewsListAdapter;
 import com.example.snms.news.NewsListFragment.NewsScrollListner;
 import com.example.snms.qibla.QiblaFragment;
+import com.example.snms.settings.SettingsFragment;
 import com.example.snms.utils.SnmsPrayTimeAdapter;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
@@ -159,18 +160,8 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		qiblaDonationShortCut.setOnClickListener(this);
 		qiblaShortcut.setOnClickListener(this);
 		newsShortCut.setOnClickListener(this);
-		
-		
-	//	nextNews = (ImageButton) root.findViewById(R.id.next_news);
-	//	nextNews.setOnClickListener(this);
-	//	prevNews = (ImageButton) root.findViewById(R.id.prev_news);
-	//	prevNews.setOnClickListener(this);
-		
-		//newsSpinnerProgress = (ProgressBar) root.findViewById(R.id.newsSpinnerProgress);
 		newsJummaSpinnerProgress = (LinearLayout) root.findViewById(R.id.newsJummaSpinnerProgress);
 		latestNewsContainer = (LinearLayout)root.findViewById(R.id.latestNewsContainer);
-	//	latestNewsContainer.setVisibility(View.GONE);
-	
 		prevDay.setOnClickListener(this);
 		currentDate = new DateTime();
 		timeCurrentlyUsedInPreyOverView = currentDate;
@@ -262,8 +253,9 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		if(currentDateUsedInAppIsMoreThanOneInthaFuture()){
 			renderAllPreysAsFuturu(); 
 		}
-		
+		try {	
 		for (PreyItem item : preyTimes) {
+		
 			View preyRow = this.preyNamePreyRowMap.get(item.getName());
 			TextView title = (TextView) preyRow
 					.findViewById(R.id.row_title);
@@ -286,6 +278,9 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 				renderNext(item,preyRow,title, time,status,image);
 				// TODO: Trigger a new count down
 			}
+		}
+		} catch(Exception e){
+			Log.e("ERROR","Could not render this prey");
 		}
 		
 
@@ -458,7 +453,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 
 	public List<PreyItem> loadPrayTimes(DateTime dateTime) {
 		SnmsPrayTimeAdapter prayTimeAdapter = new SnmsPrayTimeAdapter(
-				getActivity().getAssets());
+				getActivity().getAssets(),((PreyOverView) getActivity()).getDAO());
 		DateTime midnight = dateTime.minusHours(dateTime.getHourOfDay())
 				.minusMinutes(dateTime.getMinuteOfHour())
 				.minusSeconds(dateTime.getSecondOfMinute());
@@ -534,7 +529,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			switchFragment(myDetailFragment,null);
 		}
 		if (v.equals(settingsShortCut)) {
-			NewsDetailsFragment myDetailFragment = new NewsDetailsFragment();
+			SettingsFragment myDetailFragment = new SettingsFragment();
 			switchFragment(myDetailFragment,null);
 		}
 		if (v.equals(qiblaShortcut)) {
