@@ -149,6 +149,7 @@ public class SnmsDAO extends SQLiteOpenHelper {
 						c.getString(c.getColumnIndex(TABLE_SETTINGS_VALUE)));
 			} while (c.moveToNext());
 		}
+		
 		for (String dbkey : settings.keySet()) {
 			if (dbkey.equals(key)) {
 				return settings.get(dbkey);

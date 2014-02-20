@@ -60,22 +60,21 @@ public class SnmsPrayTimeAdapter {
 		}else {
 			PrayTime prayers = new PrayTime();
 			prayers.setTimeFormat(prayers.Time24);
-			double latitude = 59;
-			double longitude = 10;
+		
 			double timezone = 1;
 			Calendar cal = Calendar.getInstance();
 			cal.set(time.getYear(),time.getMonthOfYear(), time.getDayOfMonth());
 			prayers.setCalcMethod(settings.getCalculationMethodNo());
 			prayers.setAsrJuristic(settings.getJuristicMethodsNo());
-			prayers.setLat(latitude);
-			prayers.setLng(longitude);
+			prayers.setLat(settings.getLat());
+			prayers.setLng(settings.getLng());
 			//prayers.setAsrJuristic(settings.getAdjustingMethodNo());
-			ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal, latitude,
-					longitude, timezone);
+			ArrayList<String> prayerTimes = prayers.getPrayerTimes(cal, settings.getLat(),
+					settings.getLng(), timezone);
 			ArrayList<String> prayerNames = prayers.getTimeNames();
 			List<PreyItem> listToReturn = new ArrayList<PreyItem>();
 			for (int i = 0; i < prayerTimes.size(); i++) {
-
+				if(!prayerNames.get(i).equals("Sunset")) {
 				DateTime timeToAdd = time.plusHours(
 						Integer.valueOf(prayerTimes.get(i).split(":")[0]))
 						.plusMinutes(
@@ -84,7 +83,9 @@ public class SnmsPrayTimeAdapter {
 						false);
 				listToReturn.add(preyItem);
 //				checkAlarmStateAtStartup(preyItem);
+				}
 			}
+			List temp = listToReturn;
 			return listToReturn;
 		}
 

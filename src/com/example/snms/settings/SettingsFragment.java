@@ -1,45 +1,62 @@
 package com.example.snms.settings;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.snms.PreyOverView;
 import com.example.snms.R;
 import com.example.snms.database.SnmsDAO;
+import com.example.snms.domain.Geolocation;
+import com.example.snms.domain.GeolocationSearchResult;
+import com.example.snms.domain.Geometry;
+import com.example.snms.news.NewsItem;
+import com.example.snms.news.NewsListFragment.NewsListAdapter;
 
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SettingsFragment extends Fragment implements
-		OnItemSelectedListener, OnCheckedChangeListener {
+		OnItemSelectedListener, OnCheckedChangeListener, OnClickListener {
 
 	SnmsDAO dao;
 
-	Spinner location;
+	EditText location;
 	Spinner calcMethod;
 	Spinner jurMethod;
 	Spinner adjustMethod;
 	CheckBox hanaFi;
 	CheckBox icc;
 	CheckBox avansert;
+	Button searchButton; 
 	RelativeLayout avansertContainer;
 	ArrayAdapter<CharSequence> locationAdapter;
 	ArrayAdapter<CharSequence> calcAdapter;
 	ArrayAdapter<CharSequence> adjustMethodAdapter;
 	ArrayAdapter<CharSequence> jurMethodAdapter;
+	GeolocationManager geolocationManager = GeolocationManager.getInstance();
+	ProgressBar progressBar;
+	TextView locationText;
+	
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -52,23 +69,20 @@ public class SettingsFragment extends Fragment implements
 		hanaFi = (CheckBox) root.findViewById(R.id.hanafi);
 		icc = (CheckBox) root.findViewById(R.id.icc);
 		avansert = (CheckBox) root.findViewById(R.id.avansert);
-
+		progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
+		progressBar.setVisibility(View.GONE);
+		locationText =  (TextView) root.findViewById(R.id.locationContainer);
 		hanaFi.setOnCheckedChangeListener(this);
 		icc.setOnCheckedChangeListener(this);
 		avansert.setOnCheckedChangeListener(this);
 		avansertContainer = (RelativeLayout) root
 				.findViewById(R.id.avansertContainer);
-
-		location = (Spinner) root.findViewById(R.id.location);
+		searchButton = (Button)root.findViewById(R.id.search);
+		searchButton.setOnClickListener(this);
+		location = (EditText) root.findViewById(R.id.location);
 		calcMethod = (Spinner) root.findViewById(R.id.calcMethod);
 		adjustMethod = (Spinner) root.findViewById(R.id.adjustMethod);
 		jurMethod = (Spinner) root.findViewById(R.id.jurMethod);
-
-		locationAdapter = ArrayAdapter.createFromResource(getActivity(),
-				R.array.location, android.R.layout.simple_spinner_item);
-		locationAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		location.setAdapter(locationAdapter);
 
 		calcAdapter = ArrayAdapter.createFromResource(getActivity(),
 				R.array.calculation_methods,
@@ -89,7 +103,6 @@ public class SettingsFragment extends Fragment implements
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		jurMethod.setAdapter(jurMethodAdapter);
 
-		location.setOnItemSelectedListener(this);
 		calcMethod.setOnItemSelectedListener(this);
 		adjustMethod.setOnItemSelectedListener(this);
 		jurMethod.setOnItemSelectedListener(this);
@@ -120,7 +133,7 @@ public class SettingsFragment extends Fragment implements
 				adjustMethod.setSelection(adjustMethodAdapter.getPosition(dao.getSettingsValue("adjustmethod"))); 
 			}
 			if(dao.getSettingsValue("location")!=null){
-				location.setSelection(locationAdapter.getPosition(dao.getSettingsValue("location"))); 
+				locationText.setText(dao.getSettingsValue("location"));
 			}
 			if(dao.getSettingsValue("calcmethod")!=null){
 				calcMethod.setSelection(calcAdapter.getPosition(dao.getSettingsValue("calcmethod"))); 
@@ -150,10 +163,7 @@ public class SettingsFragment extends Fragment implements
 			String jurMethod = (String) arg0.getItemAtPosition(arg2);
 			dao.saveSetting("jurmethod", jurMethod);
 		}
-		if (arg0 == location) {
-			String locationString = (String) arg0.getItemAtPosition(arg2);
-			dao.saveSetting("location", locationString);
-		}
+	
 	}
 	
 	
@@ -163,6 +173,39 @@ public class SettingsFragment extends Fragment implements
 		// TODO Auto-generated method stub
 
 	}
+	
+	
+	private Response.Listener <GeolocationSearchResult> createSuccessListener() {
+	    return new Response.Listener <GeolocationSearchResult>() {
+	    	@Override
+			public void onResponse(GeolocationSearchResult response) {
+	    		
+	    		if(response.getStatus().equals("OK") && response.getResults().length>0){
+	    			Geolocation loc = response.getResults()[0];
+	    			dao.saveSetting("location", loc.getFormatted_address());
+	    			dao.saveSetting("lat", String.valueOf(loc.getGeometry().getLocation().getLat()));
+	    			dao.saveSetting("lng", String.valueOf(loc.getGeometry().getLocation().getLng()));
+	    			locationText.setText(loc.getFormatted_address());
+	    		}
+	    		progressBar.setVisibility(View.GONE);
+	    	
+			}
+	    };	
+	}
+	
+	private Response.ErrorListener createErrorListener() {
+	    return new Response.ErrorListener() {
+	        @Override
+	        public void onErrorResponse(VolleyError error) {
+	        	progressBar.setVisibility(View.GONE);
+	        	//TODO : Log error and get prey times from local storage
+	            //error.getStackTrace();
+	        	Log.e("Kunne ikke hente geolcation",error.toString());
+	        }
+	    };
+	}
+	
+	
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -192,5 +235,18 @@ public class SettingsFragment extends Fragment implements
 		}
 
 	}
+
+	@Override
+	public void onClick(View v) {
+		if(v.equals(searchButton)){
+			progressBar.setVisibility(View.VISIBLE);
+			String address = location.getText().toString();
+			location.setText("");
+			geolocationManager.getGeolocation(createSuccessListener(), createErrorListener(), address);
+			
+		}
+		
+	}
+
 
 }
