@@ -196,6 +196,49 @@
                 android:layout_alignBottom="@+id/location"
                 android:layout_alignParentRight="true"
                 android:text="Søk" />
+            
+             <TextView
+                android:id="@+id/timeZoneHeader"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/search"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border2"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="Tidssone brukt i bergening"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/timeZoneContainer"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/snmsDarkGray"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/timeZoneHeader"
+                android:gravity="center|left"
+                android:paddingLeft="5dp"
+                android:text="Oslo, Norge"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/timeZoneExplatation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/timeZoneContainer"
+                android:gravity="left"
+                android:paddingLeft="5dp"
+                android:text="Hvis du ønsker endre tidssone må du gjøre dette i dine telefoninnstillinger"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+            
+     
+            
+            
+            
         </RelativeLayout>
     </LinearLayout>
 

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -56,12 +57,15 @@ public class SnmsPrayTimeAdapter {
 		PreySettings settings = dao.getAllSettings();
 		
 		if(!settings.getHasAvansertPreyCalenderSet()){
-			return readPrayItemFormXml(time);
+			if(settings.getHasShafiPreyCalenderSet())
+				return readPrayItemFormXml(time,"shafi");
+			else 
+				return readPrayItemFormXml(time,"hanafi");
 		}else {
 			PrayTime prayers = new PrayTime();
 			prayers.setTimeFormat(prayers.Time24);
-		
-			double timezone = 1;
+			
+			int timezone = Math.abs(TimeZone.getDefault().getRawOffset()) / 3600000;
 			Calendar cal = Calendar.getInstance();
 			cal.set(time.getYear(),time.getMonthOfYear(), time.getDayOfMonth());
 			prayers.setCalcMethod(settings.getCalculationMethodNo());
@@ -214,11 +218,12 @@ public class SnmsPrayTimeAdapter {
 	
 	
 	
-	private List<PreyItem> readPrayItemFormXml(DateTime time) {
+	private List<PreyItem> readPrayItemFormXml(DateTime time, String lovSkole) {
 		InputStream inputStream = null;
 		try {
 			String test = String.valueOf(time.getMonthOfYear());
-			inputStream = assetManager.open(String.valueOf(time.getMonthOfYear()) + ".xml");
+			System.out.println("Dette er lovskole" + lovSkole);
+			inputStream = assetManager.open(lovSkole + "/"+String.valueOf(time.getMonthOfYear()) + ".xml");
 			//inputStream = assetManager.open("1.xml");
 			XmlPullParser parser = Xml.newPullParser();
 			parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
