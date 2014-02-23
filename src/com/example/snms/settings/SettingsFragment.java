@@ -1,5 +1,7 @@
 package com.example.snms.settings;
 
+import java.util.TimeZone;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.snms.PreyOverView;
@@ -47,7 +49,7 @@ public class SettingsFragment extends Fragment implements
 	CheckBox hanaFi;
 	CheckBox icc;
 	CheckBox avansert;
-	Button searchButton; 
+	Button searchButton;
 	RelativeLayout avansertContainer;
 	ArrayAdapter<CharSequence> locationAdapter;
 	ArrayAdapter<CharSequence> calcAdapter;
@@ -56,7 +58,7 @@ public class SettingsFragment extends Fragment implements
 	GeolocationManager geolocationManager = GeolocationManager.getInstance();
 	ProgressBar progressBar;
 	TextView locationText;
-	
+	TextView timeZoneContainer;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -69,15 +71,17 @@ public class SettingsFragment extends Fragment implements
 		hanaFi = (CheckBox) root.findViewById(R.id.hanafi);
 		icc = (CheckBox) root.findViewById(R.id.icc);
 		avansert = (CheckBox) root.findViewById(R.id.avansert);
-		progressBar = (ProgressBar)root.findViewById(R.id.progressBar);
+		progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
 		progressBar.setVisibility(View.GONE);
-		locationText =  (TextView) root.findViewById(R.id.locationContainer);
+		locationText = (TextView) root.findViewById(R.id.locationContainer);
+		timeZoneContainer = (TextView) root
+				.findViewById(R.id.timeZoneContainer);
 		hanaFi.setOnCheckedChangeListener(this);
 		icc.setOnCheckedChangeListener(this);
 		avansert.setOnCheckedChangeListener(this);
 		avansertContainer = (RelativeLayout) root
 				.findViewById(R.id.avansertContainer);
-		searchButton = (Button)root.findViewById(R.id.search);
+		searchButton = (Button) root.findViewById(R.id.search);
 		searchButton.setOnClickListener(this);
 		location = (EditText) root.findViewById(R.id.location);
 		calcMethod = (Spinner) root.findViewById(R.id.calcMethod);
@@ -113,6 +117,19 @@ public class SettingsFragment extends Fragment implements
 	}
 
 	void renderSettingState() {
+		String region = TimeZone.getDefault().getID().replaceAll(".*/", "")
+				.replaceAll("_", " ");
+		int hours = Math.abs(TimeZone.getDefault().getRawOffset()) / 3600000;
+		int minutes = Math.abs(TimeZone.getDefault().getRawOffset() / 60000) % 60;
+		String sign = TimeZone.getDefault().getRawOffset() >= 0 ? "+" : "-";
+
+		String timeZonePretty = String.format("(UTC %s %02d:%02d) %s", sign,
+				hours, minutes, region);
+		System.out.println(timeZonePretty);
+
+		timeZoneContainer.setText(TimeZone.getDefault().getDisplayName() + " "
+				+ timeZonePretty);
+
 		if (dao.getSettingsValue("hanfi") != null) {
 			hanaFi.setChecked(true);
 			icc.setChecked(false);
@@ -125,20 +142,23 @@ public class SettingsFragment extends Fragment implements
 			hanaFi.setChecked(false);
 			icc.setChecked(false);
 			avansert.setChecked(true);
-			
-			if(dao.getSettingsValue("jurmethod")!=null){
-				jurMethod.setSelection(jurMethodAdapter.getPosition(dao.getSettingsValue("jurmethod"))); 
+
+			if (dao.getSettingsValue("jurmethod") != null) {
+				jurMethod.setSelection(jurMethodAdapter.getPosition(dao
+						.getSettingsValue("jurmethod")));
 			}
-			if(dao.getSettingsValue("adjustmethod")!=null){
-				adjustMethod.setSelection(adjustMethodAdapter.getPosition(dao.getSettingsValue("adjustmethod"))); 
+			if (dao.getSettingsValue("adjustmethod") != null) {
+				adjustMethod.setSelection(adjustMethodAdapter.getPosition(dao
+						.getSettingsValue("adjustmethod")));
 			}
-			if(dao.getSettingsValue("location")!=null){
+			if (dao.getSettingsValue("location") != null) {
 				locationText.setText(dao.getSettingsValue("location"));
 			}
-			if(dao.getSettingsValue("calcmethod")!=null){
-				calcMethod.setSelection(calcAdapter.getPosition(dao.getSettingsValue("calcmethod"))); 
+			if (dao.getSettingsValue("calcmethod") != null) {
+				calcMethod.setSelection(calcAdapter.getPosition(dao
+						.getSettingsValue("calcmethod")));
 			}
-			
+
 		} else {
 			hanaFi.setChecked(false);
 			icc.setChecked(true);
@@ -163,49 +183,51 @@ public class SettingsFragment extends Fragment implements
 			String jurMethod = (String) arg0.getItemAtPosition(arg2);
 			dao.saveSetting("jurmethod", jurMethod);
 		}
-	
+
 	}
-	
-	
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
 		// TODO Auto-generated method stub
 
 	}
-	
-	
-	private Response.Listener <GeolocationSearchResult> createSuccessListener() {
-	    return new Response.Listener <GeolocationSearchResult>() {
-	    	@Override
+
+	private Response.Listener<GeolocationSearchResult> createSuccessListener() {
+		return new Response.Listener<GeolocationSearchResult>() {
+			@Override
 			public void onResponse(GeolocationSearchResult response) {
-	    		
-	    		if(response.getStatus().equals("OK") && response.getResults().length>0){
-	    			Geolocation loc = response.getResults()[0];
-	    			dao.saveSetting("location", loc.getFormatted_address());
-	    			dao.saveSetting("lat", String.valueOf(loc.getGeometry().getLocation().getLat()));
-	    			dao.saveSetting("lng", String.valueOf(loc.getGeometry().getLocation().getLng()));
-	    			locationText.setText(loc.getFormatted_address());
-	    		}
-	    		progressBar.setVisibility(View.GONE);
-	    	
+
+				if (response.getStatus().equals("OK")
+						&& response.getResults().length > 0) {
+					Geolocation loc = response.getResults()[0];
+					dao.saveSetting("location", loc.getFormatted_address());
+					dao.saveSetting(
+							"lat",
+							String.valueOf(loc.getGeometry().getLocation()
+									.getLat()));
+					dao.saveSetting(
+							"lng",
+							String.valueOf(loc.getGeometry().getLocation()
+									.getLng()));
+					locationText.setText(loc.getFormatted_address());
+				}
+				progressBar.setVisibility(View.GONE);
+
 			}
-	    };	
+		};
 	}
-	
+
 	private Response.ErrorListener createErrorListener() {
-	    return new Response.ErrorListener() {
-	        @Override
-	        public void onErrorResponse(VolleyError error) {
-	        	progressBar.setVisibility(View.GONE);
-	        	//TODO : Log error and get prey times from local storage
-	            //error.getStackTrace();
-	        	Log.e("Kunne ikke hente geolcation",error.toString());
-	        }
-	    };
+		return new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				progressBar.setVisibility(View.GONE);
+				// TODO : Log error and get prey times from local storage
+				// error.getStackTrace();
+				Log.e("Kunne ikke hente geolcation", error.toString());
+			}
+		};
 	}
-	
-	
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -238,15 +260,15 @@ public class SettingsFragment extends Fragment implements
 
 	@Override
 	public void onClick(View v) {
-		if(v.equals(searchButton)){
+		if (v.equals(searchButton)) {
 			progressBar.setVisibility(View.VISIBLE);
 			String address = location.getText().toString();
 			location.setText("");
-			geolocationManager.getGeolocation(createSuccessListener(), createErrorListener(), address);
-			
-		}
-		
-	}
+			geolocationManager.getGeolocation(createSuccessListener(),
+					createErrorListener(), address);
 
+		}
+
+	}
 
 }

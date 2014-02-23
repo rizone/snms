@@ -6,8 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -383,8 +385,10 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	}
 
 	private void renderNext(PreyItem key,View container, TextView title, TextView time, TextView status, ImageView image) {
+		
+		DateTimeZone zone = DateTimeZone.forID(TimeZone.getDefault().getID());
 		DateTime delta = key.getTime().minus(
-				DateTime.now().getMillis());
+				DateTime.now(zone).getMillis());
 		preyCountDownTimer = new PreyCountDownTimer(delta.getMillis(), 1000, status, this);
 		preyCountDownTimer.start();
 	}
@@ -435,10 +439,10 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			day = "Fredag";
 			break;
 		case 6:
-			day = "Lørdag";
+			day = "Lï¿½rdag";
 			break;
 		case 7:
-			day = "Søndag";
+			day = "Sï¿½ndag";
 			break;
 		default:
 			day = "Ukjent";
@@ -553,7 +557,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 					for(PreyItem preyItem:preyTimes){
 						if(preyItem.getName().equals(key)){
 					
-							FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction(); //endre dette til å bruke setReapeting
+							FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction(); //endre dette til ï¿½ bruke setReapeting
 							AlarmDialogFragment newFragment = AlarmDialogFragment.newInstance(preyItem); //var key
 							newFragment.show(ft, "dialog");
 							Bundle args = new Bundle(); 

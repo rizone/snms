@@ -2,10 +2,8 @@
 <resources>
 
 	<string name="hello">Tid for bønn</string>
-    <string name="app_name">Alarm Demo</string>
     <string name="alarm_hello">The alarm will start in five seconds.</string>
     <string name="stop_alarm">Stop Alarm</string>
-    <string name="app_name">SlidingMenu Demos</string>
     <string name="app_name">SNMS</string>
     <string name="properties">SlidingMenu Properties</string>
     <string name="general">General</string>
