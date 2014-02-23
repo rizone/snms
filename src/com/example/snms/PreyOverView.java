@@ -7,6 +7,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.example.snms.alarm.AlarmChangeListner;
+import com.example.snms.alarm.AlarmDialogFragment;
 import com.example.snms.database.SnmsDAO;
 import com.example.snms.domain.PreyItem;
 import com.example.snms.news.NewsListFragment;
@@ -25,13 +26,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
-import android.app.Fragment;
 import android.view.Menu;
 import android.widget.TimePicker;
 
 public class PreyOverView extends  BaseActivity {
 	
-	private static Context context;		//Dag-Martin
+//	private static Context context;		//Dag-Martin
 	SnmsDAO snmsDAO; 
 	ArrayList<AlarmChangeListner> alarmChangeListners = new ArrayList<AlarmChangeListner>();
 	
@@ -46,7 +46,8 @@ public class PreyOverView extends  BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		PreyOverView.context = getApplicationContext();		//Dag-Martin
+		
+//		Context context = getApplicationContext();		//Dag-Martin
 		getSlidingMenu().setMode(SlidingMenu.LEFT_RIGHT);
 
 		getSlidingMenu().setMode(SlidingMenu.LEFT);
@@ -72,19 +73,21 @@ public class PreyOverView extends  BaseActivity {
 		}
 	}
 	
-	public void setAlarm(String alarm, int min) {
+	public void setAlarm() {
 		for(AlarmChangeListner alarmChangeListner : alarmChangeListners){
-			alarmChangeListner.alarmChanged(alarm,min);
+			alarmChangeListner.alarmChanged();
 		}
 	}
 	
 	public SnmsDAO getDAO() {
 		return snmsDAO;
 	}
+	
 
-	public static Context getAppContext() {
-	    return PreyOverView.context;
-	}
+
+//	public static Context getAppContext() {
+//	    return PreyOverView.getAppContext();
+//	}
 
 	@Override
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {

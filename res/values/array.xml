@@ -32,5 +32,36 @@
         <item>@drawable/turkey</item>
         <item>@drawable/vulture</item>
     </string-array>
+    
+     <string-array name="calculation_methods">
+        <item>Jafari</item>
+        <item>Karachi</item>
+        <item>Islamic Society of North America (ISNA)</item>
+        <item>Muslim World League (MWL)</item>
+        <item>Makkah</item>
+        <item>Egypt</item>
+        <item>Tehran</item>
+    </string-array>
+    
+     <string-array name="jurstic_methods">
+        <item>Shafii</item>
+        <item>Hanafi</item>
+    </string-array>
+    
+     
+    <string-array name="adjust_methods">
+        <item>Ingen</item>
+        <item>Midnatt</item>
+        <item>1/7 av natten</item>
+        <item>Grader</item>
+    </string-array>
+    
+    
+    <string-array name="location">
+        <item>Oslo</item>
+        <item>Halden</item>
+    </string-array>
+    
+    
 
 </resources>

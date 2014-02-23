@@ -123,7 +123,7 @@ public class PrayTime {
         // Time Names
         timeNames = new ArrayList<String>();
         timeNames.add("Fajr");
-        timeNames.add("Sunrise");
+        timeNames.add("Soloppgang");
         timeNames.add("Dhuhr");
         timeNames.add("Asr");
         timeNames.add("Sunset");

@@ -149,7 +149,7 @@ public class PrayCalenderListFragment extends Fragment implements
 	@SuppressLint("NewApi")
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		prayTimeAdapter = new SnmsPrayTimeAdapter(getActivity().getAssets());
+		prayTimeAdapter = new SnmsPrayTimeAdapter(getActivity().getAssets(),((PreyOverView) getActivity()).getDAO());
 		prayGridForMonth.setAdapter(adapter);
 		setUpCurrentDay();
 		try {

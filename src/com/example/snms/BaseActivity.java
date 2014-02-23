@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -56,9 +55,10 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements
 	// final TimePickerDialog timePickerDialog =
 	// TimePickerDialog.newInstance(this, 0 ,0, false);
 
-	private int mTitleRes;
+	private int mTitleRes;	
 	protected ListFragment mFrag;
 
+	
 	Fragment currentFragment1;
 	Fragment currentFragment2;
 	ImageView homeButton;
@@ -181,16 +181,7 @@ public abstract class BaseActivity extends SlidingFragmentActivity implements
 		return true;
 	}
 
-	@SuppressLint("NewApi")
-	public void onArticleSelected(DateTime time, String name) {
-		// The user selected the headline of an article from the
-		// HeadlinesFragment
-		// Do something here to display that article
 
-		DialogFragment newFragment = new TimePickerFragment(time, name);
-		newFragment.show(getFragmentManager(), "timePicker");
-
-	}
 
 	@Override
 	public void onClick(View v) {

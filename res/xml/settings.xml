@@ -1,0 +1,11 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory 
+        android:title="Bønnekalender"
+        android:key="pref_prey_cal_jun">
+        <CheckBoxPreference
+            android:key="pref_key_auto_delete"
+            android:summary="Oslo - Hanafi tider (JUN)"
+            android:title="Oslo - Hanafi tider"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

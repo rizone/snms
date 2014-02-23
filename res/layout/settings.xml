@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:orientation="vertical" >
+        
+        <TextView
+                android:id="@+id/headline"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/border2"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="Bønnekalender"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+        <CheckBox
+            android:id="@+id/hanafi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oslo - Hanafi tider (JUN)" />
+
+        <CheckBox
+            android:id="@+id/icc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Oslo - Shafi tider (ICC)" />
+
+        <CheckBox
+            android:id="@+id/avansert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Avansert" />
+
+        <RelativeLayout
+            android:id="@+id/avansertContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/avanserteheadline"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border2"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="Berningsvalg"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/calcMethodText"
+                android:layout_width="230dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/avanserteheadline"
+                android:gravity="bottom"
+                android:paddingLeft="5dp"
+                android:text="Beregningsmetode"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <Spinner
+                android:id="@+id/calcMethod"
+                style="@style/CustomNPStyle"
+                android:layout_width="150dp"
+                android:layout_height="55dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/avanserteheadline"
+                android:layout_marginTop="0dp"
+                android:gravity="bottom"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/jurMethodText"
+                android:layout_width="230dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/calcMethodText"
+                android:gravity="bottom"
+                android:paddingLeft="5dp"
+                android:text="Lovskole"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <Spinner
+                android:id="@+id/jurMethod"
+                style="@style/CustomNPStyle"
+                android:layout_width="150dp"
+                android:layout_height="55dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/calcMethod"
+                android:layout_marginTop="0dp"
+                android:gravity="bottom"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/adjustText"
+                android:layout_width="230dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/jurMethodText"
+                android:gravity="bottom"
+                android:paddingLeft="5dp"
+                android:text="Tilpassingsmetode"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <Spinner
+                android:id="@+id/adjustMethod"
+                style="@style/CustomNPStyle"
+                android:layout_width="150dp"
+                android:layout_height="55dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/jurMethod"
+                android:layout_marginTop="0dp"
+                android:gravity="bottom"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/locationheadLine"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/adjustText"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border2"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="Geolokasjon bruk i beregning"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/locationContainer"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/snmsDarkGray"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/locationheadLine"
+                android:gravity="center|left"
+                android:paddingLeft="5dp"
+                android:text="Oslo, Norge"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/locationText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/locationContainer"
+                android:gravity="left|bottom"
+                android:paddingLeft="5dp"
+                android:text="Ny lokasjon"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+            
+               <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/AppTheme"
+                android:layout_below="@+id/locationContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+               android:layout_toLeftOf="@+id/search"
+            android:layout_gravity="center" >
+        </ProgressBar>
+
+            <EditText
+                android:id="@+id/location"
+                style="@style/CustomNPStyle"
+                android:layout_width="130dp"
+                android:layout_height="55dp"
+                android:layout_below="@+id/locationContainer"
+                android:layout_marginTop="0dp"
+                android:layout_toLeftOf="@+id/search"
+                android:gravity="bottom"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/search"
+                android:layout_width="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/snmsbutton"
+                  android:textColor="@color/white"
+                android:layout_alignBottom="@+id/location"
+                android:layout_alignParentRight="true"
+                android:text="Søk" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
