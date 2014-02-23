@@ -196,7 +196,7 @@
     <LinearLayout
         android:id="@+id/shortCutContainer"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="wrap_content"
         android:background="@color/snmsDarkBlue"
         android:orientation="vertical"
         android:paddingBottom="5dp"
@@ -213,56 +213,53 @@
 
             <Button
                 android:id="@+id/newsShortCut"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="@dimen/snms_qicknav_margin"
+                android:layout_marginTop="0dp"
                 android:layout_weight="0.33"
                 android:background="@drawable/snmsbutton"
                 android:drawablePadding="0sp"
                 android:drawableTop="@drawable/ic_qibla"
                 android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:text="News"
                 android:textColor="#FFFFFF"
-                android:textSize="13dp" >
+                android:textSize="@dimen/snms_text_button" >
             </Button>
 
             <Button
                 android:id="@+id/qiblaShortcut"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="@dimen/snms_qicknav_margin"
+                android:layout_marginTop="0dp"
                 android:layout_weight="0.33"
                 android:background="@drawable/snmsbutton"
                 android:drawablePadding="0sp"
                 android:drawableTop="@drawable/ic_qibla"
                 android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:text="Qibla"
                 android:textColor="#FFFFFF"
-                android:textSize="13dp" >
+                android:textSize="@dimen/snms_text_button" >
             </Button>
 
             <Button
                 android:id="@+id/qiblaDonationShortCut"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="@dimen/snms_qicknav_margin"
+                android:layout_marginTop="0dp"
                 android:layout_weight="0.33"
                 android:background="@drawable/snmsbutton"
                 android:drawablePadding="0sp"
                 android:drawableTop="@drawable/ic_donation"
                 android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:text="Støtt oss"
                 android:textColor="#FFFFFF"
-                android:textSize="13dp" >
+                android:textSize="@dimen/snms_text_button" >
             </Button>
         </LinearLayout>
 
@@ -275,56 +272,53 @@
 
             <Button
                 android:id="@+id/eventsShortCut"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="@dimen/snms_qicknav_margin"
+                android:layout_marginBottom="0dp"
                 android:layout_weight="0.33"
                 android:background="@drawable/snmsbutton"
                 android:drawablePadding="0sp"
                 android:drawableTop="@drawable/ic_events"
                 android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:text="Events"
                 android:textColor="#FFFFFF"
-                android:textSize="13dp" >
+                android:textSize="@dimen/snms_text_button" >
             </Button>
 
             <Button
                 android:id="@+id/buildShortcut"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="@dimen/snms_qicknav_margin"
+                android:layout_marginBottom="0dp"
                 android:layout_weight="0.33"
                 android:background="@drawable/snmsbutton"
                 android:drawablePadding="0sp"
                 android:drawableTop="@drawable/ic_buildproject"
                 android:paddingTop="5dp"
-                android:text="Bygg.p"
+                android:paddingBottom="5dp"
+                android:text="Byggeprosjekt"
                 android:textColor="#FFFFFF"
-                android:textSize="13dp" >
+                android:textSize="@dimen/snms_text_button" >
             </Button>
 
             <Button
                 android:id="@+id/settingsShortCut"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
+                android:layout_margin="@dimen/snms_qicknav_margin"
+                android:layout_marginBottom="0dp"
                 android:layout_weight="0.33"
                 android:background="@drawable/snmsbutton"
                 android:drawablePadding="0sp"
                 android:drawableTop="@drawable/ic_qibla"
                 android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 android:text="Innstillinger"
                 android:textColor="#FFFFFF"
-                android:textSize="13dp" >
+                android:textSize="@dimen/snms_text_button" >
             </Button>
         </LinearLayout>
     </LinearLayout>

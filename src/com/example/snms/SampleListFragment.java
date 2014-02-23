@@ -33,12 +33,12 @@ public class SampleListFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		SampleAdapter adapter = new SampleAdapter(getActivity());
-	    adapter.add(new SampleItem("Nyheter", android.R.drawable.ic_menu_search));
-	    adapter.add(new SampleItem("Byggeprosjektet", android.R.drawable.ic_menu_search));
-	    adapter.add(new SampleItem("Events", android.R.drawable.ic_menu_search));
-	    adapter.add(new SampleItem("Om snms", android.R.drawable.ic_menu_search));
-	    adapter.add(new SampleItem("Qibla", android.R.drawable.ic_menu_search));
-	    adapter.add(new SampleItem("Donasjon", android.R.drawable.ic_menu_search));
+	    adapter.add(new SampleItem("Nyheter", R.drawable.ic_news));
+	    adapter.add(new SampleItem("Byggeprosjektet", R.drawable.ic_buildproject));
+	    adapter.add(new SampleItem("Events", R.drawable.ic_events));
+	    adapter.add(new SampleItem("Om snms", R.drawable.ic_logo));
+	    adapter.add(new SampleItem("Qibla", R.drawable.ic_qibla));
+	    adapter.add(new SampleItem("Donasjon", R.drawable.ic_donation));
 	
 		setListAdapter(adapter);
 	}
