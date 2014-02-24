@@ -104,8 +104,8 @@ var brng = Math.atan2(y, x).toDeg();
 	    // for the system's orientation sensor registered listeners
         mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_GAME);
-        locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,0,0, this);
+      locationManager.requestLocationUpdates(
+             LocationManager.NETWORK_PROVIDER,0,0, this);
         
         
        // getQiblaAngle();
