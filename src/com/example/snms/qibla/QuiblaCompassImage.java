@@ -30,7 +30,7 @@ public class QuiblaCompassImage extends ImageView{
 	    protected void onDraw(Canvas canvas) {
 	        super.onDraw(canvas);
 	        if(angle!=null) {
-	        	angle = 133.0f;
+	        	//angle = 133.0f;
 	        	canvas.translate((float)(canvas.getWidth()/2.0), (float)(canvas.getHeight()/2.0));
 	        	Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
 	        	float x = (float) ((canvas.getWidth()/2.0)*Math.cos(angle*(Math.PI/180)));
@@ -40,7 +40,7 @@ public class QuiblaCompassImage extends ImageView{
 	          	Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),
 	          			R.drawable.ic_qibla);
 	          	p.setColor(Color.BLUE);
-	           	canvas.drawCircle(x-(-25), y, 30, p);
+	           	canvas.drawCircle(x, y, 30, p);
 	          	canvas.drawBitmap(icon, x, y, p);
 	        	canvas.drawLine(0, 0, x,y, p);
 	        	

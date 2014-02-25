@@ -72,8 +72,8 @@ var brng = Math.atan2(y, x).toDeg();
 
     TextView tvHeading;
     
-    double qiblaLat = 21.4225;
-    double qiblaLong = 39.8261 ;
+    Float qiblaLat = 21.4225f;
+    Float qiblaLong = 39.8261f;
 
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -173,49 +173,36 @@ var brng = Math.atan2(y, x).toDeg();
 		
 		*/
 		
+		/*
+		 * 
+		 * var y = Math.sin(dLon) * Math.cos(lat2);
+var x = Math.cos(lat1)*Math.sin(lat2) -
+        Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
+var brng = Math.atan2(y, x).toDeg();
+		 * 
+		 */
+		
 	//	double lat1 = this.location.getLatitude();
 	//	double lon1 = this.location.getLongitude();
 		
-		double lat1 = 59.0;
-		double lon1 = 18.0;
-		double lat2 = qiblaLat;
-		double lon2 = qiblaLong;
+		float lat1 = 1.35208f;
+		float lon1 = 103.819f;
+		float lat2 = qiblaLat;
+		float lon2 = qiblaLong;
 		
-		double y = Math.sin(lon2-lon1)*Math.cos(lat2);
-		double x = Math.cos(lat1)*Math.sin(lat2) -   Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1);
-//		double tc1 = -1; 
-//		  if (y > 0){
-//		    if(x > 0)
-//		    	tc1 = Math.atan(y/x)*180/Math.PI;
-//		    if (x <0) 
-//		    	tc1 = 180 - Math.atan(-y/x)*180/Math.PI;
-//		    if(x == 0) 
-//		    	tc1 = 90.0;
-//		  }
-//		  if(y < 0) {
-//		    if (x > 0)
-//		    	tc1 = -Math.atan(-y/x)*180/Math.PI;
-//		    if (x < 0) 
-//		    	tc1 = (Math.atan(y/x)*180/Math.PI)-180;
-//		    if (x == 0)
-//		    	tc1 = 270.0;
-//		  }
-//		  if( y == 0 ){
-//		    if (x > 0) 
-//		    	tc1 = 0.0;
-//		    if (x < 0 )
-//		    	tc1 = 180.0;
-//		    if (x == 0)
-//		    	tc1 = 0.0;
-//		  }
+	
+		
+		/*
+		 * 
+		 * 
+		 */
+		float lonDelta = (lon2 - lon1);
+		float y = (float) (Math.sin(lonDelta) * Math.cos(lat2));
+		float x = (float) (Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lonDelta));
+		double brng = Math.toDegrees(Math.atan2(y, x));
 		
 		
-		double angle = (Math.atan2(y, x) % 2*Math.PI)*180/Math.PI;
-//		angle = angle + 360 % 360;
-		
-		
-		
-		return angle;
+		return brng;
 	}
 	
 	
