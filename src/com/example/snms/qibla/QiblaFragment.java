@@ -45,82 +45,101 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
-public class QiblaFragment extends Fragment implements  SensorEventListener, LocationListener  {
-	
-	
-	
+public class QiblaFragment extends Fragment implements SensorEventListener,
+		LocationListener {
+
 	/*
 	 * 
-	 * var y = Math.sin(dLon) * Math.cos(lat2);
-var x = Math.cos(lat1)*Math.sin(lat2) -
-        Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
-var brng = Math.atan2(y, x).toDeg();
-	 * 
+	 * var y = Math.sin(dLon) * Math.cos(lat2); var x =
+	 * Math.cos(lat1)*Math.sin(lat2) -
+	 * Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon); var brng = Math.atan2(y,
+	 * x).toDeg();
 	 */
 	private LocationManager locationManager;
-	  // define the display assembly compass picture
-    private QuiblaCompassImage image;
+	// define the display assembly compass picture
+	private QuiblaCompassImage image;
 
-    // record the compass picture angle turned
-    private float currentDegree = 0f;
+	// record the compass picture angle turned
+	private float currentDegree = 0f;
 
-    // device sensor manager
-    private SensorManager mSensorManager;
-    
-    
-    private Location location; 
+	// device sensor manager
+	private SensorManager mSensorManager;
 
-    TextView tvHeading;
-    
-    Float qiblaLat = 21.4225f;
-    Float qiblaLong = 39.8261f;
+	private Location location;
 
+	TextView tvHeading;
+
+	double qiblaLat = 21d;
+	double qiblaLong = 39d;
+
+	ImageView qiblaArrow;
+	double qiblaAngle = 0.0; 
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-	    View root = inflater.inflate(R.layout.qibla,null);
+		View root = inflater.inflate(R.layout.qibla, null);
 
-        // 
-        image = (QuiblaCompassImage) root.findViewById(R.id.imageViewCompass);
-        // TextView that will tell the user what degree is he heading
-        tvHeading = (TextView) root.findViewById(R.id.tvHeading);
+		//
+		image = (QuiblaCompassImage) root.findViewById(R.id.imageViewCompass);
+		// TextView that will tell the user what degree is he heading
 
-        // initialize your android device sensor capabilities
-        mSensorManager = (SensorManager) this.getActivity().getSystemService(Activity.SENSOR_SERVICE);
-        locationManager = (LocationManager) this.getActivity().getSystemService(Activity.LOCATION_SERVICE);
+		// initialize your android device sensor capabilities
+		mSensorManager = (SensorManager) this.getActivity().getSystemService(
+				Activity.SENSOR_SERVICE);
+//		locationManager = (LocationManager) this.getActivity()
+//				.getSystemService(Activity.LOCATION_SERVICE);
 		return root;
-		}
+	}
 
-		/*
-		 * image.setImageUrl(newsItem.getImgUrl(),
-		 * ImageCacheManager.getInstance().getImageLoader());
-		 */
-
-
+	/*
+	 * image.setImageUrl(newsItem.getImgUrl(),
+	 * ImageCacheManager.getInstance().getImageLoader());
+	 */
+	
+	
+	
+	
 	@Override
 	public void onResume() {
 		super.onResume();
-	    // for the system's orientation sensor registered listeners
-        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
-                SensorManager.SENSOR_DELAY_GAME);
-      locationManager.requestLocationUpdates(
-             LocationManager.NETWORK_PROVIDER,0,0, this);
-        
-        
-       // getQiblaAngle();
-        float angle = (float)getQiblaAngle();
-        this.image.setAngle(angle);
-     
+		float angle = (float) getQiblaAngle();
+	 //	rotateArrow(angle);
+		
+		// for the system's orientation sensor registered listeners
+		mSensorManager.registerListener(this,
+				mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+				SensorManager.SENSOR_DELAY_GAME);
+//		locationManager.requestLocationUpdates(
+//				LocationManager.NETWORK_PROVIDER, 0, 0, this);
+
+		// getQiblaAngle();
+	
+		this.image.setAngle(angle);
+
 	}
 	
-	   @Override
-	    public void onPause() {
-	        super.onPause();
+	private void rotateArrow(Float angle){
+		RotateAnimation ra = new RotateAnimation(currentDegree, -angle,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		System.out.println("this is angle:" + angle);
+		ra.setDuration(210);
+		ra.setFillAfter(true);
+	
+		qiblaArrow.startAnimation(ra);
+		qiblaAngle = angle; 
+		
+	}
+	
 
-	        // to stop the listener and save battery
-	        mSensorManager.unregisterListener(this);
-	    }
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		// to stop the listener and save battery
+		mSensorManager.unregisterListener(this);
+	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -134,125 +153,99 @@ var brng = Math.atan2(y, x).toDeg();
 	@Override
 	public void onAccuracyChanged(Sensor arg0, int arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		   // get the angle around the z-axis rotated
-        float degree = Math.round(event.values[0]);
+		// get the angle around the z-axis rotated
+		float degree = Math.round(event.values[0]);
 
-        tvHeading.setText("Heading: " + Float.toString(degree) + " degrees");
 
-        // create a rotation animation (reverse turn degree degrees)
-        RotateAnimation ra = new RotateAnimation(
-                currentDegree, 
-                -degree,
-                Animation.RELATIVE_TO_SELF, 0.5f, 
-                Animation.RELATIVE_TO_SELF,
-                0.5f);
-
-        // how long the animation will take place
-        ra.setDuration(210);
-
-        // set the animation after the end of the reservation status
-        ra.setFillAfter(true);
-
-        // Start the animation
-        image.startAnimation(ra);
-        currentDegree = -degree;
+		// create a rotation animation (reverse turn degree degrees)
+		RotateAnimation ra = new RotateAnimation(currentDegree, degree,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
 		
+		
+	
+		// how long the animation will take place
+		ra.setDuration(210);
+		// set the animation after the end of the reservation status
+		ra.setFillAfter(true);
+
+		// Start the animation
+		image.startAnimation(ra);
+	//	qiblaArrow.setRotationX(image.getRotationX());
+		currentDegree = -degree;
+
 	}
 
 	private double getQiblaAngle() {
 		/*
-		var y = Math.sin(dLon) * Math.cos(lat2);
-		var x = Math.cos(lat1)*Math.sin(lat2) -
-		        Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
-		var brng = Math.atan2(y, x).toDeg();
-		
-		*/
-		
+		 * var y = Math.sin(dLon) * Math.cos(lat2); var x =
+		 * Math.cos(lat1)*Math.sin(lat2) -
+		 * Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon); var brng =
+		 * Math.atan2(y, x).toDeg();
+		 */
+
 		/*
 		 * 
-		 * var y = Math.sin(dLon) * Math.cos(lat2);
-var x = Math.cos(lat1)*Math.sin(lat2) -
-        Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon);
-var brng = Math.atan2(y, x).toDeg();
-		 * 
+		 * var y = Math.sin(dLon) * Math.cos(lat2); var x =
+		 * Math.cos(lat1)*Math.sin(lat2) -
+		 * Math.sin(lat1)*Math.cos(lat2)*Math.cos(dLon); var brng =
+		 * Math.atan2(y, x).toDeg();
 		 */
+
+		// double lat1 = this.location.getLatitude();
+		// double lon1 = this.location.getLongitude();
 		
-	//	double lat1 = this.location.getLatitude();
-	//	double lon1 = this.location.getLongitude();
+		Location targetLocation = new Location("");//provider name is unecessary
+		targetLocation.setLatitude(59d);//your coords of course
+		targetLocation.setLongitude(10d);
 		
-		float lat1 = 1.35208f;
-		float lon1 = 103.819f;
-		float lat2 = qiblaLat;
-		float lon2 = qiblaLong;
+		Location qibla = new Location("");
+		qibla.setLatitude(qiblaLat);
+		qibla.setLongitude(qiblaLong);
 		
-	
+		return qibla.bearingTo(targetLocation);
 		
-		/*
-		 * 
-		 * 
-		 */
-		float lonDelta = (lon2 - lon1);
-		float y = (float) (Math.sin(lonDelta) * Math.cos(lat2));
-		float x = (float) (Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lonDelta));
-		double brng = Math.toDegrees(Math.atan2(y, x));
-		
-		
-		return brng;
+//		float lat1 = 1.35208f;
+//		float lon1 = 103.819f;
+//		float lat2 = qiblaLat;
+//		float lon2 = qiblaLong;
+
 	}
-	
-	
-	
-	
+
 	@Override
 	public void onLocationChanged(Location location) {
-		if(location!=null){
-			this.location = location; 
+		if (location != null) {
+			this.location = location;
 			locationManager.removeUpdates(this);
 		}
-		
+
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
-	//1) Get location
-	//2) Calculate vetvor
-	//3) Draw vetvor 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
+	}
+
+	// 1) Get location
+	// 2) Calculate vetvor
+	// 3) Draw vetvor
 
 }

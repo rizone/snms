@@ -42,9 +42,8 @@ public class AlarmUtilities {
 				.getSystemService(Activity.ALARM_SERVICE);
 		alarmManager.cancel(sender);
 
-		Toast.makeText(context, "Alarm er blitt deaktivert.",
-				Toast.LENGTH_SHORT).show();
-		System.out.println("Alarm with ID:" + id + " canceled");
+//		Toast.makeText(context, "Alarm er blitt deaktivert.",
+//				Toast.LENGTH_SHORT).show();
 
 		if (hasAlarm(name)) {
 			dao.deleteAlarm(name);
@@ -52,7 +51,6 @@ public class AlarmUtilities {
 			dao.closeDB();
 		}
 
-		System.out.println("Alarm with name:" + name + " removed from DB");
 
 	}
 
@@ -169,24 +167,24 @@ public class AlarmUtilities {
 		long intervalMillis = nextPrey.getMillis() - thisPrey.getMillis();
 		
 
-		Toast.makeText(
-				context,
-				"Satt alarm :" + thisPrey.getYear() + " "
-						+ thisPrey.getMonthOfYear() + " "
-						+ thisPrey.getDayOfMonth() + " "
-						+ thisPrey.getHourOfDay() + " "
-						+ thisPrey.getMinuteOfHour() + " "
-						+ thisPrey.getSecondOfMinute(), Toast.LENGTH_LONG)
-				.show();
-		Toast.makeText(
-				context,
-				"Neste alarm :" + nextPrey.getYear() + " "
-						+ nextPrey.getMonthOfYear() + " "
-						+ nextPrey.getDayOfMonth() + " "
-						+ nextPrey.getHourOfDay() + " "
-						+ nextPrey.getMinuteOfHour() + " "
-						+ nextPrey.getSecondOfMinute(), Toast.LENGTH_LONG)
-				.show();
+//		Toast.makeText(
+//				context,
+//				"Satt alarm :" + thisPrey.getYear() + " "
+//						+ thisPrey.getMonthOfYear() + " "
+//						+ thisPrey.getDayOfMonth() + " "
+//						+ thisPrey.getHourOfDay() + " "
+//						+ thisPrey.getMinuteOfHour() + " "
+//						+ thisPrey.getSecondOfMinute(), Toast.LENGTH_LONG)
+//				.show();
+//		Toast.makeText(
+//				context,
+//				"Neste alarm :" + nextPrey.getYear() + " "
+//						+ nextPrey.getMonthOfYear() + " "
+//						+ nextPrey.getDayOfMonth() + " "
+//						+ nextPrey.getHourOfDay() + " "
+//						+ nextPrey.getMinuteOfHour() + " "
+//						+ nextPrey.getSecondOfMinute(), Toast.LENGTH_LONG)
+//				.show();
 
 
 
@@ -227,8 +225,8 @@ public class AlarmUtilities {
 		// alarms = dao.getAlarms();
 		// dao.closeDB();
 
-		Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT)
-				.show();
+//		Toast.makeText(context, "Alarm er blitt satt", Toast.LENGTH_SHORT)
+//				.show();
 
 		// PreyOverviewFragment povf = new PreyOverviewFragment();
 		//

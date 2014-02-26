@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.opengl.Matrix;
 import android.util.AttributeSet;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.ImageView;
 
 public class QuiblaCompassImage extends ImageView{
@@ -30,22 +31,24 @@ public class QuiblaCompassImage extends ImageView{
 	    protected void onDraw(Canvas canvas) {
 	        super.onDraw(canvas);
 	        if(angle!=null) {
-	        	//angle = 133.0f;
-	        	canvas.translate((float)(canvas.getWidth()/2.0), (float)(canvas.getHeight()/2.0));
-	        	Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-	        	float x = (float) ((canvas.getWidth()/2.0)*Math.cos(angle*(Math.PI/180)));
-	        	float y = (float) ((canvas.getWidth()/2.0)*Math.sin(angle*(Math.PI/180)));
+	            final Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+	            final int paddingLeft = getPaddingLeft();
+	            final int paddingTop = getPaddingTop();
 
-	          	//	scaleMatrix.postTranslate(x, y);
-	          	Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),
-	          			R.drawable.ic_qibla);
-	          	p.setColor(Color.BLUE);
-	           	canvas.drawCircle(x, y, 30, p);
-	          	canvas.drawBitmap(icon, x, y, p);
-	        	canvas.drawLine(0, 0, x,y, p);
-	        	
-	        	canvas.restore();
-	        	//canvas.drawl
+	            canvas.save();
+
+	            // do my rotation and other adjustments
+	            canvas.rotate(-angle,canvas.getWidth()/2, canvas.getHeight()/2);
+	            
+	            if( paddingLeft!=0 )
+	                canvas.translate(paddingLeft,0);
+
+	            if( paddingTop!=0 )
+	                canvas.translate(0,paddingTop);
+
+	            canvas.drawBitmap( BitmapFactory.decodeResource(getContext().getResources(),
+	          			R.drawable.ic_compass_arrow),0,0,p );
+	            canvas.restore();
 	        }
 
 	    }
