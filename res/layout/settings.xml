@@ -136,7 +136,7 @@
                 android:background="@drawable/border2"
                 android:gravity="center_vertical"
                 android:paddingLeft="5dp"
-                android:text="Geolokasjon bruk i beregning"
+                android:text="Geolokasjon brukt i beregning"
                 android:textColor="@color/black"
                 android:textSize="17sp" />
 
@@ -230,7 +230,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/timeZoneContainer"
                 android:gravity="left"
-                android:paddingLeft="5dp"
+                android:padding="7dp"
                 android:text="Hvis du ønsker endre tidssone må du gjøre dette i dine telefoninnstillinger"
                 android:textColor="@color/black"
                 android:textSize="17sp" />

@@ -143,6 +143,7 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		latesetNewsScrollView = (HorizontalScrollView)root.findViewById(R.id.latesetNewsScrollView);
 		shortCutContainer = (LinearLayout)root.findViewById(R.id.shortCutContainer);
 		shortCuts = (Button) root.findViewById(R.id.shortCuts);
+		shortCuts.setSelected(true);
 		latestNews = (Button) root.findViewById(R.id.latestNews);
 		shortCuts.setOnClickListener(this);
 		latestNews.setOnClickListener(this);
@@ -154,7 +155,6 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 		settingsShortCut = (Button) root.findViewById(R.id.settingsShortCut);
 		qiblaShortcut  = (Button) root.findViewById(R.id.qiblaShortcut);
 		newsShortCut = (Button) root.findViewById(R.id.newsShortCut);
-		
 		eventsShortCut.setOnClickListener(this);
 		buildShortcut.setOnClickListener(this);
 		settingsShortCut.setOnClickListener(this);
@@ -549,6 +549,12 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 			switchFragment(myDetailFragment,null);
 		}
 		
+		for(RelativeLayout key  : newsMap.keySet()){
+			if(v.equals(key)) {
+				NewsDetailsFragment myDetailFragment = new NewsDetailsFragment(newsMap.get(key));
+				switchFragment(myDetailFragment,null);
+			}
+		}
 		
 		
 		for(String key  :alarmButtonNameMap.keySet()){
@@ -626,7 +632,11 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	    };
 	}
 	
-
+	HashMap<RelativeLayout,NewsItem> newsMap = new HashMap<RelativeLayout,NewsItem>();
+	
+	void setListener(RelativeLayout latestNews){
+		latestNews.setOnClickListener(this);
+	}
 			
 	@SuppressLint("NewApi")
 	private Response.Listener <NewsItem[]> createSuccessListener() {
@@ -643,6 +653,9 @@ public class PreyOverviewFragment extends Fragment implements  OnClickListener, 
 	    			newsText.setText(item.getTitle());
 	    			newsimage.setImageUrl(item.getImgUrl(), ImageCacheManager.getInstance().getImageLoader());
 	    			latestNewsContainer.addView(latestNews);
+	    			newsMap.put(latestNews, item);
+	    			setListener(latestNews);
+	    			
 	    		}
 	    		
 //	    		

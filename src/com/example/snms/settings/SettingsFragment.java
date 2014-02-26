@@ -160,8 +160,8 @@ public class SettingsFragment extends Fragment implements
 			}
 
 		} else {
-			hanaFi.setChecked(false);
-			icc.setChecked(true);
+			hanaFi.setChecked(true);
+			icc.setChecked(false);
 			avansert.setChecked(false);
 			dao.saveSetting("icc", "true");
 		}
