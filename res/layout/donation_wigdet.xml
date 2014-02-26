@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
                     android:gravity="bottom"
-                    android:text="Gi en gave til felleskapet"
+                    android:text="Gi ditt bidrag til SNMS"
                     android:textAppearance="@android:style/TextAppearance.Large"
                     android:textColor="@color/white" />
             </LinearLayout>
@@ -74,8 +74,8 @@
             android:layout_height="match_parent"
             android:layout_margin="0dp"
             android:gravity="center_vertical"
-            android:text="Vi mottar daglig donasjoner som går til å skape enda bedre tilbud for oss alle. Nå kan man også donere rett fra vår app! Velg beløpet du ønsker under, og klikk “Gi din gave!”"
-            android:textAppearance="@android:style/TextAppearance.Small"
+            android:text="SMS Donasjon er en sikker og effektiv løsning som gir deg mulighet til å gi donasjoner til SNMS.\nMed Allahs velsignelse arbeider SNMS målrettet for å bygge moské på Mortensrud, og vi trenger økonomisk støtte fra dere. Alle som ønsker å bidra kan velge et beløp under og klikke på 'Jeg vil gi pengestøtte'"
+			android:textSize="13dp"
             android:textColor="@color/black" />
     </LinearLayout>
 
@@ -160,11 +160,11 @@
 
             <Button
                 android:id="@+id/donerButton"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="45dp"
                 android:background="@drawable/snmsbutton"
                 android:gravity="center"
-                android:text="Gi din gave!"
+                android:text="JEG VIL GI\n PENGESTØTTE"
                 android:textColor="@color/white" />
             
              <LinearLayout

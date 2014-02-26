@@ -255,6 +255,9 @@ public class SettingsFragment extends Fragment implements
 			hanaFi.setChecked(false);
 			avansert.setChecked(false);
 		}
+		
+		if(!icc.isChecked() && !hanaFi.isChecked() && !avansert.isChecked())
+			hanaFi.setChecked(true);
 
 	}
 

@@ -55,7 +55,7 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 	
 	private NumberPicker picker; 
 	private Button donationButton; 
-	private String[] nums = new String[100];
+	private String[] nums = new String[10];
 	private TextView dontationText; 
 	private TextView infoButton;
 	private ImageView infoImage;
@@ -73,7 +73,7 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 		infoButton.setOnClickListener(this);
 		infoImage.setOnClickListener(this);
 		for(int i=0; i<nums.length; i++)
-		   nums[i] = Integer.toString(i*50);
+			nums[i] = Integer.toString(i*50 + 50);
 
 		
 		return root;
@@ -92,7 +92,7 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 		picker.setMinValue(0);
 		picker.setWrapSelectorWheel(false);
 		picker.setDisplayedValues(nums);
-		picker.setValue(1);
+		picker.setValue(0);
 		dontationText.setText("50kr");
 
 	}
@@ -116,8 +116,8 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 	public void onClick(View v) {
 		if(v.equals(donationButton)){
 			 Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-			    smsIntent.putExtra("sms_body", "Jeg donerer " + picker.getValue()*50 +" kr."); 
-			    smsIntent.putExtra("address", "93892904");
+			    smsIntent.putExtra("sms_body", "Masjid " + (picker.getValue()*50 +50)); 
+			    smsIntent.putExtra("address", "1963");
 			    smsIntent.setType("vnd.android-dir/mms-sms");
 			    startActivity(smsIntent);
 		}
@@ -128,7 +128,7 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 			// 1. Instantiate an AlertDialog.Builder with its constructor
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			// 2. Chain together various setter methods to set the dialog characteristics
-			builder.setMessage("Donasjons beløp under 100..");
+			builder.setMessage("Kostnaden for donasjon varierer med beløpets størrelse fra 4,6% til ca. 7%. Donasjonsbeløpet varierer fra 50 kr - 500 kr. Dersom ditt bidrag er større enn 500 kr, må du donere flere ganger eller overføre til konto: 6062.05.31599. Merk beløpet 'Donasjon til SNMS'.");
 			// 3. Get the AlertDialog from create()
 			AlertDialog dialog = builder.create();
 			dialog.show();
@@ -140,8 +140,7 @@ public class DonationFragment extends Fragment implements OnClickListener, Numbe
 
 	@Override
 	public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-		dontationText.setText(newVal*50 + "kr");
-		
+		  dontationText.setText(newVal*50+50 + "kr");
 	}
 
 
